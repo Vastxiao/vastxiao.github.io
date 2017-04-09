@@ -41,7 +41,7 @@ menu:
   categories: /categories
   tags: /tags
   archives: /archives
-  #about: /about
+  about: /about
   #sitemap: /sitemap.xml
   #commonweal: /404.html
 
@@ -129,14 +129,14 @@ font:
 # Sidebar Settings
 # ---------------------------------------------------------------
 
-
+# 社交链接
 # Social Links
 # Key is the link label showing to end users.
 # Value is the target link (E.g. GitHub: https://github.com/iissnan)
 social:
   #LinkLabel: Link
   GitHub: https://github.com/Vastxiao
-
+  Weibo: http://weibo.com/345123812
 
 # Social Links Icons
 # Icon Mapping:
@@ -151,11 +151,11 @@ social_icons:
   Twitter: twitter
   Weibo: weibo
 
-
+# 设置头像
 # Sidebar Avatar
 # in theme directory(source/images): /images/avatar.jpg
 # in site  directory(source/uploads): /uploads/avatar.jpg
-#avatar:
+avatar: /images/avatar.png
 
 
 # Table Of Contents in the Sidebar
@@ -199,6 +199,7 @@ sidebar:
   scrollpercent: false
 
 
+# 友情链接
 # Blog rolls
 #links_title: Links
 #links_layout: block
@@ -217,6 +218,7 @@ scroll_to_more: true
 # Automatically excerpt description in homepage as preamble text.
 excerpt_description: true
 
+# 自动截取文章摘要 (不推荐)
 # Automatically Excerpt. Not recommend.
 # Please use <!-- more --> in the post to control excerpt accurately.
 auto_excerpt:
@@ -245,11 +247,13 @@ post_wordcount:
 
 # Declare license on posts
 post_copyright:
-  enable: false
+  enable: true
   license: CC BY-NC-SA 3.0
   license_url: https://creativecommons.org/licenses/by-nc-sa/3.0/
 
-
+reward_comment: Life is but a span, learn and live.
+wechatpay: /images/wechatpay.png
+alipay: /images/alipay.png
 
 # ---------------------------------------------------------------
 # Misc Theme Settings
@@ -287,7 +291,7 @@ mathjax:
 #swiftype_key:
 
 # Baidu Analytics ID
-#baidu_analytics:
+baidu_analytics: 96951c2a9f5ddfa1367d07d7a339e260
 
 # Duoshuo ShortName
 #duoshuo_shortname:
@@ -295,7 +299,7 @@ mathjax:
 # Disqus
 disqus:
   enable: false
-  shortname:
+  shortname: 
   count: true
 
 # Hypercomments
@@ -312,7 +316,7 @@ changyan:
 
 # Support for youyan comments system.
 # You can get your uid from http://www.uyan.cc
-#youyan_uid: your uid
+youyan_uid: 2130477
 
 # Support for LiveRe comments system.
 # You can get your uid from https://livere.com/insight/myCode (General web site)

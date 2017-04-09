@@ -1,5 +1,6 @@
 ---
 title: Elastic Curator 简介和安装
+description: ES curator工具的多种安装方法。
 toc: true
 categories:
   - elastic
