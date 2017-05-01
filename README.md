@@ -19,4 +19,12 @@ npm install
 
 # 使用git部署站点需要安装包:
 npm install hexo-deployer-git --save
+
+# 配置/部署博客:
+hexo new       # Create a new post.
+hexo clean     # Removed generated files and cache.
+hexo generate  # Generate static files.
+hexo server    # Start the server.
+hexo deploy    # Deploy your website.
 ```
+
