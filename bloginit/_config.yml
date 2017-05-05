@@ -14,8 +14,11 @@ timezone:
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: https://vastxiao.github.io/
 root: /
+# 按日期归档
 #permalink: :year/:month/:day/:title/
-permalink: :category/:title/
+permalink: article/:year/:month/:day/:title/
+# 按分类归档
+#permalink: :category/:title/
 permalink_defaults:
 
 # Directory
