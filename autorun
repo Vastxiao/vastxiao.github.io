@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+# Edit by vastxiao
+# Date at 20170506 
+
+cd $(dirname $0)
+MAINPATH=$(pwd)
+cd bloginit || exit 1
+hexo version || exit 1
+hexo clean
+hexo gen
+hexo deploy
+cd ${MAINPATH}
+git add .
+git commit
+git push
+
