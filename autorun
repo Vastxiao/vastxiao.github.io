@@ -11,7 +11,7 @@ hexo clean
 hexo gen
 hexo deploy || exit 1
 cd ${MAINPATH}
-git add .
-git commit
+git add . -A
+git commit -a -m "update bloginit at $(date +'%F %T')"
 git push
 
