@@ -1,0 +1,18 @@
+#!/bin/bash
+#
+# 这是一个解码迅雷资源链接的小工具。
+#
+# Made by 渺小
+# Date at 2017/1/23
+# Version 1.0
+#
+
+base64 --version &>/dev/null
+[ $? -ne 0 ] && echo "Sorry，你的系统没有base64，请先安装base64 (GNU coreutils)。" && exit 1
+
+url=$1
+[ x"$url" = x ] && echo "Usage: $0 <Thunder_url>" && echo "" && echo "Example: $0 thunder://codestringsline" && exit 1
+url=$(echo $url |sed -e 's#thunder://##' -e 's#/$##' )
+echo $url |base64 -d |sed -e 's#^AA##' -e 's#ZZ$##'
+echo ""
+

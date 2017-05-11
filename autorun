@@ -9,7 +9,7 @@ cd bloginit || exit 1
 hexo version || exit 1
 hexo clean
 hexo gen
-hexo deploy
+hexo deploy || exit 1
 cd ${MAINPATH}
 git add .
 git commit
