@@ -7,7 +7,6 @@ categories:
 tags:
   - elastic
   - curator
-  - 安装
 date: 2017-03-26 19:17:02
 updated: 2017-03-26 19:17:02
 ---
