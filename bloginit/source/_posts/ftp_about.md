@@ -46,10 +46,10 @@ FTP 服务的交互比较复杂，使用了两个TCP连接，分别是命令信�
 
 ### FTP主动连接模式 (active) 
 
-```seq
-Client->FtpServer: ClientPort:A - 建立tcp通道连接 - FtpServerPort:21
-Client->FtpServer: ClientPort:A - 知服务器端使用active且连接的client端口号B - FtpServerPort:21
-FtpServer-->Client: ClientPort:B - 建立tcp连接 - FtpServerPort:20
+```sequence
+Client->FtpServer: ClientPort:A-建立tcp通道连接-FtpServerPort:21
+Client->FtpServer: ClientPort:A-知服务器端使用active且连接的client端口号B-FtpServerPort:21
+FtpServer-->Client: ClientPort:B-建立tcp连接-FtpServerPort:20
 ```
 
 1. 客户端会随机取一个大于1024以上的端口(port A)来与FTP服务器端的(port 21)建立连接，连接后客户端可以通过这个连接对FTP服务器发送命令。
@@ -62,7 +62,7 @@ FtpServer-->Client: ClientPort:B - 建立tcp连接 - FtpServerPort:20
 
 ### FTP被动连接模式 (passive) 
 
-```seq
+```sequence
 Client->FtpServer: ClientPort:A - 建立tcp通道连接 - FtpServerPort:21
 Client->FtpServer: ClientPort:A - 向服务器端发送passive连接请求 - FtpServerPort:21
 FtpServer-->Client: ClientPort:A - 服务器返回passvie连接端口号(Port X) - FtpServerPort:21
