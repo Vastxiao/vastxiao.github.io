@@ -12,6 +12,9 @@ https://hexo.io/zh-cn/
 # 安装hexo:
 npm install -g hexo-cli
 
+# 安装hexo插件，支持markdown流程图
+npm install --save hexo-filter-flowchart
+
 # 备注:使用hexo命令时有一些node_modules报错,可以重新安装下这个hexo.
 # 或需要移除报错modules目录
 cd /TO/HEXOINITDIR
