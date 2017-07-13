@@ -7,7 +7,7 @@ categories:
 tags:
   - facl
 date: 2017-06-18 12:06:29
-updated: 2017-06-18 12:06:29
+updated: 2017-07-13 16:39:07
 ---
 
 
@@ -149,12 +149,18 @@ setfacl -k /path/to/dirname
 
 ## facl useful
 
-搞定开发项目的目录权限：
+一招搞定开发项目的目录权限：
 
 ```bash
 chown -R root:www /www #确定目录属组
 chmod 2775 /www #目录属组下文件及目录使用共享组权限
-setfacl -R -m d:g::rwx /www #配置目录下创建目录或文件默认权限
+setfacl -R -m d:u::rwx /www #配置该目录下创建目录或文件时的默认权限
+setfacl -R -m d:g::rwx /www #配置该目录下创建目录或文件时的默认权限
+setfacl -R -m d:m::rwx /www #配置该目录下创建目录或文件时的默认权限
+setfacl -R -m d:o::rx /www #配置该目录下创建目录或文件时的默认权限
+
+# 这样设置完后，以后给人员权限只要家组就够了：
+usermod -a -G Username
 ```
 
 ## reference
