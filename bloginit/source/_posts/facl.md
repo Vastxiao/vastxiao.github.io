@@ -159,8 +159,8 @@ setfacl -R -m d:g::rwx /www #配置该目录下创建目录或文件时的默认
 setfacl -R -m d:m::rwx /www #配置该目录下创建目录或文件时的默认权限
 setfacl -R -m d:o::rx /www #配置该目录下创建目录或文件时的默认权限
 
-# 这样设置完后，以后给人员权限只要给linux账号添加组就够了：
-usermod -a -G Username
+# 这样设置完后，以后给linux账号加权限只要添加属组就够了：
+usermod -a -G www Username
 ```
 
 ## reference
