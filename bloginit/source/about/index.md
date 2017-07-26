@@ -21,4 +21,9 @@ Let sleeping dogs lie...
 Page: https://vastxiao.github.io/zabbixMonitorES/  
 Repo: https://github.com/Vastxiao/zabbixMonitorES
 
+## tmssh
+
+一个tmux的增强工具，用于批量ssh远程主机，方便日常工作操作多台服务器。  
+Repo: https://github.com/Vastxiao/tmssh
+
 
