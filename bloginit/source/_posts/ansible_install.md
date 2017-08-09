@@ -3,7 +3,7 @@ title: ansible安装
 description: 自动化工具ansible的几种安装方式。
 toc: true
 categories:
-  - linux
+  - Linux
 tags:
   - tools
   - ansible

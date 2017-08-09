@@ -3,7 +3,7 @@ title: ftp协议 功能及工作模式
 description: 纯理论知识，关于ftp协议的基本功能及两种工作模式的介绍。
 toc: true
 categories:
-  - linux
+  - Linux
 tags:
   - ftp
 date: 2017-06-09 22:09:28

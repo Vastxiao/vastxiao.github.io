@@ -3,7 +3,7 @@ title: tmux + tmuxifier 打造终极Linux运维终端工具
 description: 分享tmux和tmuxifier基本知识及我的用法。
 toc: true
 categories:
-  - linux
+  - Linux
 tags:
   - tmux
   - tools

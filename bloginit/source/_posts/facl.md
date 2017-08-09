@@ -3,7 +3,7 @@ title: linux强大的facl功能
 description: facl(POSIX Access Control Lists)是针对linux系统文件权限的高级访问控制。
 toc: true
 categories:
-  - linux
+  - Linux
 tags:
   - facl
 date: 2017-06-18 12:06:29

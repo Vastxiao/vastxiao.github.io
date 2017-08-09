@@ -3,7 +3,7 @@ title: linux 超级方便的目录命令行工具：autojump
 description: autojump是一个命令行工具，它允许你可以直接跳转到你喜爱的目录，而不用管你当前处于哪个目录。
 toc: true
 categories:
-  - linux
+  - Linux
 tags:
   - tools
 date: 2017-04-14 22:17:02

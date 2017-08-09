@@ -3,7 +3,7 @@ title: 迅雷协议URL的解码方法:decodeThreadURL
 description: 这是自制的一个在linux终端下解码迅雷资源链接的简单小脚本.
 toc: true
 categories:
-  - linux
+  - Linux
 tags:
   - tools
 date: 2017-05-12 02:36:22

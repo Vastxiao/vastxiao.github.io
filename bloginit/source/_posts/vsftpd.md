@@ -3,7 +3,7 @@ title: vsftp配置指南
 description: vsftp的安装配置的详细指南。
 toc: true
 categories:
-  - linux
+  - Linux
 tags:
   - ftp
 date: 2017-06-11 10:15:03

@@ -3,7 +3,7 @@ title: 轻量级Linux命令行测速工具speedtest-cli
 description: speedtest-cli是一个用Python编写的轻量级Linux命令行工具，在Python2.4至3.4版本下均可运行。
 toc: true
 categories:
-  - linux
+  - Linux
 tags:
   - tools
 date: 2017-05-1 21:12:32

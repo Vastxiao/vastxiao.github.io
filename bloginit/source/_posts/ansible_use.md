@@ -3,7 +3,7 @@ title: ansible配置和使用
 description: 自动化工具ansible的基本配置和用法。
 toc: true
 categories:
-  - linux
+  - Linux
 tags:
   - tools
   - ansible
