@@ -457,7 +457,7 @@ Consider increasing /proc/sys/fs/inotify/max_user_watches
 sysctl -a|grep max_user_watches
 
 解决方法：改大fs.inotify.max_user_watches
-vim /etc/sysctl.conf然后添加修改``fs.inotify.max_user_watches = 2001192``
+vim /etc/sysctl.conf然后添加修改: fs.inotify.max_user_watches = 2001192
 生效命令： sysctl -p
 ```
 
