@@ -3,8 +3,9 @@ title: Elastic Curator 的配置和运行
 description: Es curator工具的配置和运行方式，有提供例子。
 toc: true
 categories:
-  - elastic
+  - Services
 tags:
+  - database
   - elastic
   - curator
 date: 2017-03-26 19:17:02

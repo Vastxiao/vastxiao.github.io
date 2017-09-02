@@ -3,9 +3,9 @@ title: Mysql抓包工具：mysql-sniffer
 description: MySQL Sniffer 是一个基于 MySQL 协议的抓包工具，实时抓取 MySQLServer 端的请求，并格式化输出。
 toc: true
 categories:
-  - Datebase
-  - mysql
+  - Services
 tags:
+  - database
   - tools
   - mysql
 date: 2017-07-26 22:36:32
