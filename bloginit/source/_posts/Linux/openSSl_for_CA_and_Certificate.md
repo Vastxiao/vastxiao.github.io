@@ -72,6 +72,7 @@ CA要给别人颁发证书，首先自己得有一个作为根证书，
 
 ```
 # 对于自建的非权威CA认证中心，这个文件配置大部分配置使用配置比较简单。
+# 这里只有配置文件的部分内容。
 
 [ ca ]
 default_ca      = CA_default            # The default ca section
