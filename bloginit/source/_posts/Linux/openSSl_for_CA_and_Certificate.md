@@ -10,7 +10,7 @@ tags:
   - SSL/TLS
   - service
 date: 2017-09-03 20:14:32
-updated: 2017-09-03 20:14:32
+updated: 2017-09-03 22:55:00
 ---
 
 # 基于OpenSSL的CA服务和SSL/TLS证书颁发
@@ -223,6 +223,6 @@ openssl ca -in server.csr -ourt server.crt -days 400
 
 # 资料参考
 
-http://seanlook.com/2015/01/18/openssl-self-sign-ca/
-
+* http://seanlook.com/2015/01/18/openssl-self-sign-ca/
+* [申请免费的SSL证书](https://jamesqi.com/%E5%8D%9A%E5%AE%A2/%E7%94%B3%E8%AF%B7%E5%85%8D%E8%B4%B9%E7%9A%84SSL%E8%AF%81%E4%B9%A6%EF%BC%8C%E5%BC%80%E9%80%9Ahttps%E7%BD%91%E7%AB%99)
 
