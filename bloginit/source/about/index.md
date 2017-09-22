@@ -11,7 +11,7 @@ Let sleeping dogs lie...
 
 - ID: 太渺小(渺小)
 - Github: https://github.com/Vastxiao
-- License: [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/)
+- License: [CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 # Project
 

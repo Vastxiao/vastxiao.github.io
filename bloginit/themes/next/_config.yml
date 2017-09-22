@@ -169,7 +169,7 @@ toc:
 # Creative Commons 4.0 International License.
 # http://creativecommons.org/
 # Available: by | by-nc | by-nc-nd | by-nc-sa | by-nd | by-sa | zero
-#creative_commons: by-nc-sa
+creative_commons: by-nc-sa
 #creative_commons:
 
 
@@ -201,12 +201,13 @@ sidebar:
 
 # 友情链接
 # Blog rolls
-#links_title: Links
-#links_layout: block
+links_title: Blog recommended
+links_layout: block
 #links_layout: inline
-#links:
-  #Title: http://example.com/
-
+links:
+    Jecvay: https://jecvay.com/
+    Adnrewliu: http://andrewliu.in/
+    sean's notes: http://seanlook.com/
 
 # ---------------------------------------------------------------
 # Post Settings
