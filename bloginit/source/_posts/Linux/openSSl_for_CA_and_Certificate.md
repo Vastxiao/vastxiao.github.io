@@ -10,7 +10,7 @@ tags:
   - SSL/TLS
   - service
 date: 2017-09-03 20:14:32
-updated: 2017-09-03 22:55:00
+updated: 2017-10-08 14:30:00
 ---
 
 # 基于OpenSSL的CA服务和SSL/TLS证书颁发
@@ -54,7 +54,7 @@ CentOS 6.x上有关ssl证书默认的目录结构：
      └── tls/
          ├── cert.pem -> certs/ca-bundle.crt
          ├── certs/        # 系统的证书存放目录，可以放置系统自己的证书和内置证书。
-         │   ├── ca-bundle.crt    # Mozilla root CA 生成的X.509 CA公钥证书。
+         │   └── ca-bundle.crt    # Mozilla root CA 生成的X.509 CA公钥证书。
          ├── openssl.cnf   # openssl的CA主配置文件。
          └── private/      # 系统的证书私钥目录，存放系统使用的证书私钥。
 ```
@@ -225,4 +225,5 @@ openssl ca -in server.csr -ourt server.crt -days 400
 
 * http://seanlook.com/2015/01/18/openssl-self-sign-ca/
 * [申请免费的SSL证书](https://jamesqi.com/%E5%8D%9A%E5%AE%A2/%E7%94%B3%E8%AF%B7%E5%85%8D%E8%B4%B9%E7%9A%84SSL%E8%AF%81%E4%B9%A6%EF%BC%8C%E5%BC%80%E9%80%9Ahttps%E7%BD%91%E7%AB%99)
+* [关于SNI: 实现多域名虚拟主机的SSL/TLS认证](http://www.ttlsa.com/web/sni-multi-domain-virtual-host-ssl-tls-authentication/)
 
