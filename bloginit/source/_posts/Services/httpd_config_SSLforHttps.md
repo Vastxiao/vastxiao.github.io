@@ -12,7 +12,7 @@ tags:
   - httpd
   - https
 date: 2017-10-10 21:25:00
-updated: 2017-10-10 21:25:00
+updated: 2017-10-11 16:55:00
 ---
 
 # Apache httpd 配置https
@@ -52,7 +52,9 @@ sed -i 's@#LoadModule ssl_module         modules/mod_ssl.so@LoadModule ssl_modul
 
 ```bash
 bin/apachectl -l
-# 在信息中可以看到mod_ssl.c
+# 静态编译模块在信息中可以看到mod_ssl.c
+bin/apachectl -M
+# 动态编译模块在信息中看到ssl_module (shared)
 ```
 
 ## (2)配置ssl启用https服务
@@ -132,10 +134,10 @@ CustomLog "/usr/local/apache4/logs/ssl_request_log" \
 先根据需要注释掉httpd-ssl.conf默认的VirtualHost配置：
 
 ```bash
-cd conf/extra/httpd-ssl.conf
+cd conf/extra/
 cp -a httpd-ssl.conf httpd-ssl.conf.default
-line_n=(sed -n '/^<VirtualHost _default_:443>$/=' httpd-ssl.conf)
-sed -i "${line?err},$s/^/#/g" httpd-ssl.conf
+line_n=$(sed -n '/^<VirtualHost _default_:443>$/=' httpd-ssl.conf)
+sed -i "${line_n?err},$ s/^/#/" httpd-ssl.conf
 ```
 
 自己配置VirtualHost启动https web：
@@ -174,8 +176,6 @@ NameVirtualHost *:443
     ServerAdmin webmaster@domain.com
     ServerName www.example.com
     DocumentRoot "/web/www.example.com/wwwroot"
-    ErrorLog "/var/logs/www.example.com-error.log"
-    CustomLog "|/usr/local/apache2/bin/rotatelogs /var/logs/www.example.com-access.log_%Y.%m.%d.%H.%M.%S 86400 480" combined
     <Directory "/web/www.example.com/wwwroot">
         SSLOptions +StdEnvVars
         Options FollowSymLinks
@@ -183,6 +183,8 @@ NameVirtualHost *:443
         Order allow,deny
         Allow from all
     </Directory>
+    ErrorLog "/var/logs/www.example.com-error.log"
+    CustomLog "|/usr/local/apache2/bin/rotatelogs /var/logs/www.example.com-access.log_%Y.%m.%d.%H.%M.%S 86400 480" combined
 </VirtualHost> 
 ```
 

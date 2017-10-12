@@ -10,7 +10,7 @@ tags:
   - SSL/TLS
   - service
 date: 2017-09-03 20:14:32
-updated: 2017-10-08 14:30:00
+updated: 2017-10-11 16:41:00
 ---
 
 # 基于OpenSSL的CA服务和SSL/TLS证书颁发
@@ -206,10 +206,10 @@ openssl req -new -key server.key -out server.csr
 
 ```bash
 # 生成的crt文件就是应用服务端(服务器)的证书文件，要将文件提供给应用服务端(服务器)。
-openssl ca -in server.csr -ourt server.crt
+openssl ca -in server.csr -out server.crt
 
 # 指定证书有效天数：
-openssl ca -in server.csr -ourt server.crt -days 400
+openssl ca -in server.csr -out server.crt -days 400
 ```
 
 **注：**
