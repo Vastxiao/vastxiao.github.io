@@ -21,6 +21,12 @@ Let sleeping dogs lie...
 Page: https://vastxiao.github.io/zabbixMonitorES/  
 Repo: https://github.com/Vastxiao/zabbixMonitorES
 
+## zabbixMonitorPHPFPM
+
+zabbix自动发现和监控php-fpm状态。  
+Page: https://vastxiao.github.io/zabbixMonitorPHPFPM/  
+Repo: https://github.com/Vastxiao/zabbixMonitorPHPFPM
+
 ## tmssh
 
 一个tmux的增强工具，用于批量ssh远程主机，方便日常工作操作多台服务器。  
