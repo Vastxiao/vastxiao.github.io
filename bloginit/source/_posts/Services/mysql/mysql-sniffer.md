@@ -9,7 +9,7 @@ tags:
   - tools
   - mysql
 date: 2017-07-26 22:36:32
-updated: 2017-07-26 22:36:32
+updated: 2017-11-26 12:53:00
 ---
 
 # mysql-sniffer
@@ -21,15 +21,18 @@ MySQL Sniffer 是一个基于 MySQL 协议的抓包工具，实时抓取 MySQLSe
 GitHub:
 https://github.com/Qihoo360/mysql-sniffer
 
+参考资料：
+http://mp.weixin.qq.com/s/ixKOepIMOORIdnxAsaQp6g
+
 ## 依赖
 
 yum安装：
 
 ```
-yum install glib2-devel
-yum install libpcap-devel
+yum install cmake unzip -y
+yum install glib2-devel libpcap-devel -y
 #wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-6.repo
-yum install libnet-devel
+yum install libnet-devel -y
 ```
 
 ## 安装
@@ -81,8 +84,5 @@ Usage mysql-sniffer [-d] -i eth0 -p 3306,3307,3308 -l /var/log/mysql-sniffer/ -e
 2017-03-06 09:37:02      linxs   192.168.50.211  latedemo                 0ms             1      INSERT INTO `staff` (`jobnumber`,`name`,`suid`) VALUES ('1892','王文文','146')
 ```
 
-# 参考资料：
-
-http://mp.weixin.qq.com/s/ixKOepIMOORIdnxAsaQp6g
-
+**注意：**这个工具只是抓取经过指定网口的指定端口数据包，这里的输出并没有显示连接了哪个目目标ip地址。
 
