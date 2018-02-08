@@ -31,7 +31,9 @@ yum安装：
 ```
 yum install cmake unzip -y
 yum install glib2-devel libpcap-devel -y
+#wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-5.repo
 #wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-6.repo
+#wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
 yum install libnet-devel -y
 ```
 
@@ -40,7 +42,7 @@ yum install libnet-devel -y
 建议在 CentOS6.2 及以上编译安装，并用 root 运行。
 
 ```sh
-wget -O mysql-sniffer.zip https://github.com/Qihoo360/mysql-sniffer/archive/master.zip
+wget -O mysql-sniffer.zip https://github.com/Qihoo360/mysql-sniffer/archive/master.zip --no-check-certificate
 unzip mysql-sniffer.zip
 cd mysql-sniffer-master
 mkdir proj
