@@ -56,11 +56,12 @@ Source Install:
 ```bash
 VERSION=1.11.1
 wget -O innotop-${VERSION}.tar.gz https://github.com/innotop/innotop/archive/v${VERSION}.tar.gz
-tar -zxvf innotop-${VERSION}.tar.gz
-cd innotop-${VERSION}
-perl Makefile.PL
-make
-make install
+[ $? -eq 0 ] && tar -zxvf innotop-${VERSION}.tar.gz
+[ $? -eq 0 ] && cd innotop-${VERSION}
+[ $? -eq 0 ] && perl Makefile.PL
+[ $? -eq 0 ] && make
+[ $? -eq 0 ] && make install
+[ $? -eq 0 ] && cp -a innotop /usr/local/bin/
 ```
 
 ## Usage
