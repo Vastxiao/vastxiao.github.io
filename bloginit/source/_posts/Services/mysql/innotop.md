@@ -31,15 +31,11 @@ https://github.com/innotop/innotop
 
 ```bash
 # perl-DBD-MySQL
-yum install perl-DBD-MySQL -y
 # perl-Time-HiRes
-yum install perl-Time-HiRes -y
 # perl-DBI
-yum install -y perl-DBI
 # perl-TermReadKey
-yum install -y perl-TermReadKey
-
-#yum install -y perl-DBD-MySQL perl-Time-HiRes perl-DBI perl-TermReadKey
+yum install -y perl-DBD-MySQL perl-Time-HiRes perl-DBI perl-TermReadKey
+yum install openssl-devel -y
 ```
 
 ## Install
@@ -47,7 +43,7 @@ yum install -y perl-TermReadKey
 RPM Install:
 
 ```bash
-wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/innotop/innotop-1.9.1-1.el6.noarch.rpm
+wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/innotop/innotop-1.9.1-1.el6.noarch.rpm --no-check-certificate
 rpm -ivh innotop-1.9.1-1.el6.noarch.rpm
 ```
 

@@ -67,7 +67,13 @@ chmod 555 /mnt/usb
 chmod 444 /mnt/usb/USB_DISK_NOT_PRESENT
 ```
 
-直接写入/etc/rc.local在启动系统时自动挂载
+## 3. 系统启动自动挂载
+
+**使用fstab启动:**
+
+配置文件: /etc/config/fstab
+
+**直接写入/etc/rc.local在启动系统时自动挂载**
 
 ```
 # /etc/rc.local
