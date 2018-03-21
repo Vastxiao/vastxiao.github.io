@@ -8,8 +8,8 @@ tags:
   - database
   - tools
   - memcache
-date: 2017-17-26 13:00:00
-updated: 2017-11-26 13:00:00
+date: 2018-02-17 13:00:00
+updated: 2018-02-17 13:00:00
 ---
 
 # glusterfs volume trash
