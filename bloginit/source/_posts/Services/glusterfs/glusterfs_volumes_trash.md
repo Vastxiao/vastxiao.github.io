@@ -5,11 +5,11 @@ toc: true
 categories:
   - Services
 tags:
-  - database
+  - storage
   - tools
-  - memcache
+  - glusterfs
 date: 2018-02-17 13:00:00
-updated: 2018-02-17 13:00:00
+updated: 2018-03-22 09:45:00
 ---
 
 # glusterfs volume trash
@@ -21,9 +21,10 @@ http://docs.gluster.org/en/latest/Administrator%20Guide/Trash/
 ## 功能特性
 
 * trash功能默认关闭的．
-* trash目录默认是.trashcan，基于挂载卷根目录中．
+* trash目录默认是.trashcan, 基于挂载卷根目录中．
 * trash目录和卷目录共用一个存储空间.
 * trash功能允许处理的文件大小限制默认是5MB．
+* 启用trash功能后, 删除的文件会被重命名添加时间戳移到trash的相对目录中.
 
 ## volume命令选项
 
