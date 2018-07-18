@@ -200,7 +200,8 @@ openssl req -new -key server.key -out server.csr
 
 1. 同样会提示输入一些内容。除了Commone Name一定要是你要授予证书的服务器域名或主机名，challenge password不填。
 2. 注意输入的内容，Common Name选项，需要填写需要授予证书的服务器的域名或IP地址，challenge password不填。
-3. 生成的csr文件只对CA签署证书有用，提供此文件CA就能根据信息完成证书签署。
+3. 如果要使用泛域名(通配符)证书，需要在Common Name选项输入通配域名(例如*.baidu.com。并且注意，如果是a.b.baidu.com要写成*.b.baidu.com)。
+4. 生成的csr文件只对CA签署证书有用，提供此文件CA就能根据信息完成证书签署。
 
 ### CA根据应用服务端(服务器)的请求签署证书并颁发证书文件
 

@@ -44,6 +44,7 @@ gluster volume set <VOLNAME> features.trash-eliminate-path <path1> [ , <path2> ,
 
 # This command can be used to enable trash for internal operations
 # like self-heal and re-balance. By default set to off.
+# 回收站的自懂修复和重新均衡功能。
 gluster volume set <VOLNAME> features.trash-internal-op <on / off>
 ```
 
