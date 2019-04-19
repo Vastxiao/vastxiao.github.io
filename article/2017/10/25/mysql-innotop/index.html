@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>首页 - Xiao's Notes</title>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Let the cat out of the bag." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/theme/css/base.css" rel="stylesheet">
+    <link href="/theme/css/index.css" rel="stylesheet">
+    <link href="/theme/css/m.css" rel="stylesheet">
+
+<link href="/theme/css/markdown-github.css" rel="stylesheet">
+
+    <script src="/theme/js/jquery.min.js" ></script>
+    <script src="/theme/js/hc-sticky.js"></script>
+    <script src="/theme/js/comm.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/theme/js/modernizr.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <header id="header">         <div class="navbar">
+        <div class="topbox">
+          <p class="welcome">Let the cat out of the bag.</p>
+          <!--<div class="searchbox">-->
+            <!--<div id="search_bar" class="search_bar">-->
+              <!--<form  id="searchform" action="[!&#45;&#45;news.url&#45;&#45;]e/search/index.php" method="post" name="searchform">-->
+                <!--<input class="input" placeholder="想搜点什么呢.." type="text" name="keyboard" id="keyboard">-->
+                <!--<input type="hidden" name="show" value="title" />-->
+                <!--<input type="hidden" name="tempid" value="1" />-->
+                <!--<input type="hidden" name="tbname" value="news">-->
+                <!--<input type="hidden" name="Submit" value="搜索" />-->
+                <!--<p class="search_ico"> <span></span></p>-->
+              <!--</form>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+      </div>
+      <div class="header-navigation">
+        <nav>
+          <div class="logo"><a href="/index.html">Xiao's Notes</a></div>
+          <h2 id="mnavh"><span class="navicon"></span></h2>
+          <ul id="starlist">
+            <li><a href="/index.html">网站首页</a></li>
+            <li class="menu"><a href="/categories.html">分类</a>
+              <ul class="sub">
+                  <li><a href="/category/linux.html">Linux</a></li>
+                  <li><a href="/category/security.html">Security</a></li>
+                  <li><a href="/category/service.html">Service</a></li>
+              </ul>
+            </li>
+            <li><a href="/tags.html">标签</a></li>
+            <li><a href="/archives.html">归档</a></li>
+            <li><a href="/about.html">关于</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+
+    <div class="wrapper">
+
+        <main>
+            <!--banner begin-->
+<h2 class="place"><a href="/article/2017/10/25/mysql-innotop/">/article/2017/10/25/mysql-innotop/</a></h2>
+<div class="infosbox">
+    <div class="newsview">
+        <h3 class="news_title">Mysql Innodb分析工具：innotop</h3>
+        <div class="bloginfo">
+            <ul>
+                <li class="author">【作者】<a href="/author/miao-xiao.html">渺小</a></li>
+                <li class="lmname">【分类】<a href="/category/service.html">Service</a></li>
+                <li class="date">【发布】2017-10-25 22:45</li>
+                <li class="modified">【更新】2017-10-25 22:45</li>
+            </ul>
+        </div>
+        <div class="tags">
+            <a href="/tag/database.html" target="_blank">【database】</a>
+            <a href="/tag/tools.html" target="_blank">【tools】</a>
+            <a href="/tag/mysql.html" target="_blank">【mysql】</a>
+        </div>
+        <div class="news_con">
+            <div class="news_mdfile">
+            <h1 id="innotop">Innotop</h1>
+<p>innotop is a 'top' clone for MySQL with many features and flexibility.</p>
+<ul>
+<li>completely customizable; it even has a plugin interface</li>
+<li>monitors many servers at once and can aggregate across them</li>
+</ul>
+<h2 id="web">Web</h2>
+<p>google(old)
+https://code.google.com/archive/p/innotop/</p>
+<p>github(new)
+https://github.com/innotop/innotop</p>
+<h2 id="requirement">Requirement</h2>
+<div class="codehilite"><pre><span></span><span class="c1"># perl-DBD-MySQL</span>
+<span class="c1"># perl-Time-HiRes</span>
+<span class="c1"># perl-DBI</span>
+<span class="c1"># perl-TermReadKey</span>
+yum install -y perl-DBD-MySQL perl-Time-HiRes perl-DBI perl-TermReadKey
+yum install openssl-devel -y
+</pre></div>
+
+
+<h2 id="install">Install</h2>
+<p>RPM Install:</p>
+<div class="codehilite"><pre><span></span>wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/innotop/innotop-1.9.1-1.el6.noarch.rpm --no-check-certificate
+rpm -ivh innotop-1.9.1-1.el6.noarch.rpm
+</pre></div>
+
+
+<p>Source Install:</p>
+<div class="codehilite"><pre><span></span><span class="nv">VERSION</span><span class="o">=</span><span class="m">1</span>.11.1
+wget -O innotop-<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span>.tar.gz https://github.com/innotop/innotop/archive/v<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span>.tar.gz
+<span class="o">[</span> <span class="nv">$?</span> -eq <span class="m">0</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> tar -zxvf innotop-<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span>.tar.gz
+<span class="o">[</span> <span class="nv">$?</span> -eq <span class="m">0</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">cd</span> innotop-<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span>
+<span class="o">[</span> <span class="nv">$?</span> -eq <span class="m">0</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> perl Makefile.PL
+<span class="o">[</span> <span class="nv">$?</span> -eq <span class="m">0</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> make
+<span class="o">[</span> <span class="nv">$?</span> -eq <span class="m">0</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> make install
+<span class="o">[</span> <span class="nv">$?</span> -eq <span class="m">0</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> cp -a innotop /usr/local/bin/
+</pre></div>
+
+
+<h2 id="usage">Usage</h2>
+<div class="codehilite"><pre><span></span><span class="nt">innotop</span> <span class="nt">--help</span>
+
+<span class="nt">Usage</span><span class="o">:</span> <span class="nt">innotop</span> <span class="o">&lt;</span><span class="nt">options</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nt">innodb-status-file</span><span class="o">&gt;</span>
+
+  <span class="nt">--askpass</span>          <span class="nt">Prompt</span> <span class="nt">for</span> <span class="nt">a</span> <span class="nt">password</span> <span class="nt">when</span> <span class="nt">connecting</span> <span class="nt">to</span> <span class="nt">MySQL</span>
+  <span class="nt">--</span><span class="cp">[</span><span class="nx">no</span><span class="cp">]</span><span class="nt">color</span>   <span class="nt">-C</span>   <span class="nt">Use</span> <span class="nt">terminal</span> <span class="nt">coloring</span> <span class="o">(</span><span class="nt">default</span><span class="o">)</span>
+  <span class="nt">--config</span>      <span class="nt">-c</span>   <span class="nt">Config</span> <span class="nt">file</span> <span class="nt">to</span> <span class="nt">read</span>
+  <span class="nt">--count</span>            <span class="nt">Number</span> <span class="nt">of</span> <span class="nt">updates</span> <span class="nt">before</span> <span class="nt">exiting</span>
+  <span class="nt">--delay</span>       <span class="nt">-d</span>   <span class="nt">Delay</span> <span class="nt">between</span> <span class="nt">updates</span> <span class="nt">in</span> <span class="nt">seconds</span>
+  <span class="nt">--help</span>             <span class="nt">Show</span> <span class="nt">this</span> <span class="nt">help</span> <span class="nt">message</span>
+  <span class="nt">--host</span>        <span class="nt">-h</span>   <span class="nt">Connect</span> <span class="nt">to</span> <span class="nt">host</span>
+  <span class="nt">--</span><span class="cp">[</span><span class="nx">no</span><span class="cp">]</span><span class="nt">inc</span>     <span class="nt">-i</span>   <span class="nt">Measure</span> <span class="nt">incremental</span> <span class="nt">differences</span>
+  <span class="nt">--mode</span>        <span class="nt">-m</span>   <span class="nt">Operating</span> <span class="nt">mode</span> <span class="nt">to</span> <span class="nt">start</span> <span class="nt">in</span>
+  <span class="nt">--nonint</span>      <span class="nt">-n</span>   <span class="nt">Non-interactive</span><span class="o">,</span> <span class="nt">output</span> <span class="nt">tab-separated</span> <span class="nt">fields</span>
+  <span class="nt">--password</span>    <span class="nt">-p</span>   <span class="nt">Password</span> <span class="nt">to</span> <span class="nt">use</span> <span class="nt">for</span> <span class="nt">connection</span>
+  <span class="nt">--port</span>        <span class="nt">-P</span>   <span class="nt">Port</span> <span class="nt">number</span> <span class="nt">to</span> <span class="nt">use</span> <span class="nt">for</span> <span class="nt">connection</span>
+  <span class="nt">--skipcentral</span> <span class="nt">-s</span>   <span class="nt">Skip</span> <span class="nt">reading</span> <span class="nt">the</span> <span class="nt">central</span> <span class="nt">configuration</span> <span class="nt">file</span>
+  <span class="nt">--socket</span>      <span class="nt">-S</span>   <span class="nt">MySQL</span> <span class="nt">socket</span> <span class="nt">to</span> <span class="nt">use</span> <span class="nt">for</span> <span class="nt">connection</span>
+  <span class="nt">--spark</span>            <span class="nt">Length</span> <span class="nt">of</span> <span class="nt">status</span> <span class="nt">sparkline</span> <span class="o">(</span><span class="nt">default</span> <span class="nt">10</span><span class="o">)</span>
+  <span class="nt">--timestamp</span>   <span class="nt">-t</span>   <span class="nt">Print</span> <span class="nt">timestamp</span> <span class="nt">in</span> <span class="nt">-n</span> <span class="nt">mode</span> <span class="o">(</span><span class="nt">1</span><span class="o">:</span> <span class="nt">per</span> <span class="nt">iter</span><span class="o">;</span> <span class="nt">2</span><span class="o">:</span> <span class="nt">per</span> <span class="nt">line</span><span class="o">)</span>
+  <span class="nt">--user</span>        <span class="nt">-u</span>   <span class="nt">User</span> <span class="nt">for</span> <span class="nt">login</span> <span class="nt">if</span> <span class="nt">not</span> <span class="nt">current</span> <span class="nt">user</span>
+  <span class="nt">--version</span>          <span class="nt">Output</span> <span class="nt">version</span> <span class="nt">information</span> <span class="nt">and</span> <span class="nt">exit</span>
+  <span class="nt">--write</span>       <span class="nt">-w</span>   <span class="nt">Write</span> <span class="nt">running</span> <span class="nt">configuration</span> <span class="nt">into</span> <span class="nt">home</span> <span class="nt">directory</span> <span class="nt">if</span> <span class="nt">no</span> <span class="nt">config</span> <span class="nt">files</span> <span class="nt">were</span> <span class="nt">loaded</span>
+
+<span class="nt">innotop</span> <span class="nt">is</span> <span class="nt">a</span> <span class="nt">MySQL</span> <span class="nt">and</span> <span class="nt">InnoDB</span> <span class="nt">transaction</span><span class="o">/</span><span class="nt">status</span> <span class="nt">monitor</span><span class="o">,</span> <span class="nt">like</span> <span class="s1">&#39;top&#39;</span> <span class="nt">for</span>
+<span class="nt">MySQL</span><span class="o">.</span>  <span class="nt">It</span> <span class="nt">displays</span> <span class="nt">queries</span><span class="o">,</span> <span class="nt">InnoDB</span> <span class="nt">transactions</span><span class="o">,</span> <span class="nt">lock</span> <span class="nt">waits</span><span class="o">,</span> <span class="nt">deadlocks</span><span class="o">,</span>
+<span class="nt">foreign</span> <span class="nt">key</span> <span class="nt">errors</span><span class="o">,</span> <span class="nt">open</span> <span class="nt">tables</span><span class="o">,</span> <span class="nt">replication</span> <span class="nt">status</span><span class="o">,</span> <span class="nt">buffer</span> <span class="nt">information</span><span class="o">,</span>
+<span class="nt">row</span> <span class="nt">operations</span><span class="o">,</span> <span class="nt">logs</span><span class="o">,</span> <span class="nt">I</span><span class="o">/</span><span class="nt">O</span> <span class="nt">operations</span><span class="o">,</span> <span class="nt">load</span> <span class="nt">graph</span><span class="o">,</span> <span class="nt">and</span> <span class="nt">more</span><span class="o">.</span>  <span class="nt">You</span> <span class="nt">can</span>
+<span class="nt">monitor</span> <span class="nt">many</span> <span class="nt">servers</span> <span class="nt">at</span> <span class="nt">once</span> <span class="nt">with</span> <span class="nt">innotop</span><span class="o">.</span>
+</pre></div>
+
+
+<h2 id="reference">Reference</h2>
+<p>http://www.cnblogs.com/ivictor/p/5101506.html<br />
+http://blog.csdn.net/wyzxg/article/details/8609981</p>
+            </div>
+        </div>
+    </div>
+</div>
+            <!--banner end-->
+        </main>
+        <aside class="sidebar">
+
+            <div class="about">
+                <h2 class="hometitle">关于我</h2>
+                <div class="avatar">
+                    <img src="images/avatar.png" alt="">
+                </div>
+                <p class="abname">渺小</p>
+                <p class="abposition">... ...!!</p>
+                <div class="abtext">To be or not to be, this is not a question.</div>
+            </div>
+
+            <div class="categories">
+                <h2 class="hometitle">分类</h2>
+                    <ul>
+                        <li><a href="/category/linux.html">Linux</a></li>
+                        <li><a href="/category/security.html">Security</a></li>
+                        <li><a href="/category/service.html">Service</a></li>
+                    </ul>
+            </div>
+            <div class="cloud">
+                <h2 class="hometitle">标签云</h2>
+                <ul>                    <a href="/tag/ansible.html">ansible</a>
+                    <a href="/tag/apache.html">apache</a>
+                    <a href="/tag/curator.html">curator</a>
+                    <a href="/tag/database.html">database</a>
+                    <a href="/tag/elastic.html">elastic</a>
+                    <a href="/tag/elasticsearch.html">elasticsearch</a>
+                    <a href="/tag/facl.html">facl</a>
+                    <a href="/tag/ftp.html">ftp</a>
+                    <a href="/tag/glusterfs.html">glusterfs</a>
+                    <a href="/tag/haproxy.html">haproxy</a>
+                    <a href="/tag/httpd.html">httpd</a>
+                    <a href="/tag/https.html">https</a>
+                    <a href="/tag/linux.html">linux</a>
+                    <a href="/tag/logs.html">logs</a>
+                    <a href="/tag/memcache.html">memcache</a>
+                    <a href="/tag/mysql.html">mysql</a>
+                    <a href="/tag/nginx.html">nginx</a>
+                    <a href="/tag/openssl.html">openssl</a>
+                    <a href="/tag/openwrt.html">Openwrt</a>
+                    <a href="/tag/qa.html">QA</a>
+                    <a href="/tag/redis.html">redis</a>
+                    <a href="/tag/scribe.html">scribe</a>
+                    <a href="/tag/security.html">security</a>
+                    <a href="/tag/service.html">service</a>
+                    <a href="/tag/shadowsocks.html">shadowsocks</a>
+                    <a href="/tag/slb.html">slb</a>
+                    <a href="/tag/ss.html">ss</a>
+                    <a href="/tag/ssltls.html">SSL/TLS</a>
+                    <a href="/tag/storage.html">storage</a>
+                    <a href="/tag/tmux.html">tmux</a>
+                    <a href="/tag/tool.html">tool</a>
+                    <a href="/tag/tools.html">tools</a>
+                </ul>
+            </div>
+            <div class="links">
+              <h2 class="hometitle">推荐链接</h2>
+              <ul>
+                  <li><a href="https://jecvay.com/" target="_blank">Jecvay</a></li>
+                  <li><a href="http://andrewliu.in/" target="_blank">Adnrewliu</a></li>
+                  <li><a href="http://seanlook.com/" target="_blank">sean's notes</a></li>
+                  <li><a href="https://woaielf.github.io/" target="_blank">ZOE's Blog</a></li>
+                  <li><a href="https://233blog.com/" target="_blank">233Blog</a></li>
+                  <li><a href="http://www.yangqq.com" target="_blank">杨青个人博客</a></li>
+              </ul>
+            </div>
+
+
+        </aside>
+        <!--sidebar end-->
+    </div>
+    <!--wrapper end-->
+
+    <a href="#" class="cd-top">Top</a>
+</body>
+
+</html>

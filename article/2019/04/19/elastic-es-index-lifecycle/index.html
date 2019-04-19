@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>首页 - Xiao's Notes</title>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Let the cat out of the bag." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/theme/css/base.css" rel="stylesheet">
+    <link href="/theme/css/index.css" rel="stylesheet">
+    <link href="/theme/css/m.css" rel="stylesheet">
+
+<link href="/theme/css/markdown-github.css" rel="stylesheet">
+
+    <script src="/theme/js/jquery.min.js" ></script>
+    <script src="/theme/js/hc-sticky.js"></script>
+    <script src="/theme/js/comm.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/theme/js/modernizr.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <header id="header">         <div class="navbar">
+        <div class="topbox">
+          <p class="welcome">Let the cat out of the bag.</p>
+          <!--<div class="searchbox">-->
+            <!--<div id="search_bar" class="search_bar">-->
+              <!--<form  id="searchform" action="[!&#45;&#45;news.url&#45;&#45;]e/search/index.php" method="post" name="searchform">-->
+                <!--<input class="input" placeholder="想搜点什么呢.." type="text" name="keyboard" id="keyboard">-->
+                <!--<input type="hidden" name="show" value="title" />-->
+                <!--<input type="hidden" name="tempid" value="1" />-->
+                <!--<input type="hidden" name="tbname" value="news">-->
+                <!--<input type="hidden" name="Submit" value="搜索" />-->
+                <!--<p class="search_ico"> <span></span></p>-->
+              <!--</form>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+      </div>
+      <div class="header-navigation">
+        <nav>
+          <div class="logo"><a href="/index.html">Xiao's Notes</a></div>
+          <h2 id="mnavh"><span class="navicon"></span></h2>
+          <ul id="starlist">
+            <li><a href="/index.html">网站首页</a></li>
+            <li class="menu"><a href="/categories.html">分类</a>
+              <ul class="sub">
+                  <li><a href="/category/linux.html">Linux</a></li>
+                  <li><a href="/category/security.html">Security</a></li>
+                  <li><a href="/category/service.html">Service</a></li>
+              </ul>
+            </li>
+            <li><a href="/tags.html">标签</a></li>
+            <li><a href="/archives.html">归档</a></li>
+            <li><a href="/about.html">关于</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+
+    <div class="wrapper">
+
+        <main>
+            <!--banner begin-->
+<h2 class="place"><a href="/article/2019/04/19/elastic-es-index-lifecycle/">/article/2019/04/19/elastic-es-index-lifecycle/</a></h2>
+<div class="infosbox">
+    <div class="newsview">
+        <h3 class="news_title">Elasticsearch 索引生命周期管理(lifecycle)</h3>
+        <div class="bloginfo">
+            <ul>
+                <li class="author">【作者】<a href="/author/miao-xiao.html">渺小</a></li>
+                <li class="lmname">【分类】<a href="/category/service.html">Service</a></li>
+                <li class="date">【发布】2019-04-19 09:40</li>
+                <li class="modified">【更新】2019-04-19 09:40</li>
+            </ul>
+        </div>
+        <div class="tags">
+            <a href="/tag/elastic.html" target="_blank">【elastic】</a>
+            <a href="/tag/elasticsearch.html" target="_blank">【elasticsearch】</a>
+        </div>
+        <div class="news_con">
+            <div class="news_mdfile">
+            <h1 id="index-lifecycle">索引生命周期(index lifecycle)</h1>
+<p><em>索引生命周期管理在ES6.6开始支持,在ES7.0已经是稳定版特性了。</em></p>
+<ul>
+<li>https://www.elastic.co/guide/en/elasticsearch/reference/current/index-lifecycle-management.html</li>
+<li>https://www.elastic.co/guide/en/elasticsearch/reference/current/index-lifecycle-management-api.html#index-lifecycle-management-api</li>
+</ul>
+<p>索引生命周期管理包含内容:
+  - 生命周期任务管理(_ilm)
+  - 生命周期策略管理(policy)
+  - 索引周期策略管理</p>
+<h2 id="_ilm">生命周期任务管理(_ilm)</h2>
+<p>接口:</p>
+<div class="codehilite"><pre><span></span># 获取 _ilm 运行状态
+GET /_ilm/status
+
+# 关闭 _ilm 任务
+POST /_ilm/stop
+
+# 启动 _ilm 任务
+POST /_ilm/start
+</pre></div>
+
+
+<p>使用</p>
+<div class="codehilite"><pre><span></span>curl <span class="s1">&#39;http://192.168.13.56:9200/_ilm/status?pretty&#39;</span>
+curl <span class="s1">&#39;http://192.168.13.56:9200/_ilm/stop?pretty&#39;</span> -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -XPOST
+curl <span class="s1">&#39;http://192.168.13.56:9200/_ilm/start?pretty&#39;</span> -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -XPOST
+</pre></div>
+
+
+<h2 id="policy">生命周期策略管理(policy)</h2>
+<h3 id="lifesycle4stages">lifesycle包含4个阶段(stages)</h3>
+<ul>
+<li>hot: The index is actively being written to</li>
+<li>warm: The index is generally not being written to, but is still queried</li>
+<li>cold: The index is no longer being updated and is seldom queried. The information still needs to be searchable, but it’s okay if those queries are slower.</li>
+<li>delete: The index is no longer needed and can safely be deleted</li>
+</ul>
+<h3 id="lifesyclepolicy">lifesycle策略接口(policy)</h3>
+<div class="codehilite"><pre><span></span># 创建和更新policy:
+PUT _ilm/policy/&lt;policy_id&gt;
+
+# 查看policy:
+GET _ilm/policy
+GET _ilm/policy/&lt;policy_id&gt;
+
+# 删除policy:
+DELETE _ilm/policy/&lt;policy_id&gt;
+</pre></div>
+
+
+<h3 id="policy_1">使用policy接口</h3>
+<div class="codehilite"><pre><span></span><span class="c1"># 创建lifecycle策略:</span>
+curl <span class="s1">&#39;192.168.13.56:9200/_ilm/policy/my_policy&#39;</span> -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -XPUT -d <span class="s1">&#39;</span>
+<span class="s1">{</span>
+<span class="s1">  &quot;policy&quot;: {</span>
+<span class="s1">    &quot;phases&quot;: {</span>
+<span class="s1">      &quot;warm&quot;: {</span>
+<span class="s1">        &quot;min_age&quot;: &quot;10d&quot;,</span>
+<span class="s1">        &quot;actions&quot;: {</span>
+<span class="s1">          &quot;forcemerge&quot;: {</span>
+<span class="s1">            &quot;max_num_segments&quot;: 1</span>
+<span class="s1">          }</span>
+<span class="s1">        }</span>
+<span class="s1">      },</span>
+<span class="s1">      &quot;delete&quot;: {</span>
+<span class="s1">        &quot;min_age&quot;: &quot;30d&quot;,</span>
+<span class="s1">        &quot;actions&quot;: {</span>
+<span class="s1">          &quot;delete&quot;: {}</span>
+<span class="s1">        }</span>
+<span class="s1">      }</span>
+<span class="s1">    }</span>
+<span class="s1">  }</span>
+<span class="s1">}</span>
+<span class="s1">&#39;</span>
+
+
+<span class="c1"># 查看lifecycle策略:</span>
+curl <span class="s1">&#39;192.168.13.56:9200/_ilm/policy/my_policy?pretty&#39;</span> -XGET
+<span class="c1"># 查看所有策略</span>
+curl <span class="s1">&#39;192.168.13.56:9200/_ilm/policy?pretty&#39;</span> -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -XGET
+
+
+<span class="c1"># 删除lifecycle策略:</span>
+curl <span class="s1">&#39;192.168.13.56:9200/_ilm/policy/my_policy?pretty&#39;</span> -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -XDELETE
+</pre></div>
+
+
+<h2 id="_1">索引周期策略管理</h2>
+<p>在模版中添加生命周期策略:</p>
+<div class="codehilite"><pre><span></span>curl <span class="s1">&#39;192.168.13.56:9200/_template/my_template&#39;</span> -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -XPUT -d<span class="s1">&#39;</span>
+<span class="s1">{</span>
+<span class="s1">  &quot;index_patterns&quot;: [&quot;test-*&quot;], </span>
+<span class="s1">  &quot;settings&quot;: {</span>
+<span class="s1">    &quot;number_of_shards&quot;: 1,</span>
+<span class="s1">    &quot;number_of_replicas&quot;: 1,</span>
+<span class="s1">    &quot;index.lifecycle.name&quot;: &quot;my_policy&quot;</span>
+<span class="s1">  }</span>
+<span class="s1">}</span>
+<span class="s1">&#39;</span>
+</pre></div>
+
+
+<p>配置索引的生命周期策略:</p>
+<div class="codehilite"><pre><span></span>curl <span class="s1">&#39;192.168.13.56:9200/my_index/_settings&#39;</span> -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -XPUT -d<span class="s1">&#39;</span>
+<span class="s1">{</span>
+<span class="s1">  &quot;lifecycle.name&quot;: &quot;my_other_policy&quot;</span>
+<span class="s1">}</span>
+<span class="s1">&#39;</span>
+</pre></div>
+
+
+<p>从索引中移除生命周期策略:</p>
+<div class="codehilite"><pre><span></span><span class="c1"># POST &lt;index&gt;/_ilm/remove</span>
+curl <span class="s1">&#39;192.168.13.56:9200/my_index/_ilm/remove&#39;</span> -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -XPOST
+</pre></div>
+
+
+<p>查看索引的生命周期当前阶段状态:</p>
+<div class="codehilite"><pre><span></span>curl <span class="s1">&#39;192.168.13.56:9200/myindex/_ilm/explain?pretty&#39;</span>
+</pre></div>
+
+
+<p>对索引重试lifecycle策略执行失败的操作:</p>
+<div class="codehilite"><pre><span></span>curl <span class="s1">&#39;192.168.13.56:9200/myindex/_ilm/retry?pretty&#39;</span> -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -XPOST
+</pre></div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!--banner end-->
+        </main>
+        <aside class="sidebar">
+
+            <div class="about">
+                <h2 class="hometitle">关于我</h2>
+                <div class="avatar">
+                    <img src="images/avatar.png" alt="">
+                </div>
+                <p class="abname">渺小</p>
+                <p class="abposition">... ...!!</p>
+                <div class="abtext">To be or not to be, this is not a question.</div>
+            </div>
+
+            <div class="categories">
+                <h2 class="hometitle">分类</h2>
+                    <ul>
+                        <li><a href="/category/linux.html">Linux</a></li>
+                        <li><a href="/category/security.html">Security</a></li>
+                        <li><a href="/category/service.html">Service</a></li>
+                    </ul>
+            </div>
+            <div class="cloud">
+                <h2 class="hometitle">标签云</h2>
+                <ul>                    <a href="/tag/ansible.html">ansible</a>
+                    <a href="/tag/apache.html">apache</a>
+                    <a href="/tag/curator.html">curator</a>
+                    <a href="/tag/database.html">database</a>
+                    <a href="/tag/elastic.html">elastic</a>
+                    <a href="/tag/elasticsearch.html">elasticsearch</a>
+                    <a href="/tag/facl.html">facl</a>
+                    <a href="/tag/ftp.html">ftp</a>
+                    <a href="/tag/glusterfs.html">glusterfs</a>
+                    <a href="/tag/haproxy.html">haproxy</a>
+                    <a href="/tag/httpd.html">httpd</a>
+                    <a href="/tag/https.html">https</a>
+                    <a href="/tag/linux.html">linux</a>
+                    <a href="/tag/logs.html">logs</a>
+                    <a href="/tag/memcache.html">memcache</a>
+                    <a href="/tag/mysql.html">mysql</a>
+                    <a href="/tag/nginx.html">nginx</a>
+                    <a href="/tag/openssl.html">openssl</a>
+                    <a href="/tag/openwrt.html">Openwrt</a>
+                    <a href="/tag/qa.html">QA</a>
+                    <a href="/tag/redis.html">redis</a>
+                    <a href="/tag/scribe.html">scribe</a>
+                    <a href="/tag/security.html">security</a>
+                    <a href="/tag/service.html">service</a>
+                    <a href="/tag/shadowsocks.html">shadowsocks</a>
+                    <a href="/tag/slb.html">slb</a>
+                    <a href="/tag/ss.html">ss</a>
+                    <a href="/tag/ssltls.html">SSL/TLS</a>
+                    <a href="/tag/storage.html">storage</a>
+                    <a href="/tag/tmux.html">tmux</a>
+                    <a href="/tag/tool.html">tool</a>
+                    <a href="/tag/tools.html">tools</a>
+                </ul>
+            </div>
+            <div class="links">
+              <h2 class="hometitle">推荐链接</h2>
+              <ul>
+                  <li><a href="https://jecvay.com/" target="_blank">Jecvay</a></li>
+                  <li><a href="http://andrewliu.in/" target="_blank">Adnrewliu</a></li>
+                  <li><a href="http://seanlook.com/" target="_blank">sean's notes</a></li>
+                  <li><a href="https://woaielf.github.io/" target="_blank">ZOE's Blog</a></li>
+                  <li><a href="https://233blog.com/" target="_blank">233Blog</a></li>
+                  <li><a href="http://www.yangqq.com" target="_blank">杨青个人博客</a></li>
+              </ul>
+            </div>
+
+
+        </aside>
+        <!--sidebar end-->
+    </div>
+    <!--wrapper end-->
+
+    <a href="#" class="cd-top">Top</a>
+</body>
+
+</html>

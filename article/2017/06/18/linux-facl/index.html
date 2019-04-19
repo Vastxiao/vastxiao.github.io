@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>首页 - Xiao's Notes</title>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Let the cat out of the bag." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/theme/css/base.css" rel="stylesheet">
+    <link href="/theme/css/index.css" rel="stylesheet">
+    <link href="/theme/css/m.css" rel="stylesheet">
+
+<link href="/theme/css/markdown-github.css" rel="stylesheet">
+
+    <script src="/theme/js/jquery.min.js" ></script>
+    <script src="/theme/js/hc-sticky.js"></script>
+    <script src="/theme/js/comm.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/theme/js/modernizr.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <header id="header">         <div class="navbar">
+        <div class="topbox">
+          <p class="welcome">Let the cat out of the bag.</p>
+          <!--<div class="searchbox">-->
+            <!--<div id="search_bar" class="search_bar">-->
+              <!--<form  id="searchform" action="[!&#45;&#45;news.url&#45;&#45;]e/search/index.php" method="post" name="searchform">-->
+                <!--<input class="input" placeholder="想搜点什么呢.." type="text" name="keyboard" id="keyboard">-->
+                <!--<input type="hidden" name="show" value="title" />-->
+                <!--<input type="hidden" name="tempid" value="1" />-->
+                <!--<input type="hidden" name="tbname" value="news">-->
+                <!--<input type="hidden" name="Submit" value="搜索" />-->
+                <!--<p class="search_ico"> <span></span></p>-->
+              <!--</form>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+      </div>
+      <div class="header-navigation">
+        <nav>
+          <div class="logo"><a href="/index.html">Xiao's Notes</a></div>
+          <h2 id="mnavh"><span class="navicon"></span></h2>
+          <ul id="starlist">
+            <li><a href="/index.html">网站首页</a></li>
+            <li class="menu"><a href="/categories.html">分类</a>
+              <ul class="sub">
+                  <li><a href="/category/linux.html">Linux</a></li>
+                  <li><a href="/category/security.html">Security</a></li>
+                  <li><a href="/category/service.html">Service</a></li>
+              </ul>
+            </li>
+            <li><a href="/tags.html">标签</a></li>
+            <li><a href="/archives.html">归档</a></li>
+            <li><a href="/about.html">关于</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+
+    <div class="wrapper">
+
+        <main>
+            <!--banner begin-->
+<h2 class="place"><a href="/article/2017/06/18/linux-facl/">/article/2017/06/18/linux-facl/</a></h2>
+<div class="infosbox">
+    <div class="newsview">
+        <h3 class="news_title">linux强大的facl功能</h3>
+        <div class="bloginfo">
+            <ul>
+                <li class="author">【作者】<a href="/author/miao-xiao.html">渺小</a></li>
+                <li class="lmname">【分类】<a href="/category/linux.html">Linux</a></li>
+                <li class="date">【发布】2017-06-18 12:06</li>
+                <li class="modified">【更新】2017-11-11 10:57</li>
+            </ul>
+        </div>
+        <div class="tags">
+            <a href="/tag/facl.html" target="_blank">【facl】</a>
+            <a href="/tag/linux.html" target="_blank">【Linux】</a>
+        </div>
+        <div class="news_con">
+            <div class="news_mdfile">
+            <h1 id="facl">facl</h1>
+<p>POSIX Access Control Lists</p>
+<p>Linux ACL 权限控制：<br />
+ACL即Access Control List 主要的目的是提供传统的owner,group,others的read,write,execute权限之外的具体权限设置，
+ACL可以针对单一用户、单一文件或目录来进行r,w,x的权限控制，对于需要特殊权限的使用状况有一定帮助。
+如，某一个文件，不让单一的某个用户访问。</p>
+<h2 id="facl-support">facl support</h2>
+<p>要使用ACL必须要有文件系统支持才行，目前绝大多数的文件系统都会支持，EXT3文件系统默认启动ACL的。</p>
+<p>ext4文件系统：</p>
+<div class="codehilite"><pre><span></span># 查看EXT4文件系统是否支持ACL：
+dumpe2fs -h /dev/sda2
+# 检查mount options选项： Default mount options:    user_xattr acl
+
+# 如果UNIX支持ACL但是文件系统并不是默认加载此功能，可自己进行添加
+mount -o acl /dev/sda1 /export1
+mount -o remount,acl /data
+</pre></div>
+
+
+<p>xfs文件系统：xfs系统已经强制开启了ACL权限了。</p>
+<h2 id="facl-soft">facl soft</h2>
+<p><strong>libacl (库)</strong>
+- /lib64/libacl.so.1
+- /lib64/libacl.so.1.1.0</p>
+<p><strong>libacl-devel (库)</strong>
+- /lib64/libacl.so
+- /usr/include/acl
+- /usr/include/acl/libacl.h
+- /usr/include/sys/acl.h
+- /usr/lib64/libacl.a
+- /usr/lib64/libacl.so</p>
+<p><strong>acl (包)</strong>
+- /usr/bin/chacl
+- /usr/bin/getfacl
+- /usr/bin/setfacl</p>
+<h2 id="facl-command">facl command</h2>
+<ul>
+<li>getfacl：取得某个文件/目录的ACL设置项目</li>
+<li>setfacl：设置某个文件/目录的ACL设置项目</li>
+</ul>
+<h3 id="getfacl">◆  getfacl</h3>
+<p>getfacl命令</p>
+<div class="codehilite"><pre><span></span><span class="n">Usage</span><span class="o">:</span> <span class="n">getfacl</span> <span class="o">[-</span><span class="n">aceEsRLPtpndvh</span><span class="o">]</span> <span class="n">file</span> <span class="o">...</span>
+</pre></div>
+
+
+<h3 id="setfacl">◆  setfacl</h3>
+<p>setfacl命令</p>
+<div class="codehilite"><pre><span></span><span class="n">Usage</span><span class="o">:</span> <span class="n">setfacl</span> <span class="o">[-</span><span class="n">bkndRLPvh</span><span class="o">]</span> <span class="o">[{-</span><span class="n">m</span><span class="o">|-</span><span class="n">x</span><span class="o">}</span> <span class="n">acl_spec</span><span class="o">]</span> <span class="o">[{-</span><span class="n">M</span><span class="o">|-</span><span class="n">X</span><span class="o">}</span> <span class="n">acl_file</span><span class="o">]</span> <span class="n">file</span> <span class="o">...</span>
+
+<span class="n">OPTION参数</span><span class="o">:</span>
+  <span class="o">-</span><span class="n">h</span>                 <span class="err">显示帮助信息</span>
+  <span class="o">-</span><span class="n">m</span> <span class="n">acl_spec</span>        <span class="err">设置后续的</span><span class="n">acl参数</span><span class="err">，不可与</span><span class="s1">&#39;-x&#39;</span><span class="err">一起使用</span>
+  <span class="o">-</span><span class="n">M</span> <span class="n">acl_spec_file</span>   <span class="err">根据提供的</span><span class="n">acl_spec_file文件中的acl设置文件权限</span>
+  <span class="o">-</span><span class="n">x</span> <span class="n">acl_spec</span>        <span class="err">删除后续的</span><span class="n">acl参数</span><span class="err">，不可与</span><span class="s1">&#39;-m&#39;</span><span class="err">一起使用</span>
+  <span class="o">-</span><span class="n">X</span> <span class="n">acl_spec_file</span>   <span class="err">根据提供的</span><span class="n">acl_spec_file文件中的acl设置文件权限</span>
+  <span class="o">-</span><span class="n">b</span>                 <span class="err">删除所有的</span><span class="n">acl参数</span><span class="err">，参数单独使用</span>
+  <span class="o">-</span><span class="n">k</span>                 <span class="err">删除默认的</span><span class="n">acl参数</span><span class="err">，参数单独使用</span>
+  <span class="o">-</span><span class="n">R</span>                 <span class="err">递归设置</span><span class="n">acl参数</span>
+  <span class="o">-</span><span class="n">d</span>                 <span class="err">设置默认的</span><span class="n">acl参数</span><span class="err">，只对目录有效，作用使目录下新</span>
+                     <span class="err">建的子目录和文件继承父目录的默认</span><span class="n">acl权限</span><span class="err">。</span>
+
+  <span class="n">acl_spec_file的内容就是权限内容</span><span class="err">。</span>
+
+<span class="n">acl_spec格式</span><span class="o">:</span>
+  <span class="o">[</span><span class="n">d</span><span class="o">:]</span><span class="n">u</span><span class="o">:[</span><span class="n">username</span><span class="o">|</span><span class="n">uid</span><span class="o">]:</span><span class="n">perms</span>
+  <span class="o">[</span><span class="n">d</span><span class="o">:]</span><span class="n">g</span><span class="o">:[</span><span class="n">groupname</span><span class="o">|</span><span class="n">gid</span><span class="o">]:</span><span class="n">perms</span>
+  <span class="o">[</span><span class="n">d</span><span class="o">:]</span><span class="n">o</span><span class="o">::</span><span class="n">perms</span>
+  <span class="o">[</span><span class="n">d</span><span class="o">:]</span><span class="n">m</span><span class="o">::</span><span class="n">perms</span>
+
+  <span class="n">perms</span><span class="o">:</span> <span class="err">权限内容是‘</span><span class="n">rwx</span><span class="o">-</span><span class="err">’中的</span><span class="mi">3</span><span class="err">位组合</span>
+      <span class="o">---</span>
+      <span class="n">rwx</span>
+      <span class="n">r</span><span class="o">-</span><span class="n">x</span>
+</pre></div>
+
+
+<p>setfacl详解</p>
+<div class="codehilite"><pre><span></span># 对特殊用户设置的facls，如果不指定用户则对文件本身生效，同chmod设置。
+setfacl -m u:antony:rw /mnt/gluster/data/testfile
+
+# 对用户组设置的facls,如果不指定用户组则对文件本身生效，同chmod设置。
+setfacl -m g:usergroup:rw /mnt/gluster/data/testfile
+
+# 针对有效权限设置的facls
+# 有效权限（mask）就是acl权限设置的极限值，也就是所设置的acl权限
+# 一定是mask的一个子集，如果超出mask范围会将超出的权限去掉.
+setfacl -m m::rw /PATH/TO/DIR_OR_FILE
+
+# 设置目录下的新建的文件或子目录的默认ACLs权限
+# 针对一个目录为一个用户（组）设置特定权限，但是如果这个目录下在
+# 新创建的文件是不具有这些针对这个用户的特定权限的。为了解决这个
+# 问题，就需要设置默认 acl 权限，使这个目录下新创建的文件有和目录
+# 相同的默认ACL特定权限。因此该设置只能设置目录。
+setfacl -m d:u:antony:rw /mnt/gluster/data/dirname
+setfacl -d -m u:antony:rw /path/to//dirname
+
+# Removing POSIX ACLs
+# 移除已设置的POSIX ACLs权限方式
+setfacl -x u:antony /mnt/gluster/data/test-file
+setfacl -x g:usergroup:rw /mnt/gluster/data/testfile
+
+# 删除文件权限列表,一下子就全删了，+号都没有了
+setfacl -b /path/to/name
+
+# 删除默认的acl参数，会删除默认(defaultt)的权限列表
+setfacl -k /path/to/dirname
+</pre></div>
+
+
+<h3 id="_1">◆  查看权限列表</h3>
+<div class="codehilite"><pre><span></span>[user@linux Desktop]$ ls  -l  file 
+-rw-rw-r--      .      1 root group1 0 Nov  7 15:13 file
+
+# 如果此位为 “.”  代表这位没有权限列表
+# 如果此位为 “+”  代表有权限列表存在
+</pre></div>
+
+
+<h2 id="facl-useful">facl useful</h2>
+<p>搞定开发项目的目录权限：</p>
+<div class="codehilite"><pre><span></span>chown -R root:www /www                         <span class="c1">#确定目录属组</span>
+chmod <span class="m">2775</span> /www                                <span class="c1">#目录属组下文件及目录使用共享组权限</span>
+find /www -type d -exec chmod -v <span class="m">2775</span> <span class="o">{}</span> <span class="se">\;</span>    <span class="c1">#目录属组下文件及目录使用共享组权限</span>
+find /www -type f -exec chmod -v ug+rw <span class="o">{}</span> <span class="se">\;</span>   <span class="c1">#目录下文件使用组共享写权限</span>
+setfacl -R -m d:u::rwx /www                    <span class="c1">#配置该目录下创建目录或文件时的默认权限</span>
+setfacl -R -m d:g::rwx /www                    <span class="c1">#配置该目录下创建目录或文件时的默认权限</span>
+setfacl -R -m d:o::rx /www                     <span class="c1">#配置该目录下创建目录或文件时的默认权限</span>
+setfacl -R -m d:m::rwx /www                    <span class="c1">#配置该目录下创建目录或文件时的默认权限</span>
+setfacl -R -m d:g:www:rwx /www                 <span class="c1">#配置该目录下创建目录或文件时的默认权限 </span>
+
+<span class="c1"># 这样设置完后，以后给linux账号加权限只要添加属组就够了：</span>
+usermod -a -G www Username
+</pre></div>
+
+
+<h2 id="reference">reference</h2>
+<p>http://www.linuxidc.com/Linux/2013-07/88049.htm<br />
+http://wiki.jikexueyuan.com/project/learn-linux-step-by-step/acl-permission-control.html</p>
+            </div>
+        </div>
+    </div>
+</div>
+            <!--banner end-->
+        </main>
+        <aside class="sidebar">
+
+            <div class="about">
+                <h2 class="hometitle">关于我</h2>
+                <div class="avatar">
+                    <img src="images/avatar.png" alt="">
+                </div>
+                <p class="abname">渺小</p>
+                <p class="abposition">... ...!!</p>
+                <div class="abtext">To be or not to be, this is not a question.</div>
+            </div>
+
+            <div class="categories">
+                <h2 class="hometitle">分类</h2>
+                    <ul>
+                        <li><a href="/category/linux.html">Linux</a></li>
+                        <li><a href="/category/security.html">Security</a></li>
+                        <li><a href="/category/service.html">Service</a></li>
+                    </ul>
+            </div>
+            <div class="cloud">
+                <h2 class="hometitle">标签云</h2>
+                <ul>                    <a href="/tag/ansible.html">ansible</a>
+                    <a href="/tag/apache.html">apache</a>
+                    <a href="/tag/curator.html">curator</a>
+                    <a href="/tag/database.html">database</a>
+                    <a href="/tag/elastic.html">elastic</a>
+                    <a href="/tag/elasticsearch.html">elasticsearch</a>
+                    <a href="/tag/facl.html">facl</a>
+                    <a href="/tag/ftp.html">ftp</a>
+                    <a href="/tag/glusterfs.html">glusterfs</a>
+                    <a href="/tag/haproxy.html">haproxy</a>
+                    <a href="/tag/httpd.html">httpd</a>
+                    <a href="/tag/https.html">https</a>
+                    <a href="/tag/linux.html">linux</a>
+                    <a href="/tag/logs.html">logs</a>
+                    <a href="/tag/memcache.html">memcache</a>
+                    <a href="/tag/mysql.html">mysql</a>
+                    <a href="/tag/nginx.html">nginx</a>
+                    <a href="/tag/openssl.html">openssl</a>
+                    <a href="/tag/openwrt.html">Openwrt</a>
+                    <a href="/tag/qa.html">QA</a>
+                    <a href="/tag/redis.html">redis</a>
+                    <a href="/tag/scribe.html">scribe</a>
+                    <a href="/tag/security.html">security</a>
+                    <a href="/tag/service.html">service</a>
+                    <a href="/tag/shadowsocks.html">shadowsocks</a>
+                    <a href="/tag/slb.html">slb</a>
+                    <a href="/tag/ss.html">ss</a>
+                    <a href="/tag/ssltls.html">SSL/TLS</a>
+                    <a href="/tag/storage.html">storage</a>
+                    <a href="/tag/tmux.html">tmux</a>
+                    <a href="/tag/tool.html">tool</a>
+                    <a href="/tag/tools.html">tools</a>
+                </ul>
+            </div>
+            <div class="links">
+              <h2 class="hometitle">推荐链接</h2>
+              <ul>
+                  <li><a href="https://jecvay.com/" target="_blank">Jecvay</a></li>
+                  <li><a href="http://andrewliu.in/" target="_blank">Adnrewliu</a></li>
+                  <li><a href="http://seanlook.com/" target="_blank">sean's notes</a></li>
+                  <li><a href="https://woaielf.github.io/" target="_blank">ZOE's Blog</a></li>
+                  <li><a href="https://233blog.com/" target="_blank">233Blog</a></li>
+                  <li><a href="http://www.yangqq.com" target="_blank">杨青个人博客</a></li>
+              </ul>
+            </div>
+
+
+        </aside>
+        <!--sidebar end-->
+    </div>
+    <!--wrapper end-->
+
+    <a href="#" class="cd-top">Top</a>
+</body>
+
+</html>

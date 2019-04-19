@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>首页 - Xiao's Notes</title>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Let the cat out of the bag." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/theme/css/base.css" rel="stylesheet">
+    <link href="/theme/css/index.css" rel="stylesheet">
+    <link href="/theme/css/m.css" rel="stylesheet">
+
+<link href="/theme/css/markdown-github.css" rel="stylesheet">
+
+    <script src="/theme/js/jquery.min.js" ></script>
+    <script src="/theme/js/hc-sticky.js"></script>
+    <script src="/theme/js/comm.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/theme/js/modernizr.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <header id="header">         <div class="navbar">
+        <div class="topbox">
+          <p class="welcome">Let the cat out of the bag.</p>
+          <!--<div class="searchbox">-->
+            <!--<div id="search_bar" class="search_bar">-->
+              <!--<form  id="searchform" action="[!&#45;&#45;news.url&#45;&#45;]e/search/index.php" method="post" name="searchform">-->
+                <!--<input class="input" placeholder="想搜点什么呢.." type="text" name="keyboard" id="keyboard">-->
+                <!--<input type="hidden" name="show" value="title" />-->
+                <!--<input type="hidden" name="tempid" value="1" />-->
+                <!--<input type="hidden" name="tbname" value="news">-->
+                <!--<input type="hidden" name="Submit" value="搜索" />-->
+                <!--<p class="search_ico"> <span></span></p>-->
+              <!--</form>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+      </div>
+      <div class="header-navigation">
+        <nav>
+          <div class="logo"><a href="/index.html">Xiao's Notes</a></div>
+          <h2 id="mnavh"><span class="navicon"></span></h2>
+          <ul id="starlist">
+            <li><a href="/index.html">网站首页</a></li>
+            <li class="menu"><a href="/categories.html">分类</a>
+              <ul class="sub">
+                  <li><a href="/category/linux.html">Linux</a></li>
+                  <li><a href="/category/security.html">Security</a></li>
+                  <li><a href="/category/service.html">Service</a></li>
+              </ul>
+            </li>
+            <li><a href="/tags.html">标签</a></li>
+            <li><a href="/archives.html">归档</a></li>
+            <li><a href="/about.html">关于</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+
+    <div class="wrapper">
+
+        <main>
+            <!--banner begin-->
+<h2 class="place"><a href="/article/2017/09/02/lsync-201709021425/">/article/2017/09/02/lsync-201709021425/</a></h2>
+<div class="infosbox">
+    <div class="newsview">
+        <h3 class="news_title">lsync：目录文件实时同步工具</h3>
+        <div class="bloginfo">
+            <ul>
+                <li class="author">【作者】<a href="/author/miao-xiao.html">渺小</a></li>
+                <li class="lmname">【分类】<a href="/category/linux.html">Linux</a></li>
+                <li class="date">【发布】2017-09-02 14:25</li>
+                <li class="modified">【更新】2017-09-02 14:25</li>
+            </ul>
+        </div>
+        <div class="tags">
+            <a href="/tag/tools.html" target="_blank">【tools】</a>
+        </div>
+        <div class="news_con">
+            <div class="news_mdfile">
+            <h1 id="lsync">lsync</h1>
+<p>官网：https://axkibe.github.io/lsyncd/</p>
+<ul>
+<li>Lysncd 实际上是lua语言封装了inotify和rsync工具，采用了Linux内核（2.6.13及以后）里的inotify触发机制，然后通过rsync去差异同步，达到实时的效果。</li>
+<li>最亮的特性：完美解决了inotify+rsync海量文件同步带来的文件频繁发送文件列表的问题 —— 通过时间延迟或累计触发事件次数实现。</li>
+<li>它的配置方式很简单，lua本身就是一种配置语言，可读性非常强。</li>
+<li>lsyncd也有多种工作模式可以选择，本地目录cp，本地目录rsync，远程目录rsyncssh。</li>
+<li>实现简单高效的本地目录同步备份（网络存储挂载也当作本地目录），一个命令搞定。</li>
+</ul>
+<h1 id="lsyncd">安装lsyncd</h1>
+<h2 id="apt">apt源</h2>
+<div class="codehilite"><pre><span></span>apt-get install lsyncd
+</pre></div>
+
+
+<h2 id="yum">yum源</h2>
+<div class="codehilite"><pre><span></span><span class="c1"># yum安装需要epel源</span>
+<span class="c1"># 阿里epel源地址：https://opsx.alibaba.com/mirror</span>
+yum install lsyncd
+</pre></div>
+
+
+<p>yum源安装文件结构：</p>
+<table>
+<thead>
+<tr>
+<th>路径</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/etc/lsyncd.conf</td>
+<td>主配置文件</td>
+</tr>
+<tr>
+<td>/etc/sysconfig/lsyncd</td>
+<td>init环境变量和启动选项配置文件</td>
+</tr>
+<tr>
+<td>/etc/logrotate.d/lsyncd</td>
+<td>日志滚动配置文件</td>
+</tr>
+<tr>
+<td>/usr/share/doc/lsyncd-*/examples/</td>
+<td>目录下有lsyncd.conf配置例子</td>
+</tr>
+<tr>
+<td>/etc/init.d/lsyncd</td>
+<td>lsyncd的init启动脚本</td>
+</tr>
+<tr>
+<td>/usr/bin/lsyncd</td>
+<td>lsyncd命令路径</td>
+</tr>
+<tr>
+<td>/var/run/lsyncd/</td>
+<td>可放lsyncd.pid的目录</td>
+</tr>
+<tr>
+<td>/var/log/lsyncd/</td>
+<td>默认的日志目录</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_1">源码编译</h2>
+<div class="codehilite"><pre><span></span><span class="c1"># 源码下载：https://axkibe.github.io/lsyncd/download/</span>
+<span class="c1"># 编译方式及依赖：https://axkibe.github.io/lsyncd/manual/building/</span>
+yum install -y lua cmake rsync git
+
+<span class="c1">#VERSION=2.1.5</span>
+<span class="c1">#wget -O lsyncd-release-${VERSION?err}.tar.gz https://github.com/axkibe/lsyncd/archive/release-${VERSION?err}.tar.gz</span>
+<span class="c1">#tar -zxvf lsyncd-release-${VERSION?err}.tar.gz</span>
+<span class="c1">#cd lsyncd-release-${VERSION?err}</span>
+git clone https://github.com/axkibe/lsyncd.git
+<span class="nb">cd</span> lsyncd
+
+cmake .
+make
+make install
+</pre></div>
+
+
+<h1 id="lsyncdlsyncdconf">lsyncd配置(lsyncd.conf)</h1>
+<p>lsyncd的一个配置文件总体分类：</p>
+<ol>
+<li>settings(global)：settings是全局进程设置。 </li>
+<li>sync(layer 4)：sync里面是定义同步参数，可以有多个sync，各自的sync配置，互不影响。</li>
+<li>onAction(layer 3): 用于定义sync触发的事件动作，定义后的Action应用到sync配置下。
+（例如监控某个目录下的文件，根据触发的事件自己定义要执行的命令。）</li>
+<li>AdvancedonAction(layer 2)：自定义事件模型，定义后可应用到layer3和layer4。</li>
+<li>Inlets(layer 1)：自定义事件函数，一般在自定义事件模型(layer 2)中使用自定义事件函数。</li>
+<li>注释：--开头表示注释</li>
+</ol>
+<h2 id="settings">settings</h2>
+<div class="codehilite"><pre><span></span><span class="n">settings</span> <span class="p">{</span>
+    <span class="c1">-- # 进程pid文件</span>
+    <span class="c1">--pidfile = &quot;/var/run/lsyncd/lsyncd.pid&quot;,</span>
+    <span class="c1">-- # nodaemon为true(默认)表示不启用守护模式。</span>
+    <span class="c1">--nodaemon   = false,</span>
+    <span class="c1">-- # inotifyMode指定inotify监控的事件，默认是CloseWrite，还可以是Modify。</span>
+    <span class="n">inotifyMode</span> <span class="o">=</span> <span class="s2">&quot;CloseWrite&quot;</span><span class="p">,</span>
+    <span class="c1">-- # 同步进程的最大个数。如maxProcesses=8，则最大能看到有8个rysnc进程。</span>
+    <span class="n">maxProcesses</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="c1">-- # statusFile定义状态文件。</span>
+    <span class="n">statusFile</span> <span class="o">=</span> <span class="s2">&quot;/var/run/lsyncd/lsyncd.status&quot;</span><span class="p">,</span>
+    <span class="c1">-- # statusInterval将lsyncd的状态写入上面的statusFile的间隔，默认10秒。</span>
+    <span class="n">statusInterval</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="c1">-- # logfile</span>
+    <span class="n">logfile</span> <span class="o">=</span> <span class="s2">&quot;/var/log/lsyncd/lsyncd.log&quot;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p><em>注:</em></p>
+<ul>
+<li>在没有配置settings选项时也能通过lsyncd命令指定<code>lsyncd --help</code></li>
+<li>或者yum安装的，由/etc/init.d/lsyncd脚本启动的，也可通过/etc/sysconfig/lsyncd配置。</li>
+<li>命令行制定的参数比配置文件中的settings优先生效。</li>
+</ul>
+<h2 id="sync-layer-4">sync (layer 4)</h2>
+<p>https://axkibe.github.io/lsyncd/manual/config/layer4/</p>
+<p>sync配置形式：</p>
+<div class="codehilite"><pre><span></span><span class="n">sync</span> <span class="p">{</span>
+   <span class="c1">-- # 选项</span>
+   <span class="c1">--default.rsync,</span>
+   <span class="c1">--source = &quot;DIRNAME&quot;,</span>
+   <span class="c1">--target = &quot;DIRNAME&quot;</span>
+   <span class="c1">-- # 选项...</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h3 id="sync">sync选项：</h3>
+<p><strong>default.*</strong></p>
+<p>sync一般第一个参数指定lsyncd以什么模式运行：rsync、rsyncssh、direct三种模式：</p>
+<ul>
+<li>default.direct ：本地目录间同步，使用cp、rm等命令完成差异文件备份。</li>
+<li>default.rsync ：本地目录间同步，使用rsync，也可以达到使用ssh形式的远程rsync效果，或daemon方式连接远程rsyncd进程；</li>
+<li>default.rsyncssh ：同步到远程主机目录，rsync的ssh模式，需要使用key来认证</li>
+</ul>
+<p><strong>source</strong></p>
+<p>source同步的源目录，使用绝对路径。</p>
+<p><strong>target</strong></p>
+<p>target定义目的地址.对应不同的模式有几种写法：</p>
+<ul>
+<li>/tmp/dest ：本地目录同步，可用于direct和rsync模式</li>
+<li>172.29.88.223:/tmp/dest ：同步到远程服务器目录，可用于rsync和rsyncssh模式。</li>
+<li>172.29.88.223::module ：同步到远程服务器目录，用于rsync模式</li>
+</ul>
+<p><strong>init</strong></p>
+<p>init 是一个优化选项，当init = false，
+只同步进程启动以后发生改动事件的文件，
+原有的目录即使有差异也不会同步。默认是true。</p>
+<p><strong>delay</strong></p>
+<p>delay 累计事件，等待rsync同步延时时间，默认15秒（最大累计到1000个不可合并的事件）。
+也就是15s内监控目录下发生的改动，会累积到一次rsync同步，避免过于频繁的同步。
+（可合并的意思是，15s内两次修改了同一文件，最后只同步最新的文件）</p>
+<p><strong>excludeFrom</strong></p>
+<p>排除选项，后面指定排除的文件<code>excludeFrom = "/etc/lsyncd.exclude"</code>。
+排除规则：</p>
+<div class="codehilite"><pre><span></span>- 监控路径里的任何部分匹配到一个文本，都会被排除，例如/bin/foo/bar可以匹配规则foo
+- 如果规则以斜线/开头，则从头开始要匹配全部
+- 如果规则以/结尾，则要匹配监控路径的末尾
+- ?匹配任何字符，但不包括/
+- *匹配0或多个字符，但不包括/
+- **匹配0或多个字符，可以是/
+</pre></div>
+
+
+<p><strong>exclude</strong></p>
+<p>排除选项，后面跟一个列表<code>exclude = { '.bak' , '.tmp' }</code>。
+规则和excludeFrom一样。</p>
+<p><strong>delete</strong></p>
+<p>delete 为了保持target与souce完全同步，Lsyncd默认会delete = true来允许同步删除。
+值：</p>
+<ul>
+<li>true</li>
+<li>false</li>
+<li>startup</li>
+<li>running</li>
+</ul>
+<p><strong>rsync</strong></p>
+<p>这个rsync选项用在default.rsync和default.rsyncssh模式。</p>
+<p>rsync配置形式：</p>
+<div class="codehilite"><pre><span></span><span class="n">rsync</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1">-- # binary指定rsync命令路径</span>
+    <span class="n">binary</span> <span class="o">=</span> <span class="s2">&quot;/usr/bin/rsync&quot;</span><span class="p">,</span>
+    <span class="c1">-- # compress 压缩传输默认为true。在带宽与cpu负载之间权衡，本地目录同步可以考虑把它设为false</span>
+    <span class="n">compress</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="c1">-- # perms 默认保留文件权限</span>
+    <span class="n">perms</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="n">acls</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="n">xattrs</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="n">links</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="n">quiet</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="c1">--ipv4 = true,</span>
+    <span class="c1">--ipv6 = true,</span>
+    <span class="c1">-- # 其它rsync的命令选项</span>
+    <span class="n">_extra</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;--bwlimit=2000&quot;</span><span class="p">,</span> <span class="s2">&quot;--password-file=/etc/rsyncd_work.pass&quot;</span><span class="p">},</span>
+    <span class="c1">-- # 指定使用ssh方式进行rsync的ssh选项</span>
+    <span class="c1">--rsh = &quot;/usr/bin/ssh -p 22 -o StrictHostKeyChecking=no&quot;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p><strong>ssh</strong></p>
+<p>这个ssh配置用在default.rsyncssh模式中。</p>
+<p>配置形式：</p>
+<div class="codehilite"><pre><span></span><span class="n">ssh</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">binary</span> <span class="o">=</span> <span class="s2">&quot;/usr/bin/ssh&quot;</span><span class="p">,</span>
+    <span class="n">identityFile</span> <span class="o">=</span> <span class="s2">&quot;/path/to/id_rsa&quot;</span><span class="p">,</span>
+    <span class="n">port</span> <span class="o">=</span> <span class="mi">22</span><span class="p">,</span>
+    <span class="c1">-- # options是ssh的-o选项指定的参数</span>
+    <span class="c1">--options = {&quot;RhostsRSAAuthentication no&quot;, &quot;PasswordAuthentication no&quot;},</span>
+    <span class="c1">-- # _extra跟 rsync的_extra一样</span>
+    <span class="n">_extra</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;--bwlimit=2000&quot;</span><span class="p">}</span> 
+<span class="p">}</span>
+</pre></div>
+
+
+<h2 id="onaction-layer-3">onAction (layer 3)</h2>
+<p>https://axkibe.github.io/lsyncd/manual/config/layer3/</p>
+<p>事件的写法：</p>
+<div class="codehilite"><pre><span></span><span class="c1">-- # bash是自定义的事件名</span>
+<span class="n">bash</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1">--# 可选项，覆盖上级配置:</span>
+    <span class="n">delay</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="n">maxProcesses</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="c1">-- # 事件动作处理流程：</span>
+    <span class="n">onCreate</span> <span class="o">=</span> <span class="s2">&quot;cp -r ^sourcePathname ^targetPathname&quot;</span><span class="p">,</span>
+    <span class="n">onModify</span> <span class="o">=</span> <span class="s2">&quot;cp -r ^sourcePathname ^targetPathname&quot;</span><span class="p">,</span>
+    <span class="n">onDelete</span> <span class="o">=</span> <span class="s2">&quot;rm -rf ^targetPathname&quot;</span><span class="p">,</span>
+    <span class="n">onMove</span>   <span class="o">=</span> <span class="s2">&quot;mv ^o.targetPathname ^d.targetPathname&quot;</span><span class="p">,</span>
+    <span class="n">onStartup</span> <span class="o">=</span> <span class="s1">&#39;[[ if [ &quot;$(ls -A ^source)&quot; ]; then cp -r ^source* ^target; fi]]&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1">-- # 应用方式</span>
+<span class="c1">--sync{bash, source=&quot;/path/to/src&quot;, target=&quot;/path/to/trg/&quot;}</span>
+</pre></div>
+
+
+<p>action说明：</p>
+<table>
+<thead>
+<tr>
+<th>action</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>onAttrib</td>
+<td>文件属性变化时触发。</td>
+</tr>
+<tr>
+<td>onCreate</td>
+<td>文件或目录被创建时触发。</td>
+</tr>
+<tr>
+<td>onModify</td>
+<td>文件被修改时触发。</td>
+</tr>
+<tr>
+<td>onDelete</td>
+<td>文件或目录被删除时触发。</td>
+</tr>
+<tr>
+<td>onMove</td>
+<td>文件或目录被移动时触发。</td>
+</tr>
+<tr>
+<td>onStartup</td>
+<td>lsyncd程序启动时触发。</td>
+</tr>
+</tbody>
+</table>
+<p>可用变量(variables)：</p>
+<div class="codehilite"><pre><span></span>^source          # source目录的绝对路径
+^target          # target目录的绝对路径
+^path            # 监测的目录相对路径，末尾有斜杠。
+^pathname        # 监测的目录相对路径，末尾没有斜杠。
+^sourcePath      # 监测source的目录(带/)或文件的路径。
+^sourcePathname  # 监测source的目录(不带/)或文件的路径。
+^targetPath      # 监测targetPathname的目录(带/)或文件的路径。
+^targetPathname  # 监测targetPathname的目录(不带/)或文件的路径。
+</pre></div>
+
+
+<h2 id="advanced-onaction-layer-2">Advanced onAction (layer 2)</h2>
+<p>https://axkibe.github.io/lsyncd/manual/config/layer2/</p>
+<h2 id="inlets-layer-1">Inlets (layer 1)</h2>
+<p>https://axkibe.github.io/lsyncd/manual/config/layer1/</p>
+<h1 id="_2">实用的配置实例</h1>
+<div class="codehilite"><pre><span></span><span class="n">settings</span> <span class="p">{</span>
+   <span class="c1">--pidfile = &quot;/var/run/lsyncd/lsyncd.pid&quot;,</span>
+   <span class="c1">--nodaemon   = false,</span>
+   <span class="n">inotifyMode</span> <span class="o">=</span> <span class="s2">&quot;CloseWrite&quot;</span><span class="p">,</span>
+   <span class="n">maxProcesses</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+   <span class="n">statusFile</span> <span class="o">=</span> <span class="s2">&quot;/tmp/lsyncd.status&quot;</span><span class="p">,</span>
+   <span class="n">statusInterval</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+   <span class="n">logfile</span> <span class="o">=</span> <span class="s2">&quot;/var/log/lsyncd/lsyncd.log&quot;</span>
+<span class="p">}</span>
+
+
+
+<span class="c1">-- # 监测本地目录发生变化就用touch更新一下mtime时间。</span>
+<span class="n">flushModifyTime</span> <span class="o">=</span><span class="p">{</span>
+    <span class="n">delay</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">maxProcesses</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">onCreate</span>  <span class="o">=</span> <span class="s2">&quot;touch ^sourcePathname&quot;</span><span class="p">,</span>
+    <span class="n">onModify</span>  <span class="o">=</span> <span class="s2">&quot;touch ^sourcePathname&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">sync</span> <span class="p">{</span>
+    <span class="n">flushModifyTime</span><span class="p">,</span>
+    <span class="n">source</span>    <span class="o">=</span> <span class="s2">&quot;/videos_store/video/&quot;</span><span class="p">,</span>
+    <span class="c1">--delete    = false</span>
+<span class="p">}</span>
+
+
+
+<span class="c1">-- # 本地目录同步，direct：cp/rm/mv。 适用：500+万文件，变动不大</span>
+<span class="n">sync</span> <span class="p">{</span>
+    <span class="n">default</span><span class="p">.</span><span class="n">direct</span><span class="p">,</span>
+    <span class="n">source</span>    <span class="o">=</span> <span class="s2">&quot;/tmp/src&quot;</span><span class="p">,</span>
+    <span class="n">target</span>    <span class="o">=</span> <span class="s2">&quot;/tmp/dest&quot;</span><span class="p">,</span>
+    <span class="n">delay</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">maxProcesses</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+<span class="p">}</span> 
+
+<span class="c1">-- # 本地目录同步，rsync模式：rsync</span>
+<span class="n">sync</span> <span class="p">{</span>
+    <span class="n">default</span><span class="p">.</span><span class="n">rsync</span><span class="p">,</span>
+    <span class="n">source</span>    <span class="o">=</span> <span class="s2">&quot;/tmp/src&quot;</span><span class="p">,</span>
+    <span class="n">target</span>    <span class="o">=</span> <span class="s2">&quot;/tmp/dest1&quot;</span><span class="p">,</span>
+    <span class="n">excludeFrom</span> <span class="o">=</span> <span class="s2">&quot;/etc/rsyncd.d/rsync_exclude.lst&quot;</span><span class="p">,</span>
+    <span class="n">rsync</span>     <span class="o">=</span> <span class="p">{</span>
+        <span class="n">binary</span> <span class="o">=</span> <span class="s2">&quot;/usr/bin/rsync&quot;</span><span class="p">,</span>
+        <span class="n">archive</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="n">compress</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="n">bwlimit</span>   <span class="o">=</span> <span class="mi">2000</span>
+    <span class="p">}</span> 
+<span class="p">}</span>
+
+
+
+<span class="c1">-- # 远程目录同步，rsync模式 + rsyncd daemon</span>
+<span class="n">sync</span> <span class="p">{</span>
+    <span class="n">default</span><span class="p">.</span><span class="n">rsync</span><span class="p">,</span>
+    <span class="n">source</span>    <span class="o">=</span> <span class="s2">&quot;/tmp/src&quot;</span><span class="p">,</span>
+    <span class="n">target</span>    <span class="o">=</span> <span class="s2">&quot;syncuser@172.29.88.223::module1&quot;</span><span class="p">,</span>
+    <span class="n">init</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="n">delete</span><span class="o">=</span><span class="s2">&quot;running&quot;</span><span class="p">,</span>
+    <span class="n">exclude</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;.*&quot;</span><span class="p">,</span> <span class="s2">&quot;.tmp&quot;</span> <span class="p">},</span>
+    <span class="n">delay</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="n">rsync</span>     <span class="o">=</span> <span class="p">{</span>
+        <span class="n">binary</span> <span class="o">=</span> <span class="s2">&quot;/usr/bin/rsync&quot;</span><span class="p">,</span>
+        <span class="n">archive</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="n">compress</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="n">verbose</span>   <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="n">password_file</span> <span class="o">=</span> <span class="s2">&quot;/etc/rsyncd.d/rsync.pwd&quot;</span><span class="p">,</span>
+        <span class="n">_extra</span>    <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;--bwlimit=200&quot;</span><span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="c1">-- # 远程目录同步，rsync模式 + rsyncd daemon (同步多台机器)</span>
+<span class="n">servers</span><span class="o">=</span><span class="p">{</span>
+<span class="s2">&quot;192.168.10.249&quot;</span><span class="p">,</span>
+<span class="s2">&quot;192.168.10.251&quot;</span>
+<span class="p">}</span>
+<span class="kr">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">server</span> <span class="kr">in</span> <span class="nb">ipairs</span><span class="p">(</span><span class="n">servers</span><span class="p">)</span> <span class="kr">do</span>
+    <span class="n">sync</span> <span class="p">{</span>
+        <span class="n">default</span><span class="p">.</span><span class="n">rsync</span><span class="p">,</span>
+        <span class="n">source</span>    <span class="o">=</span> <span class="s2">&quot;/web&quot;</span><span class="p">,</span>
+        <span class="n">target</span>    <span class="o">=</span> <span class="s2">&quot;syncuser@&quot;</span><span class="o">..</span><span class="n">server</span><span class="o">..</span><span class="s2">&quot;::module1&quot;</span><span class="p">,</span>
+        <span class="n">init</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="n">delete</span><span class="o">=</span><span class="kc">true</span><span class="p">,</span>
+        <span class="n">exclude</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;.*&quot;</span> <span class="p">},</span>
+        <span class="n">delay</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">rsync</span> <span class="o">=</span><span class="p">{</span>
+            <span class="n">binary</span> <span class="o">=</span> <span class="s2">&quot;/usr/bin/rsync&quot;</span><span class="p">,</span>
+            <span class="n">archive</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="n">compress</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="n">verbose</span>   <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="n">password_file</span> <span class="o">=</span> <span class="s2">&quot;/etc/rsyncd.d/rsync.pwd&quot;</span><span class="p">,</span>
+            <span class="n">_extra</span>    <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;--bwlimit=200&quot;</span><span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="kr">end</span>
+
+
+<span class="c1">-- # 远程目录同步，rsync模式 + ssh shell</span>
+<span class="n">sync</span> <span class="p">{</span>
+    <span class="n">default</span><span class="p">.</span><span class="n">rsync</span><span class="p">,</span>
+    <span class="n">source</span>    <span class="o">=</span> <span class="s2">&quot;/tmp/src&quot;</span><span class="p">,</span>
+    <span class="n">target</span>    <span class="o">=</span> <span class="s2">&quot;172.29.88.223:/tmp/dest&quot;</span><span class="p">,</span>
+    <span class="c1">-- target    = &quot;root@172.29.88.223:/remote/dest&quot;,</span>
+    <span class="c1">-- 上面target，注意如果是普通用户，必须拥有写权限</span>
+    <span class="n">maxDelays</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="n">delay</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="c1">-- init = true,</span>
+    <span class="n">rsync</span>     <span class="o">=</span> <span class="p">{</span>
+        <span class="n">binary</span> <span class="o">=</span> <span class="s2">&quot;/usr/bin/rsync&quot;</span><span class="p">,</span>
+        <span class="n">archive</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="n">compress</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="n">bwlimit</span>   <span class="o">=</span> <span class="mi">2000</span>
+        <span class="c1">-- rsh = &quot;/usr/bin/ssh -p 22 -o StrictHostKeyChecking=no&quot;</span>
+        <span class="c1">-- 如果要指定其它端口，请用上面的rsh</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="c1">-- # 远程目录同步，rsync模式 + rsyncssh，效果与上面相同</span>
+<span class="n">sync</span> <span class="p">{</span>
+    <span class="n">default</span><span class="p">.</span><span class="n">rsyncssh</span><span class="p">,</span>
+    <span class="n">source</span>    <span class="o">=</span> <span class="s2">&quot;/tmp/src2&quot;</span><span class="p">,</span>
+    <span class="n">host</span>      <span class="o">=</span> <span class="s2">&quot;172.29.88.223&quot;</span><span class="p">,</span>
+    <span class="n">targetdir</span> <span class="o">=</span> <span class="s2">&quot;/remote/dir&quot;</span><span class="p">,</span>
+    <span class="n">excludeFrom</span> <span class="o">=</span> <span class="s2">&quot;/etc/rsyncd.d/rsync_exclude.lst&quot;</span><span class="p">,</span>
+    <span class="c1">-- maxDelays = 5,</span>
+    <span class="n">delay</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="c1">-- init = false,</span>
+    <span class="n">rsync</span>    <span class="o">=</span> <span class="p">{</span>
+        <span class="n">binary</span> <span class="o">=</span> <span class="s2">&quot;/usr/bin/rsync&quot;</span><span class="p">,</span>
+        <span class="n">archive</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="n">compress</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="n">verbose</span>   <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="n">_extra</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;--bwlimit=2000&quot;</span><span class="p">},</span>
+    <span class="p">},</span>
+    <span class="n">ssh</span>      <span class="o">=</span> <span class="p">{</span>
+        <span class="n">port</span>  <span class="o">=</span>  <span class="mi">1234</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h1 id="_3">进程使用</h1>
+<h2 id="lsyncd_1">lsyncd命令：</h2>
+<div class="codehilite"><pre><span></span><span class="n">USAGE</span><span class="o">:</span>
+  <span class="n">runs</span> <span class="n">a</span> <span class="n">config</span> <span class="n">file</span><span class="o">:</span>
+    <span class="n">lsyncd</span> <span class="o">[</span><span class="n">OPTIONS</span><span class="o">]</span> <span class="o">[</span><span class="n">CONFIG</span><span class="o">-</span><span class="n">FILE</span><span class="o">]</span>
+
+  <span class="k">default</span> <span class="n">rsync</span> <span class="n">behaviour</span><span class="o">:</span>
+    <span class="n">lsyncd</span> <span class="o">[</span><span class="n">OPTIONS</span><span class="o">]</span> <span class="o">-</span><span class="n">rsync</span> <span class="o">[</span><span class="n">SOURCE</span><span class="o">]</span> <span class="o">[</span><span class="n">TARGET</span><span class="o">]</span>
+
+  <span class="k">default</span> <span class="n">rsync</span> <span class="k">with</span> <span class="n">mv</span><span class="err">&#39;</span><span class="n">s</span> <span class="n">through</span> <span class="n">ssh</span><span class="o">:</span>
+    <span class="n">lsyncd</span> <span class="o">[</span><span class="n">OPTIONS</span><span class="o">]</span> <span class="o">-</span><span class="n">rsyncssh</span> <span class="o">[</span><span class="n">SOURCE</span><span class="o">]</span> <span class="o">[</span><span class="n">HOST</span><span class="o">]</span> <span class="o">[</span><span class="n">TARGETDIR</span><span class="o">]</span>
+
+  <span class="k">default</span> <span class="n">local</span> <span class="n">copying</span> <span class="n">mechanisms</span> <span class="o">(</span><span class="n">cp</span><span class="o">|</span><span class="n">mv</span><span class="o">|</span><span class="n">rm</span><span class="o">):</span>
+    <span class="n">lsyncd</span> <span class="o">[</span><span class="n">OPTIONS</span><span class="o">]</span> <span class="o">-</span><span class="n">direct</span> <span class="o">[</span><span class="n">SOURCE</span><span class="o">]</span> <span class="o">[</span><span class="n">TARGETDIR</span><span class="o">]</span>
+
+<span class="n">OPTIONS</span><span class="o">:</span>
+  <span class="o">-</span><span class="n">delay</span> <span class="n">SECS</span>         <span class="n">Overrides</span> <span class="k">default</span> <span class="n">delay</span> <span class="n">times</span>
+  <span class="o">-</span><span class="n">help</span>               <span class="n">Shows</span> <span class="k">this</span>
+  <span class="o">-</span><span class="n">insist</span>             <span class="n">Continues</span> <span class="n">startup</span> <span class="n">even</span> <span class="k">if</span> <span class="n">it</span> <span class="n">cannot</span> <span class="n">connect</span>
+  <span class="o">-</span><span class="n">log</span>    <span class="n">all</span>         <span class="n">Logs</span> <span class="n">everything</span> <span class="o">(</span><span class="n">debug</span><span class="o">)</span>
+  <span class="o">-</span><span class="n">log</span>    <span class="n">scarce</span>      <span class="n">Logs</span> <span class="n">errors</span> <span class="n">only</span>
+  <span class="o">-</span><span class="n">log</span>    <span class="o">[</span><span class="n">Category</span><span class="o">]</span>  <span class="n">Turns</span> <span class="n">on</span> <span class="n">logging</span> <span class="k">for</span> <span class="n">a</span> <span class="n">debug</span> <span class="n">category</span>
+  <span class="o">-</span><span class="n">logfile</span> <span class="n">FILE</span>       <span class="n">Writes</span> <span class="n">log</span> <span class="n">to</span> <span class="n">FILE</span> <span class="o">(</span><span class="n">DEFAULT</span><span class="o">:</span> <span class="n">uses</span> <span class="n">syslog</span><span class="o">)</span>
+  <span class="o">-</span><span class="n">nodaemon</span>           <span class="n">Does</span> <span class="n">not</span> <span class="n">detach</span> <span class="n">and</span> <span class="n">logs</span> <span class="n">to</span> <span class="n">stdout</span><span class="o">/</span><span class="n">stderr</span>
+  <span class="o">-</span><span class="n">pidfile</span> <span class="n">FILE</span>       <span class="n">Writes</span> <span class="n">Lsyncds</span> <span class="n">PID</span> <span class="n">into</span> <span class="n">FILE</span>
+  <span class="o">-</span><span class="n">runner</span> <span class="n">FILE</span>        <span class="n">Loads</span> <span class="n">Lsyncds</span> <span class="n">lua</span> <span class="n">part</span> <span class="n">from</span> <span class="n">FILE</span>
+  <span class="o">-</span><span class="n">version</span>            <span class="n">Prints</span> <span class="n">versions</span> <span class="n">and</span> <span class="n">exits</span>
+</pre></div>
+
+
+<h2 id="_4">进程启动</h2>
+<div class="codehilite"><pre><span></span>lsyncd -pidfile /var/run/lsyncd.pid /etc/lsyncd.conf
+<span class="c1"># 注，要关掉直接kill进程。</span>
+</pre></div>
+
+
+<h2 id="_5">启动相关报错：</h2>
+<p><strong>max_user_watches较小</strong></p>
+<div class="codehilite"><pre><span></span>日志：
+Fri Sep  1 11:31:20 2017 Error: Terminating since out of inotify watches.
+Consider increasing /proc/sys/fs/inotify/max_user_watches
+
+查看max_user_watches：
+sysctl -a|grep max_user_watches
+
+解决方法：改大fs.inotify.max_user_watches
+vim /etc/sysctl.conf然后添加修改: fs.inotify.max_user_watches = 2001192
+生效命令： sysctl -p
+</pre></div>
+
+
+<h1 id="_6">资料原文</h1>
+<p>http://seanlook.com/2015/05/06/lsyncd-synchronize-realtime/</p>
+            </div>
+        </div>
+    </div>
+</div>
+            <!--banner end-->
+        </main>
+        <aside class="sidebar">
+
+            <div class="about">
+                <h2 class="hometitle">关于我</h2>
+                <div class="avatar">
+                    <img src="images/avatar.png" alt="">
+                </div>
+                <p class="abname">渺小</p>
+                <p class="abposition">... ...!!</p>
+                <div class="abtext">To be or not to be, this is not a question.</div>
+            </div>
+
+            <div class="categories">
+                <h2 class="hometitle">分类</h2>
+                    <ul>
+                        <li><a href="/category/linux.html">Linux</a></li>
+                        <li><a href="/category/security.html">Security</a></li>
+                        <li><a href="/category/service.html">Service</a></li>
+                    </ul>
+            </div>
+            <div class="cloud">
+                <h2 class="hometitle">标签云</h2>
+                <ul>                    <a href="/tag/ansible.html">ansible</a>
+                    <a href="/tag/apache.html">apache</a>
+                    <a href="/tag/curator.html">curator</a>
+                    <a href="/tag/database.html">database</a>
+                    <a href="/tag/elastic.html">elastic</a>
+                    <a href="/tag/elasticsearch.html">elasticsearch</a>
+                    <a href="/tag/facl.html">facl</a>
+                    <a href="/tag/ftp.html">ftp</a>
+                    <a href="/tag/glusterfs.html">glusterfs</a>
+                    <a href="/tag/haproxy.html">haproxy</a>
+                    <a href="/tag/httpd.html">httpd</a>
+                    <a href="/tag/https.html">https</a>
+                    <a href="/tag/linux.html">linux</a>
+                    <a href="/tag/logs.html">logs</a>
+                    <a href="/tag/memcache.html">memcache</a>
+                    <a href="/tag/mysql.html">mysql</a>
+                    <a href="/tag/nginx.html">nginx</a>
+                    <a href="/tag/openssl.html">openssl</a>
+                    <a href="/tag/openwrt.html">Openwrt</a>
+                    <a href="/tag/qa.html">QA</a>
+                    <a href="/tag/redis.html">redis</a>
+                    <a href="/tag/scribe.html">scribe</a>
+                    <a href="/tag/security.html">security</a>
+                    <a href="/tag/service.html">service</a>
+                    <a href="/tag/shadowsocks.html">shadowsocks</a>
+                    <a href="/tag/slb.html">slb</a>
+                    <a href="/tag/ss.html">ss</a>
+                    <a href="/tag/ssltls.html">SSL/TLS</a>
+                    <a href="/tag/storage.html">storage</a>
+                    <a href="/tag/tmux.html">tmux</a>
+                    <a href="/tag/tool.html">tool</a>
+                    <a href="/tag/tools.html">tools</a>
+                </ul>
+            </div>
+            <div class="links">
+              <h2 class="hometitle">推荐链接</h2>
+              <ul>
+                  <li><a href="https://jecvay.com/" target="_blank">Jecvay</a></li>
+                  <li><a href="http://andrewliu.in/" target="_blank">Adnrewliu</a></li>
+                  <li><a href="http://seanlook.com/" target="_blank">sean's notes</a></li>
+                  <li><a href="https://woaielf.github.io/" target="_blank">ZOE's Blog</a></li>
+                  <li><a href="https://233blog.com/" target="_blank">233Blog</a></li>
+                  <li><a href="http://www.yangqq.com" target="_blank">杨青个人博客</a></li>
+              </ul>
+            </div>
+
+
+        </aside>
+        <!--sidebar end-->
+    </div>
+    <!--wrapper end-->
+
+    <a href="#" class="cd-top">Top</a>
+</body>
+
+</html>

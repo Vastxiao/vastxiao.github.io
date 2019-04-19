@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>首页 - Xiao's Notes</title>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Let the cat out of the bag." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/theme/css/base.css" rel="stylesheet">
+    <link href="/theme/css/index.css" rel="stylesheet">
+    <link href="/theme/css/m.css" rel="stylesheet">
+
+<link href="/theme/css/markdown-github.css" rel="stylesheet">
+
+    <script src="/theme/js/jquery.min.js" ></script>
+    <script src="/theme/js/hc-sticky.js"></script>
+    <script src="/theme/js/comm.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/theme/js/modernizr.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <header id="header">         <div class="navbar">
+        <div class="topbox">
+          <p class="welcome">Let the cat out of the bag.</p>
+          <!--<div class="searchbox">-->
+            <!--<div id="search_bar" class="search_bar">-->
+              <!--<form  id="searchform" action="[!&#45;&#45;news.url&#45;&#45;]e/search/index.php" method="post" name="searchform">-->
+                <!--<input class="input" placeholder="想搜点什么呢.." type="text" name="keyboard" id="keyboard">-->
+                <!--<input type="hidden" name="show" value="title" />-->
+                <!--<input type="hidden" name="tempid" value="1" />-->
+                <!--<input type="hidden" name="tbname" value="news">-->
+                <!--<input type="hidden" name="Submit" value="搜索" />-->
+                <!--<p class="search_ico"> <span></span></p>-->
+              <!--</form>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+      </div>
+      <div class="header-navigation">
+        <nav>
+          <div class="logo"><a href="/index.html">Xiao's Notes</a></div>
+          <h2 id="mnavh"><span class="navicon"></span></h2>
+          <ul id="starlist">
+            <li><a href="/index.html">网站首页</a></li>
+            <li class="menu"><a href="/categories.html">分类</a>
+              <ul class="sub">
+                  <li><a href="/category/linux.html">Linux</a></li>
+                  <li><a href="/category/security.html">Security</a></li>
+                  <li><a href="/category/service.html">Service</a></li>
+              </ul>
+            </li>
+            <li><a href="/tags.html">标签</a></li>
+            <li><a href="/archives.html">归档</a></li>
+            <li><a href="/about.html">关于</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+
+    <div class="wrapper">
+
+        <main>
+            <!--banner begin-->
+<h2 class="place"><a href="/article/2018/02/15/openwrt-usb-storage/">/article/2018/02/15/openwrt-usb-storage/</a></h2>
+<div class="infosbox">
+    <div class="newsview">
+        <h3 class="news_title">Openwrt路由器系统配置支持USB存储设备</h3>
+        <div class="bloginfo">
+            <ul>
+                <li class="author">【作者】<a href="/author/miao-xiao.html">渺小</a></li>
+                <li class="lmname">【分类】<a href="/category/linux.html">Linux</a></li>
+                <li class="date">【发布】2018-02-15 14:54</li>
+                <li class="modified">【更新】2019-02-05 13:57</li>
+            </ul>
+        </div>
+        <div class="tags">
+            <a href="/tag/openwrt.html" target="_blank">【Openwrt】</a>
+        </div>
+        <div class="news_con">
+            <div class="news_mdfile">
+            <h1 id="openwrtusb">Openwrt路由器系统配置支持USB存储设备</h1>
+<p>https://wiki.openwrt.org/zh-cn/doc/howto/usb.storage</p>
+<h2 id="1-openwrtusb">1. OpenWrt设备上获得基本USB支持</h2>
+<p>https://wiki.openwrt.org/doc/howto/usb.essentials</p>
+<p>需要软件包：</p>
+<ul>
+<li>kmod-usb-core</li>
+<li>kmod-usb2</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="c1"># Modules for USB 2.0</span>
+opkg update
+opkg install kmod-usb2
+insmod ehci-hcd
+<span class="c1"># If you see messages like unresolved symbol usb_calc_bus_time try loading usbcore and then try ehci-hcd again:</span>
+<span class="c1">#opkg update</span>
+<span class="c1">#insmod usbcore</span>
+<span class="c1">#insmod ehci-hcd</span>
+</pre></div>
+
+
+<h2 id="2-openwrtusb">2. OpenWrt上配置挂在USB设备环境</h2>
+<p>https://wiki.openwrt.org/zh-cn/doc/howto/usb.storage#required_packages_for_usb_storage</p>
+<p>相关软件包:</p>
+<ul>
+<li>kmod-usb-storage (required) 内核支持usb存储设备需要安装包.</li>
+<li>kmod-fs-<file_system> (required) 根据文件系统安装(examples include kmod-fs-ext4, kmod-fs-msdos, kmod-fs-ntfs, and kmod-fs-xfs).</li>
+<li>kmod-usb-storage-extras (optional) 内核支持更多的设备(SmartMedia card readers).</li>
+<li>block-mount (recommended &amp; required) 挂在设备支持包.</li>
+<li>kmod-scsi-core (Any mass storage is a generic SCSI device)</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="c1"># 例子支持挂在usb设备ext4文件系统</span>
+opkg update
+opkg install kmod-usb-storage block-mount
+opkg install kmod-fs-ext4
+<span class="c1">#mkswap /dev/sda1</span>
+<span class="c1">#swapon /dev/sda1</span>
+mkdir -p /mnt/usb
+mount -t ext4 /dev/sda2 /mnt/usb -o rw,sync
+</pre></div>
+
+
+<p>禁止在未挂载时写入</p>
+<div class="codehilite"><pre><span></span><span class="c1"># You may create an empty file to indicate that the disk is not plugged in so that you don&#39;t put files directly onto NAND by doing</span>
+umount /mnt/usb   <span class="c1">#make sure the disk isn&#39;t mounted before doing this</span>
+touch /mnt/usb/USB_DISK_NOT_PRESENT
+chmod <span class="m">555</span> /mnt/usb 
+chmod <span class="m">444</span> /mnt/usb/USB_DISK_NOT_PRESENT
+</pre></div>
+
+
+<h2 id="3">3. 系统启动自动挂载</h2>
+<p><strong>使用fstab启动:</strong></p>
+<p>配置文件: /etc/config/fstab</p>
+<p><strong>直接写入/etc/rc.local在启动系统时自动挂载</strong></p>
+<div class="codehilite"><pre><span></span># /etc/rc.local
+/bin/mount -t ext4 /dev/sda /mnt/usb -o rw,sync
+</pre></div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!--banner end-->
+        </main>
+        <aside class="sidebar">
+
+            <div class="about">
+                <h2 class="hometitle">关于我</h2>
+                <div class="avatar">
+                    <img src="images/avatar.png" alt="">
+                </div>
+                <p class="abname">渺小</p>
+                <p class="abposition">... ...!!</p>
+                <div class="abtext">To be or not to be, this is not a question.</div>
+            </div>
+
+            <div class="categories">
+                <h2 class="hometitle">分类</h2>
+                    <ul>
+                        <li><a href="/category/linux.html">Linux</a></li>
+                        <li><a href="/category/security.html">Security</a></li>
+                        <li><a href="/category/service.html">Service</a></li>
+                    </ul>
+            </div>
+            <div class="cloud">
+                <h2 class="hometitle">标签云</h2>
+                <ul>                    <a href="/tag/ansible.html">ansible</a>
+                    <a href="/tag/apache.html">apache</a>
+                    <a href="/tag/curator.html">curator</a>
+                    <a href="/tag/database.html">database</a>
+                    <a href="/tag/elastic.html">elastic</a>
+                    <a href="/tag/elasticsearch.html">elasticsearch</a>
+                    <a href="/tag/facl.html">facl</a>
+                    <a href="/tag/ftp.html">ftp</a>
+                    <a href="/tag/glusterfs.html">glusterfs</a>
+                    <a href="/tag/haproxy.html">haproxy</a>
+                    <a href="/tag/httpd.html">httpd</a>
+                    <a href="/tag/https.html">https</a>
+                    <a href="/tag/linux.html">linux</a>
+                    <a href="/tag/logs.html">logs</a>
+                    <a href="/tag/memcache.html">memcache</a>
+                    <a href="/tag/mysql.html">mysql</a>
+                    <a href="/tag/nginx.html">nginx</a>
+                    <a href="/tag/openssl.html">openssl</a>
+                    <a href="/tag/openwrt.html">Openwrt</a>
+                    <a href="/tag/qa.html">QA</a>
+                    <a href="/tag/redis.html">redis</a>
+                    <a href="/tag/scribe.html">scribe</a>
+                    <a href="/tag/security.html">security</a>
+                    <a href="/tag/service.html">service</a>
+                    <a href="/tag/shadowsocks.html">shadowsocks</a>
+                    <a href="/tag/slb.html">slb</a>
+                    <a href="/tag/ss.html">ss</a>
+                    <a href="/tag/ssltls.html">SSL/TLS</a>
+                    <a href="/tag/storage.html">storage</a>
+                    <a href="/tag/tmux.html">tmux</a>
+                    <a href="/tag/tool.html">tool</a>
+                    <a href="/tag/tools.html">tools</a>
+                </ul>
+            </div>
+            <div class="links">
+              <h2 class="hometitle">推荐链接</h2>
+              <ul>
+                  <li><a href="https://jecvay.com/" target="_blank">Jecvay</a></li>
+                  <li><a href="http://andrewliu.in/" target="_blank">Adnrewliu</a></li>
+                  <li><a href="http://seanlook.com/" target="_blank">sean's notes</a></li>
+                  <li><a href="https://woaielf.github.io/" target="_blank">ZOE's Blog</a></li>
+                  <li><a href="https://233blog.com/" target="_blank">233Blog</a></li>
+                  <li><a href="http://www.yangqq.com" target="_blank">杨青个人博客</a></li>
+              </ul>
+            </div>
+
+
+        </aside>
+        <!--sidebar end-->
+    </div>
+    <!--wrapper end-->
+
+    <a href="#" class="cd-top">Top</a>
+</body>
+
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>首页 - Xiao's Notes</title>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Let the cat out of the bag." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/theme/css/base.css" rel="stylesheet">
+    <link href="/theme/css/index.css" rel="stylesheet">
+    <link href="/theme/css/m.css" rel="stylesheet">
+
+<link href="/theme/css/markdown-github.css" rel="stylesheet">
+
+    <script src="/theme/js/jquery.min.js" ></script>
+    <script src="/theme/js/hc-sticky.js"></script>
+    <script src="/theme/js/comm.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/theme/js/modernizr.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <header id="header">         <div class="navbar">
+        <div class="topbox">
+          <p class="welcome">Let the cat out of the bag.</p>
+          <!--<div class="searchbox">-->
+            <!--<div id="search_bar" class="search_bar">-->
+              <!--<form  id="searchform" action="[!&#45;&#45;news.url&#45;&#45;]e/search/index.php" method="post" name="searchform">-->
+                <!--<input class="input" placeholder="想搜点什么呢.." type="text" name="keyboard" id="keyboard">-->
+                <!--<input type="hidden" name="show" value="title" />-->
+                <!--<input type="hidden" name="tempid" value="1" />-->
+                <!--<input type="hidden" name="tbname" value="news">-->
+                <!--<input type="hidden" name="Submit" value="搜索" />-->
+                <!--<p class="search_ico"> <span></span></p>-->
+              <!--</form>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+      </div>
+      <div class="header-navigation">
+        <nav>
+          <div class="logo"><a href="/index.html">Xiao's Notes</a></div>
+          <h2 id="mnavh"><span class="navicon"></span></h2>
+          <ul id="starlist">
+            <li><a href="/index.html">网站首页</a></li>
+            <li class="menu"><a href="/categories.html">分类</a>
+              <ul class="sub">
+                  <li><a href="/category/linux.html">Linux</a></li>
+                  <li><a href="/category/security.html">Security</a></li>
+                  <li><a href="/category/service.html">Service</a></li>
+              </ul>
+            </li>
+            <li><a href="/tags.html">标签</a></li>
+            <li><a href="/archives.html">归档</a></li>
+            <li><a href="/about.html">关于</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+
+    <div class="wrapper">
+
+        <main>
+            <!--banner begin-->
+<h2 class="place"><a href="/article/2017/03/26/elastic-curator-install/">/article/2017/03/26/elastic-curator-install/</a></h2>
+<div class="infosbox">
+    <div class="newsview">
+        <h3 class="news_title">Elastic Curator 简介和安装</h3>
+        <div class="bloginfo">
+            <ul>
+                <li class="author">【作者】<a href="/author/miao-xiao.html">渺小</a></li>
+                <li class="lmname">【分类】<a href="/category/service.html">Service</a></li>
+                <li class="date">【发布】2017-03-26 19:17</li>
+                <li class="modified">【更新】2017-03-26 19:17</li>
+            </ul>
+        </div>
+        <div class="tags">
+            <a href="/tag/curator.html" target="_blank">【curator】</a>
+            <a href="/tag/elastic.html" target="_blank">【elastic】</a>
+            <a href="/tag/tools.html" target="_blank">【tools】</a>
+        </div>
+        <div class="news_con">
+            <div class="news_mdfile">
+            <h1 id="curator">curator</h1>
+<ul>
+<li>curator是一个用于管理es中的索引和快照的工具。</li>
+<li>curator是用Python写的，可以作为命令行工具，也能作为python的API。</li>
+</ul>
+<p>https://www.elastic.co/guide/en/elasticsearch/client/curator/current/index.html</p>
+<h2 id="features">Features</h2>
+<ul>
+<li>Add or remove indices (or both!) from an alias</li>
+<li>Change shard routing allocation</li>
+<li>Close indices</li>
+<li>Create index</li>
+<li>Delete indices</li>
+<li>Delete snapshots</li>
+<li>Open closed indices</li>
+<li>forceMerge indices</li>
+<li>Change the number of replicas per shard for indices</li>
+<li>Take a snapshot (backup) of indices</li>
+<li>Restore snapshots</li>
+</ul>
+<h2 id="version-compatibility">Version Compatibility</h2>
+<p>curator对es版本的支持情况：</p>
+<p>https://www.elastic.co/guide/en/elasticsearch/client/curator/current/version-compatibility.html</p>
+<h2 id="installation">Installation</h2>
+<p>从Curator 4.2开始，需要使用python3版本。</p>
+<h3 id="pip">pip</h3>
+<div class="codehilite"><pre><span></span><span class="c1"># 如果python没装pip，安装pip：</span>
+wget https://bootstrap.pypa.io/get-pip.py --no-check-certificate
+python get-pip.py
+
+<span class="c1"># 安装当前版本</span>
+pip install elasticsearch-curator
+
+<span class="c1"># 安装特定版本：</span>
+pip install -U elasticsearch-curator<span class="o">==</span><span class="m">3</span>.5.1
+
+<span class="c1"># 升级curator到最新新版本</span>
+pip install -U elasticsearch-curator
+
+<span class="c1"># 升级curator到指定版本</span>
+pip install -U elasticsearch-curator<span class="o">==</span><span class="m">3</span>.5.1
+</pre></div>
+
+
+<h3 id="apt-repository">APT repository</h3>
+<div class="codehilite"><pre><span></span>wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch <span class="p">|</span> sudo apt-key add -
+<span class="nb">echo</span> <span class="s1">&#39;deb http://packages.elastic.co/curator/4/debian stable main&#39;</span> &gt; /etc/apt/sources.list.d/curator.list
+sudo apt-get update <span class="o">&amp;&amp;</span> sudo apt-get install elasticsearch-curator
+</pre></div>
+
+
+<h3 id="yum-repository">YUM repository</h3>
+<div class="codehilite"><pre><span></span><span class="c1"># 添加Elastic&#39; Signing Key：</span>
+rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch
+
+<span class="c1"># RHEL/CentOS 6: 写/etc/yum.repos.d/curator.repo</span>
+<span class="o">[</span>curator-4<span class="o">]</span>
+<span class="nv">name</span><span class="o">=</span>CentOS/RHEL <span class="m">6</span> repository <span class="k">for</span> Elasticsearch Curator <span class="m">4</span>.x packages
+<span class="nv">baseurl</span><span class="o">=</span>http://packages.elastic.co/curator/4/centos/6
+<span class="nv">gpgcheck</span><span class="o">=</span><span class="m">1</span>
+<span class="nv">gpgkey</span><span class="o">=</span>http://packages.elastic.co/GPG-KEY-elasticsearch
+<span class="nv">enabled</span><span class="o">=</span><span class="m">1</span>
+
+<span class="c1"># RHEL/CentOS 7: 写/etc/yum.repos.d/curator.repo</span>
+<span class="o">[</span>curator-4<span class="o">]</span>
+<span class="nv">name</span><span class="o">=</span>CentOS/RHEL <span class="m">7</span> repository <span class="k">for</span> Elasticsearch Curator <span class="m">4</span>.x packages
+<span class="nv">baseurl</span><span class="o">=</span>http://packages.elastic.co/curator/4/centos/7
+<span class="nv">gpgcheck</span><span class="o">=</span><span class="m">1</span>
+<span class="nv">gpgkey</span><span class="o">=</span>http://packages.elastic.co/GPG-KEY-elasticsearch
+<span class="nv">enabled</span><span class="o">=</span><span class="m">1</span>
+
+yum install elasticsearch-curator
+</pre></div>
+
+
+<h3 id="source-code">Source Code</h3>
+<p>https://www.elastic.co/guide/en/elasticsearch/client/curator/current/python-source.html</p>
+<div class="codehilite"><pre><span></span>wget https://pypi.python.org/packages/source/p/package/package-#.#.#.tar.gz
+tar zxf package-#.#.#.tar.gz
+<span class="nb">cd</span> package-#.#.#
+python setup.py install
+</pre></div>
+
+
+<h2 id="curator-commands">Curator Commands</h2>
+<ul>
+<li>curator</li>
+<li>curator_cli</li>
+</ul>
+            </div>
+        </div>
+    </div>
+</div>
+            <!--banner end-->
+        </main>
+        <aside class="sidebar">
+
+            <div class="about">
+                <h2 class="hometitle">关于我</h2>
+                <div class="avatar">
+                    <img src="images/avatar.png" alt="">
+                </div>
+                <p class="abname">渺小</p>
+                <p class="abposition">... ...!!</p>
+                <div class="abtext">To be or not to be, this is not a question.</div>
+            </div>
+
+            <div class="categories">
+                <h2 class="hometitle">分类</h2>
+                    <ul>
+                        <li><a href="/category/linux.html">Linux</a></li>
+                        <li><a href="/category/security.html">Security</a></li>
+                        <li><a href="/category/service.html">Service</a></li>
+                    </ul>
+            </div>
+            <div class="cloud">
+                <h2 class="hometitle">标签云</h2>
+                <ul>                    <a href="/tag/ansible.html">ansible</a>
+                    <a href="/tag/apache.html">apache</a>
+                    <a href="/tag/curator.html">curator</a>
+                    <a href="/tag/database.html">database</a>
+                    <a href="/tag/elastic.html">elastic</a>
+                    <a href="/tag/elasticsearch.html">elasticsearch</a>
+                    <a href="/tag/facl.html">facl</a>
+                    <a href="/tag/ftp.html">ftp</a>
+                    <a href="/tag/glusterfs.html">glusterfs</a>
+                    <a href="/tag/haproxy.html">haproxy</a>
+                    <a href="/tag/httpd.html">httpd</a>
+                    <a href="/tag/https.html">https</a>
+                    <a href="/tag/linux.html">linux</a>
+                    <a href="/tag/logs.html">logs</a>
+                    <a href="/tag/memcache.html">memcache</a>
+                    <a href="/tag/mysql.html">mysql</a>
+                    <a href="/tag/nginx.html">nginx</a>
+                    <a href="/tag/openssl.html">openssl</a>
+                    <a href="/tag/openwrt.html">Openwrt</a>
+                    <a href="/tag/qa.html">QA</a>
+                    <a href="/tag/redis.html">redis</a>
+                    <a href="/tag/scribe.html">scribe</a>
+                    <a href="/tag/security.html">security</a>
+                    <a href="/tag/service.html">service</a>
+                    <a href="/tag/shadowsocks.html">shadowsocks</a>
+                    <a href="/tag/slb.html">slb</a>
+                    <a href="/tag/ss.html">ss</a>
+                    <a href="/tag/ssltls.html">SSL/TLS</a>
+                    <a href="/tag/storage.html">storage</a>
+                    <a href="/tag/tmux.html">tmux</a>
+                    <a href="/tag/tool.html">tool</a>
+                    <a href="/tag/tools.html">tools</a>
+                </ul>
+            </div>
+            <div class="links">
+              <h2 class="hometitle">推荐链接</h2>
+              <ul>
+                  <li><a href="https://jecvay.com/" target="_blank">Jecvay</a></li>
+                  <li><a href="http://andrewliu.in/" target="_blank">Adnrewliu</a></li>
+                  <li><a href="http://seanlook.com/" target="_blank">sean's notes</a></li>
+                  <li><a href="https://woaielf.github.io/" target="_blank">ZOE's Blog</a></li>
+                  <li><a href="https://233blog.com/" target="_blank">233Blog</a></li>
+                  <li><a href="http://www.yangqq.com" target="_blank">杨青个人博客</a></li>
+              </ul>
+            </div>
+
+
+        </aside>
+        <!--sidebar end-->
+    </div>
+    <!--wrapper end-->
+
+    <a href="#" class="cd-top">Top</a>
+</body>
+
+</html>

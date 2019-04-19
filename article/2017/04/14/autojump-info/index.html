@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>首页 - Xiao's Notes</title>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Let the cat out of the bag." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/theme/css/base.css" rel="stylesheet">
+    <link href="/theme/css/index.css" rel="stylesheet">
+    <link href="/theme/css/m.css" rel="stylesheet">
+
+<link href="/theme/css/markdown-github.css" rel="stylesheet">
+
+    <script src="/theme/js/jquery.min.js" ></script>
+    <script src="/theme/js/hc-sticky.js"></script>
+    <script src="/theme/js/comm.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/theme/js/modernizr.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <header id="header">         <div class="navbar">
+        <div class="topbox">
+          <p class="welcome">Let the cat out of the bag.</p>
+          <!--<div class="searchbox">-->
+            <!--<div id="search_bar" class="search_bar">-->
+              <!--<form  id="searchform" action="[!&#45;&#45;news.url&#45;&#45;]e/search/index.php" method="post" name="searchform">-->
+                <!--<input class="input" placeholder="想搜点什么呢.." type="text" name="keyboard" id="keyboard">-->
+                <!--<input type="hidden" name="show" value="title" />-->
+                <!--<input type="hidden" name="tempid" value="1" />-->
+                <!--<input type="hidden" name="tbname" value="news">-->
+                <!--<input type="hidden" name="Submit" value="搜索" />-->
+                <!--<p class="search_ico"> <span></span></p>-->
+              <!--</form>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+      </div>
+      <div class="header-navigation">
+        <nav>
+          <div class="logo"><a href="/index.html">Xiao's Notes</a></div>
+          <h2 id="mnavh"><span class="navicon"></span></h2>
+          <ul id="starlist">
+            <li><a href="/index.html">网站首页</a></li>
+            <li class="menu"><a href="/categories.html">分类</a>
+              <ul class="sub">
+                  <li><a href="/category/linux.html">Linux</a></li>
+                  <li><a href="/category/security.html">Security</a></li>
+                  <li><a href="/category/service.html">Service</a></li>
+              </ul>
+            </li>
+            <li><a href="/tags.html">标签</a></li>
+            <li><a href="/archives.html">归档</a></li>
+            <li><a href="/about.html">关于</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+
+    <div class="wrapper">
+
+        <main>
+            <!--banner begin-->
+<h2 class="place"><a href="/article/2017/04/14/autojump-info/">/article/2017/04/14/autojump-info/</a></h2>
+<div class="infosbox">
+    <div class="newsview">
+        <h3 class="news_title">linux 超级方便的目录命令行工具：autojump</h3>
+        <div class="bloginfo">
+            <ul>
+                <li class="author">【作者】<a href="/author/miao-xiao.html">渺小</a></li>
+                <li class="lmname">【分类】<a href="/category/linux.html">Linux</a></li>
+                <li class="date">【发布】2017-04-14 22:17</li>
+                <li class="modified">【更新】2017-04-14 22:17</li>
+            </ul>
+        </div>
+        <div class="tags">
+            <a href="/tag/tools.html" target="_blank">【tools】</a>
+        </div>
+        <div class="news_con">
+            <div class="news_mdfile">
+            <h1 id="autojump">autojump</h1>
+<p>autojump是一个命令行工具，它允许你可以直接跳转到你喜爱的目录，而不用管你现在身在何处。</p>
+<p>github: https://github.com/wting/autojump</p>
+<h2 id="_1">安装</h2>
+<p>Ubuntu/Debian上安装autojump：</p>
+<div class="codehilite"><pre><span></span>sudo apt-get install autojump
+</pre></div>
+
+
+<p>Centos/Redhat上安装autojump：</p>
+<div class="codehilite"><pre><span></span><span class="c1"># centos7直接安装新的2版本的autojump</span>
+<span class="c1"># centos6/centos5的yum安装默认是旧的1.9版本，还请用源码安装新版本。</span>
+sudo yum install autojump
+</pre></div>
+
+
+<p>源码安装autojump：</p>
+<div class="codehilite"><pre><span></span><span class="nv">VERSION</span><span class="o">=</span><span class="m">22</span>.5.1
+wget -O autojump-v<span class="si">${</span><span class="nv">VERSION</span><span class="p">?unk?</span><span class="si">}</span>.tar.gz https://github.com/wting/autojump/archive/release-v<span class="si">${</span><span class="nv">VERSION</span><span class="p">?unk?</span><span class="si">}</span>.tar.gz
+tar -zxf autojump-v<span class="si">${</span><span class="nv">VERSION</span><span class="p">?unk?</span><span class="si">}</span>.tar.gz
+<span class="nb">cd</span> autojump-release-v<span class="si">${</span><span class="nv">VERSION</span><span class="p">?unk?</span><span class="si">}</span>
+<span class="c1"># 如果不使用-d选项，默认安装到~/.autojump/目录中</span>
+./install.py -d /usr/local/autojump
+<span class="c1">#./uninstall.py -d /usr/local/autojump</span>
+</pre></div>
+
+
+<h2 id="_2">配置</h2>
+<p>autojump安装完成后, 使用前需要先加载autojump环境:</p>
+<div class="codehilite"><pre><span></span><span class="c1"># ubuntu 加载autojump环境:</span>
+. /usr/share/autojump/autojump.sh
+
+<span class="c1"># centos7 加载autojump环境:</span>
+. /usr/share/autojump/autojump.bash
+
+<span class="c1"># 源码安装的，加载环境变量：</span>
+<span class="c1"># (路径需要根据源码安装位置) </span>
+<span class="nv">AUTOJUMP_HOME</span><span class="o">=</span>/usr/local/autojump
+<span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="si">${</span><span class="nv">AUTOJUMP_HOME</span><span class="p">?unknown?</span><span class="si">}</span>/bin:<span class="nv">$PATH</span>
+<span class="nb">source</span> <span class="si">${</span><span class="nv">AUTOJUMP_HOME</span><span class="p">?unknown?</span><span class="si">}</span>/etc/profile.d/autojump.sh
+<span class="nb">unset</span> AUTOJUMP_HOME
+</pre></div>
+
+
+<p>推荐将加载命令写入环境变量文件~/.bashrc中.</p>
+<h2 id="_3">命令使用</h2>
+<div class="codehilite"><pre><span></span><span class="n">usage</span><span class="o">:</span> <span class="n">autojump</span> <span class="o">[-</span><span class="n">h</span><span class="o">]</span> <span class="o">[-</span><span class="n">a</span> <span class="n">DIRECTORY</span><span class="o">]</span> <span class="o">[-</span><span class="n">i</span> <span class="o">[</span><span class="n">WEIGHT</span><span class="o">]]</span> <span class="o">[-</span><span class="n">d</span> <span class="o">[</span><span class="n">WEIGHT</span><span class="o">]]</span> <span class="o">[-</span><span class="n">b</span><span class="o">]</span>
+                <span class="o">[--</span><span class="n">complete</span><span class="o">]</span> <span class="o">[--</span><span class="n">purge</span><span class="o">]</span> <span class="o">[-</span><span class="n">s</span><span class="o">]</span> <span class="o">[-</span><span class="n">v</span><span class="o">]</span>
+                <span class="o">[</span><span class="n">DIRECTORY</span> <span class="o">[</span><span class="n">DIRECTORY</span> <span class="o">...]]</span>
+
+<span class="n">Automatically</span> <span class="n">jump</span> <span class="n">to</span> <span class="n">directory</span> <span class="n">passed</span> <span class="k">as</span> <span class="n">an</span> <span class="n">argument</span><span class="o">.</span>
+
+<span class="n">positional</span> <span class="k">arguments</span><span class="o">:</span>
+  <span class="n">DIRECTORY</span>             <span class="n">directory</span> <span class="n">to</span> <span class="n">jump</span> <span class="n">to</span>
+
+<span class="n">optional</span> <span class="k">arguments</span><span class="o">:</span>
+  <span class="o">-</span><span class="n">h</span><span class="o">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="k">this</span> <span class="n">help</span> <span class="n">message</span> <span class="n">and</span> <span class="n">exit</span>
+  <span class="o">-</span><span class="n">a</span> <span class="n">DIRECTORY</span><span class="o">,</span> <span class="o">--</span><span class="n">add</span> <span class="n">DIRECTORY</span>
+                        <span class="n">manually</span> <span class="n">add</span> <span class="n">path</span> <span class="n">to</span> <span class="n">database</span>
+  <span class="o">-</span><span class="n">i</span> <span class="o">[</span><span class="n">WEIGHT</span><span class="o">],</span> <span class="o">--</span><span class="n">increase</span> <span class="o">[</span><span class="n">WEIGHT</span><span class="o">]</span>
+                        <span class="n">manually</span> <span class="n">increase</span> <span class="n">path</span> <span class="n">weight</span> <span class="k">in</span> <span class="n">database</span>
+  <span class="o">-</span><span class="n">d</span> <span class="o">[</span><span class="n">WEIGHT</span><span class="o">],</span> <span class="o">--</span><span class="n">decrease</span> <span class="o">[</span><span class="n">WEIGHT</span><span class="o">]</span>
+                        <span class="n">manually</span> <span class="n">decrease</span> <span class="n">path</span> <span class="n">weight</span> <span class="k">in</span> <span class="n">database</span>
+  <span class="o">-</span><span class="n">b</span><span class="o">,</span> <span class="o">--</span><span class="n">bash</span>            <span class="n">enclose</span> <span class="n">directory</span> <span class="n">quotes</span> <span class="n">to</span> <span class="n">prevent</span> <span class="n">errors</span>
+  <span class="o">--</span><span class="n">complete</span>            <span class="n">used</span> <span class="k">for</span> <span class="n">tab</span> <span class="n">completion</span>
+  <span class="o">--</span><span class="n">purge</span>               <span class="n">delete</span> <span class="n">all</span> <span class="n">database</span> <span class="n">entries</span> <span class="n">that</span> <span class="n">no</span> <span class="n">longer</span> <span class="n">exist</span> <span class="n">on</span>
+                        <span class="n">system</span>
+  <span class="o">-</span><span class="n">s</span><span class="o">,</span> <span class="o">--</span><span class="n">stat</span>            <span class="n">show</span> <span class="n">database</span> <span class="n">entries</span> <span class="n">and</span> <span class="n">their</span> <span class="n">key</span> <span class="n">weights</span>
+  <span class="o">-</span><span class="n">v</span><span class="o">,</span> <span class="o">--</span><span class="n">version</span>         <span class="n">show</span> <span class="n">version</span> <span class="n">information</span> <span class="n">and</span> <span class="n">exit</span>
+</pre></div>
+
+
+<h2 id="_4">参考</h2>
+<p>http://mp.weixin.qq.com/s/2IqlmInKPWjLtmzquKLkzw</p>
+            </div>
+        </div>
+    </div>
+</div>
+            <!--banner end-->
+        </main>
+        <aside class="sidebar">
+
+            <div class="about">
+                <h2 class="hometitle">关于我</h2>
+                <div class="avatar">
+                    <img src="images/avatar.png" alt="">
+                </div>
+                <p class="abname">渺小</p>
+                <p class="abposition">... ...!!</p>
+                <div class="abtext">To be or not to be, this is not a question.</div>
+            </div>
+
+            <div class="categories">
+                <h2 class="hometitle">分类</h2>
+                    <ul>
+                        <li><a href="/category/linux.html">Linux</a></li>
+                        <li><a href="/category/security.html">Security</a></li>
+                        <li><a href="/category/service.html">Service</a></li>
+                    </ul>
+            </div>
+            <div class="cloud">
+                <h2 class="hometitle">标签云</h2>
+                <ul>                    <a href="/tag/ansible.html">ansible</a>
+                    <a href="/tag/apache.html">apache</a>
+                    <a href="/tag/curator.html">curator</a>
+                    <a href="/tag/database.html">database</a>
+                    <a href="/tag/elastic.html">elastic</a>
+                    <a href="/tag/elasticsearch.html">elasticsearch</a>
+                    <a href="/tag/facl.html">facl</a>
+                    <a href="/tag/ftp.html">ftp</a>
+                    <a href="/tag/glusterfs.html">glusterfs</a>
+                    <a href="/tag/haproxy.html">haproxy</a>
+                    <a href="/tag/httpd.html">httpd</a>
+                    <a href="/tag/https.html">https</a>
+                    <a href="/tag/linux.html">linux</a>
+                    <a href="/tag/logs.html">logs</a>
+                    <a href="/tag/memcache.html">memcache</a>
+                    <a href="/tag/mysql.html">mysql</a>
+                    <a href="/tag/nginx.html">nginx</a>
+                    <a href="/tag/openssl.html">openssl</a>
+                    <a href="/tag/openwrt.html">Openwrt</a>
+                    <a href="/tag/qa.html">QA</a>
+                    <a href="/tag/redis.html">redis</a>
+                    <a href="/tag/scribe.html">scribe</a>
+                    <a href="/tag/security.html">security</a>
+                    <a href="/tag/service.html">service</a>
+                    <a href="/tag/shadowsocks.html">shadowsocks</a>
+                    <a href="/tag/slb.html">slb</a>
+                    <a href="/tag/ss.html">ss</a>
+                    <a href="/tag/ssltls.html">SSL/TLS</a>
+                    <a href="/tag/storage.html">storage</a>
+                    <a href="/tag/tmux.html">tmux</a>
+                    <a href="/tag/tool.html">tool</a>
+                    <a href="/tag/tools.html">tools</a>
+                </ul>
+            </div>
+            <div class="links">
+              <h2 class="hometitle">推荐链接</h2>
+              <ul>
+                  <li><a href="https://jecvay.com/" target="_blank">Jecvay</a></li>
+                  <li><a href="http://andrewliu.in/" target="_blank">Adnrewliu</a></li>
+                  <li><a href="http://seanlook.com/" target="_blank">sean's notes</a></li>
+                  <li><a href="https://woaielf.github.io/" target="_blank">ZOE's Blog</a></li>
+                  <li><a href="https://233blog.com/" target="_blank">233Blog</a></li>
+                  <li><a href="http://www.yangqq.com" target="_blank">杨青个人博客</a></li>
+              </ul>
+            </div>
+
+
+        </aside>
+        <!--sidebar end-->
+    </div>
+    <!--wrapper end-->
+
+    <a href="#" class="cd-top">Top</a>
+</body>
+
+</html>

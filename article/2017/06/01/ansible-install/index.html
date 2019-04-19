@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>首页 - Xiao's Notes</title>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Let the cat out of the bag." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/theme/css/base.css" rel="stylesheet">
+    <link href="/theme/css/index.css" rel="stylesheet">
+    <link href="/theme/css/m.css" rel="stylesheet">
+
+<link href="/theme/css/markdown-github.css" rel="stylesheet">
+
+    <script src="/theme/js/jquery.min.js" ></script>
+    <script src="/theme/js/hc-sticky.js"></script>
+    <script src="/theme/js/comm.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/theme/js/modernizr.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <header id="header">         <div class="navbar">
+        <div class="topbox">
+          <p class="welcome">Let the cat out of the bag.</p>
+          <!--<div class="searchbox">-->
+            <!--<div id="search_bar" class="search_bar">-->
+              <!--<form  id="searchform" action="[!&#45;&#45;news.url&#45;&#45;]e/search/index.php" method="post" name="searchform">-->
+                <!--<input class="input" placeholder="想搜点什么呢.." type="text" name="keyboard" id="keyboard">-->
+                <!--<input type="hidden" name="show" value="title" />-->
+                <!--<input type="hidden" name="tempid" value="1" />-->
+                <!--<input type="hidden" name="tbname" value="news">-->
+                <!--<input type="hidden" name="Submit" value="搜索" />-->
+                <!--<p class="search_ico"> <span></span></p>-->
+              <!--</form>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+      </div>
+      <div class="header-navigation">
+        <nav>
+          <div class="logo"><a href="/index.html">Xiao's Notes</a></div>
+          <h2 id="mnavh"><span class="navicon"></span></h2>
+          <ul id="starlist">
+            <li><a href="/index.html">网站首页</a></li>
+            <li class="menu"><a href="/categories.html">分类</a>
+              <ul class="sub">
+                  <li><a href="/category/linux.html">Linux</a></li>
+                  <li><a href="/category/security.html">Security</a></li>
+                  <li><a href="/category/service.html">Service</a></li>
+              </ul>
+            </li>
+            <li><a href="/tags.html">标签</a></li>
+            <li><a href="/archives.html">归档</a></li>
+            <li><a href="/about.html">关于</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+
+    <div class="wrapper">
+
+        <main>
+            <!--banner begin-->
+<h2 class="place"><a href="/article/2017/06/01/ansible-install/">/article/2017/06/01/ansible-install/</a></h2>
+<div class="infosbox">
+    <div class="newsview">
+        <h3 class="news_title">Ansible工具安装</h3>
+        <div class="bloginfo">
+            <ul>
+                <li class="author">【作者】<a href="/author/miao-xiao.html">渺小</a></li>
+                <li class="lmname">【分类】<a href="/category/linux.html">Linux</a></li>
+                <li class="date">【发布】2017-06-01 22:35</li>
+                <li class="modified">【更新】2017-06-01 22:35</li>
+            </ul>
+        </div>
+        <div class="tags">
+            <a href="/tag/tools.html" target="_blank">【tools】</a>
+            <a href="/tag/ansible.html" target="_blank">【ansible】</a>
+        </div>
+        <div class="news_con">
+            <div class="news_mdfile">
+            <h1 id="ansible-install">ansible install</h1>
+<h2 id="pre-install">Pre-install</h2>
+<h3 id="_1">对管理主机的要求</h3>
+<p>只要机器上安装了 Python 2.6 或 Python 2.7 (windows系统不可以做控制主机),都可以运行Ansible.</p>
+<p>自2.0版本开始,ansible使用了更多句柄来管理它的子进程,对于OS X系统,你需要增加ulimit值才能使用15个以上子进程,否则你可能会看见”Too many open file”的错误提示.方法：</p>
+<div class="codehilite"><pre><span></span>sudo launchctl limit maxfiles 1024 2048
+</pre></div>
+
+
+<h3 id="_2">对托管节点的要求</h3>
+<p>通常我们使用 ssh 与托管节点通信，默认使用 sftp.如果 sftp 不可用，可在 ansible.cfg 配置文件中配置成 scp 的方式. </p>
+<p>在托管节点上也需要安装 Python 2.4 或以上的版本.如果版本低于 Python 2.5 ,还需要额外安装一个模块: python-simplejson.</p>
+<p>没安装python-simplejson,也可以使用Ansible的”raw”模块和script模块,
+因此从技术上讲,你可以通过Ansible的”raw”模块安装python-simplejson,之后就可以使用Ansible的所有功能了.</p>
+<p>Red Hat Enterprise Linux, CentOS, Fedora, and Ubuntu 等发行版都默认安装了 2.X 的解释器,包括几乎所有的Unix系统也是如此.</p>
+<p>你可以使用 ‘raw’ 模块在托管节点上远程安装Python 2.X.例如：</p>
+<div class="codehilite"><pre><span></span><span class="c1"># 这条命令可以通过远程方式在托管节点上安装 Python 2.X 和 simplejson 模块.</span>
+ansible myhost --sudo -m raw -a <span class="s2">&quot;yum install -y python2 python-simplejson&quot;</span>
+</pre></div>
+
+
+<h2 id="install">Install</h2>
+<p>ansible只需要安装在管理主机上。</p>
+<h3 id="git">从源码安装的步骤(使用git)</h3>
+<div class="codehilite"><pre><span></span>git clone git://github.com/ansible/ansible.git --recursive
+<span class="nb">cd</span> ./ansible
+<span class="c1"># 安装到当前源码路径：</span>
+<span class="nb">source</span> ./hacking/env-setup
+
+<span class="c1">#如果没有安装pip, 请先安装对应于你的Python版本的pip:</span>
+sudo easy_install pip
+<span class="c1"># 以下的Python模块也需要安装 </span>
+sudo pip install paramiko PyYAML Jinja2 httplib2 six
+</pre></div>
+
+
+<p>注意,当更新ansible版本时,不只要更新git的源码树,也要更新git中指向Ansible自身模块的 “submodules” (不是同一种模块)</p>
+<div class="codehilite"><pre><span></span>git pull --rebase
+git submodule update --init --recursive
+</pre></div>
+
+
+<p>一旦运行env-setup脚本,就意味着Ansible从源码中运行起来了.默认的inventory文件是 /etc/ansible/hosts.inventory文件.</p>
+<h3 id="yumrpms-epel-6-7">通过Yum安装RPMs适用于 EPEL 6, 7</h3>
+<div class="codehilite"><pre><span></span><span class="c1"># install the epel-release RPM if needed on CentOS, RHEL, or Scientific Linux</span>
+<span class="c1"># 阿里yum源：</span>
+<span class="c1">#wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-6.repo</span>
+<span class="c1">#wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</span>
+
+sudo yum install ansible
+</pre></div>
+
+
+<h3 id="aptubuntu">通过Apt(Ubuntu)安装最新发布版本</h3>
+<div class="codehilite"><pre><span></span><span class="c1"># 在早期Ubuntu发行版中, “software-properties-common” 名为 “python-software-properties”.</span>
+sudo apt-get install software-properties-common
+sudo apt-add-repository ppa:ansible/ansible
+sudo apt-get update
+sudo apt-get install ansible
+</pre></div>
+
+
+<h3 id="pip">通过Pip安装最新发布版本</h3>
+<div class="codehilite"><pre><span></span># 若你还没有安装 pip,可执行如下命令安装:
+sudo easy_install pip
+# 安装Ansible:
+sudo pip install ansible
+</pre></div>
+
+
+<h3 id="tarball">发行版的Tarball</h3>
+<p>http://releases.ansible.com/ansible/</p>
+            </div>
+        </div>
+    </div>
+</div>
+            <!--banner end-->
+        </main>
+        <aside class="sidebar">
+
+            <div class="about">
+                <h2 class="hometitle">关于我</h2>
+                <div class="avatar">
+                    <img src="images/avatar.png" alt="">
+                </div>
+                <p class="abname">渺小</p>
+                <p class="abposition">... ...!!</p>
+                <div class="abtext">To be or not to be, this is not a question.</div>
+            </div>
+
+            <div class="categories">
+                <h2 class="hometitle">分类</h2>
+                    <ul>
+                        <li><a href="/category/linux.html">Linux</a></li>
+                        <li><a href="/category/security.html">Security</a></li>
+                        <li><a href="/category/service.html">Service</a></li>
+                    </ul>
+            </div>
+            <div class="cloud">
+                <h2 class="hometitle">标签云</h2>
+                <ul>                    <a href="/tag/ansible.html">ansible</a>
+                    <a href="/tag/apache.html">apache</a>
+                    <a href="/tag/curator.html">curator</a>
+                    <a href="/tag/database.html">database</a>
+                    <a href="/tag/elastic.html">elastic</a>
+                    <a href="/tag/elasticsearch.html">elasticsearch</a>
+                    <a href="/tag/facl.html">facl</a>
+                    <a href="/tag/ftp.html">ftp</a>
+                    <a href="/tag/glusterfs.html">glusterfs</a>
+                    <a href="/tag/haproxy.html">haproxy</a>
+                    <a href="/tag/httpd.html">httpd</a>
+                    <a href="/tag/https.html">https</a>
+                    <a href="/tag/linux.html">linux</a>
+                    <a href="/tag/logs.html">logs</a>
+                    <a href="/tag/memcache.html">memcache</a>
+                    <a href="/tag/mysql.html">mysql</a>
+                    <a href="/tag/nginx.html">nginx</a>
+                    <a href="/tag/openssl.html">openssl</a>
+                    <a href="/tag/openwrt.html">Openwrt</a>
+                    <a href="/tag/qa.html">QA</a>
+                    <a href="/tag/redis.html">redis</a>
+                    <a href="/tag/scribe.html">scribe</a>
+                    <a href="/tag/security.html">security</a>
+                    <a href="/tag/service.html">service</a>
+                    <a href="/tag/shadowsocks.html">shadowsocks</a>
+                    <a href="/tag/slb.html">slb</a>
+                    <a href="/tag/ss.html">ss</a>
+                    <a href="/tag/ssltls.html">SSL/TLS</a>
+                    <a href="/tag/storage.html">storage</a>
+                    <a href="/tag/tmux.html">tmux</a>
+                    <a href="/tag/tool.html">tool</a>
+                    <a href="/tag/tools.html">tools</a>
+                </ul>
+            </div>
+            <div class="links">
+              <h2 class="hometitle">推荐链接</h2>
+              <ul>
+                  <li><a href="https://jecvay.com/" target="_blank">Jecvay</a></li>
+                  <li><a href="http://andrewliu.in/" target="_blank">Adnrewliu</a></li>
+                  <li><a href="http://seanlook.com/" target="_blank">sean's notes</a></li>
+                  <li><a href="https://woaielf.github.io/" target="_blank">ZOE's Blog</a></li>
+                  <li><a href="https://233blog.com/" target="_blank">233Blog</a></li>
+                  <li><a href="http://www.yangqq.com" target="_blank">杨青个人博客</a></li>
+              </ul>
+            </div>
+
+
+        </aside>
+        <!--sidebar end-->
+    </div>
+    <!--wrapper end-->
+
+    <a href="#" class="cd-top">Top</a>
+</body>
+
+</html>

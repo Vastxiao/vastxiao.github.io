@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>首页 - Xiao's Notes</title>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Let the cat out of the bag." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/theme/css/base.css" rel="stylesheet">
+    <link href="/theme/css/index.css" rel="stylesheet">
+    <link href="/theme/css/m.css" rel="stylesheet">
+
+<link href="/theme/css/markdown-github.css" rel="stylesheet">
+
+    <script src="/theme/js/jquery.min.js" ></script>
+    <script src="/theme/js/hc-sticky.js"></script>
+    <script src="/theme/js/comm.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/theme/js/modernizr.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <header id="header">         <div class="navbar">
+        <div class="topbox">
+          <p class="welcome">Let the cat out of the bag.</p>
+          <!--<div class="searchbox">-->
+            <!--<div id="search_bar" class="search_bar">-->
+              <!--<form  id="searchform" action="[!&#45;&#45;news.url&#45;&#45;]e/search/index.php" method="post" name="searchform">-->
+                <!--<input class="input" placeholder="想搜点什么呢.." type="text" name="keyboard" id="keyboard">-->
+                <!--<input type="hidden" name="show" value="title" />-->
+                <!--<input type="hidden" name="tempid" value="1" />-->
+                <!--<input type="hidden" name="tbname" value="news">-->
+                <!--<input type="hidden" name="Submit" value="搜索" />-->
+                <!--<p class="search_ico"> <span></span></p>-->
+              <!--</form>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+      </div>
+      <div class="header-navigation">
+        <nav>
+          <div class="logo"><a href="/index.html">Xiao's Notes</a></div>
+          <h2 id="mnavh"><span class="navicon"></span></h2>
+          <ul id="starlist">
+            <li><a href="/index.html">网站首页</a></li>
+            <li class="menu"><a href="/categories.html">分类</a>
+              <ul class="sub">
+                  <li><a href="/category/linux.html">Linux</a></li>
+                  <li><a href="/category/security.html">Security</a></li>
+                  <li><a href="/category/service.html">Service</a></li>
+              </ul>
+            </li>
+            <li><a href="/tags.html">标签</a></li>
+            <li><a href="/archives.html">归档</a></li>
+            <li><a href="/about.html">关于</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+
+    <div class="wrapper">
+
+        <main>
+            <!--banner begin-->
+<h2 class="place"><a href="/article/2017/09/20/scribe-install/">/article/2017/09/20/scribe-install/</a></h2>
+<div class="infosbox">
+    <div class="newsview">
+        <h3 class="news_title">Scribe安装使用</h3>
+        <div class="bloginfo">
+            <ul>
+                <li class="author">【作者】<a href="/author/miao-xiao.html">渺小</a></li>
+                <li class="lmname">【分类】<a href="/category/service.html">Service</a></li>
+                <li class="date">【发布】2017-09-20 19:53</li>
+                <li class="modified">【更新】2018-11-09 11:28</li>
+            </ul>
+        </div>
+        <div class="tags">
+            <a href="/tag/tool.html" target="_blank">【tool】</a>
+            <a href="/tag/logs.html" target="_blank">【logs】</a>
+            <a href="/tag/scribe.html" target="_blank">【scribe】</a>
+        </div>
+        <div class="news_con">
+            <div class="news_mdfile">
+            <h1 id="scribe">scribe</h1>
+<p>Scribe是Facebook开源的日志收集工具。</p>
+<p>github: https://github.com/facebookarchive/scribe</p>
+<h2 id="_1">源码安装</h2>
+<p><strong>centos依赖</strong></p>
+<div class="codehilite"><pre><span></span><span class="c1"># 阿里云源: https://opsx.alibaba.com/mirror</span>
+yum install libevent-devel
+yum install boost-devel
+yum install python-devel
+yum install git
+
+<span class="c1"># https://gist.github.com/stableShip/4a6acb51614920d7c24da7a2aaa89a72</span>
+<span class="c1"># http://thrift.apache.org/docs/install/centos</span>
+</pre></div>
+
+
+<p><strong>thrift+fb303</strong></p>
+<div class="codehilite"><pre><span></span><span class="c1"># thrift</span>
+<span class="nv">VERSION</span><span class="o">=</span><span class="m">0</span>.5.0
+wget http://archive.apache.org/dist/incubator/thrift/<span class="si">${</span><span class="nv">VERSION</span><span class="p">?err</span><span class="si">}</span>-incubating/thrift-<span class="si">${</span><span class="nv">VERSION</span><span class="p">?err</span><span class="si">}</span>.tar.gz
+<span class="c1">#VERSION=0.8.0;wget http://archive.apache.org/dist/thrift/${VERSION?err}/thrift-${VERSION?err}.tar.gz</span>
+tar -zxvf thrift-<span class="si">${</span><span class="nv">VERSION</span><span class="p">?err</span><span class="si">}</span>.tar.gz
+<span class="nb">cd</span> thrift-<span class="si">${</span><span class="nv">VERSION</span><span class="p">?err</span><span class="si">}</span>
+<span class="c1">#./configure --prefix=/usr/local/thrift-${VERSION?err}</span>
+<span class="c1">#./configure --prefix=/usr/local/thrift --without-java --with-php=/usr/local/php/lib/php/build --with-php-config=/usr/local/php/bin/php-config</span>
+./configure --prefix<span class="o">=</span>/usr/local/thrift
+make <span class="o">&amp;&amp;</span> make install
+<span class="nb">echo</span> <span class="s1">&#39;/usr/local/thrift/lib&#39;</span> &gt; /etc/ld.so.conf.d/thrift.conf
+ldconfig
+<span class="c1">#[ $? -eq 0 ] &amp;&amp; ln thrift-${VERSION?err} /usr/local/thrift</span>
+<span class="c1"># fb303</span>
+<span class="nb">cd</span> contrib/fb303
+./bootstrap.sh
+./configure --prefix<span class="o">=</span>/usr/local/fb303 --with-thriftpath<span class="o">=</span>/usr/local/thrift
+make
+make install
+
+<span class="c1"># thrift make 报错:</span>
+<span class="c1">#   make[4]: *** [php_thrift_protocol.lo] Error 1</span>
+<span class="c1">#     configure选项添加php build路径 --with-php=/usr/local/php/lib/php/build</span>
+<span class="c1">#     如果不需要支持php就使用configure选项 --with-php=no</span>
+
+<span class="c1"># fb303 make 报错:</span>
+<span class="c1">#   make[3]: *** [FacebookService.o] Error 1</span>
+<span class="c1">#     configure选项添加 CPPFLAGS=&quot;-DHAVE_INTTYPES_H -DHAVE_NETINET_IN_H&quot;</span>
+
+<span class="nb">cd</span> ../../../
+</pre></div>
+
+
+<p><strong>scribe install</strong></p>
+<div class="codehilite"><pre><span></span>git clone https://github.com/facebookarchive/scribe.git
+<span class="nb">cd</span> scribe
+./bootstrap.sh --with-boost-filesystem<span class="o">=</span>boost_filesystem --prefix<span class="o">=</span>/usr/local/scribe --with-thriftpath<span class="o">=</span>/usr/local/thrift --with-fb303path<span class="o">=</span>/usr/local/fb303
+make
+make install
+<span class="o">[</span> <span class="nv">$?</span> -eq <span class="m">0</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> ok.
+
+<span class="c1"># configuration报错:</span>
+<span class="c1">#   configure: error: Could not link against</span>
+<span class="c1">#     参考 http://running.iteye.com/blog/1983467</span>
+</pre></div>
+
+
+<h2 id="scribe_1">scribe配置</h2>
+<p>scribe配置文件样例在源码包中：</p>
+<div class="codehilite"><pre><span></span># SCRIBE_SRC
+scribe/examples/
+├── example1.conf
+├── example2central.conf
+├── example2client.conf
+├── hdfs_example2.conf
+├── hdfs_example.conf
+├── README
+├── scribe_cat
+└── scribe_ctrl
+</pre></div>
+
+
+<h2 id="scrib">scrib进程启动</h2>
+<p>命令：<code>/usr/local/scribe/bin/scribed [-p port] [-c config_file]</code></p>
+<div class="codehilite"><pre><span></span><span class="c1"># 在终端前端启动</span>
+/usr/local/scribe/bin/scribed -c /etc/scribe.conf
+
+<span class="c1"># 以守护进程启动</span>
+nohup /usr/local/scribe/bin/scribed -c /etc/scribe.conf <span class="p">&amp;</span>&gt;/tmp/scribe.log <span class="p">&amp;</span>
+
+<span class="c1"># 停用进程，直接kill</span>
+killall scribed
+</pre></div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!--banner end-->
+        </main>
+        <aside class="sidebar">
+
+            <div class="about">
+                <h2 class="hometitle">关于我</h2>
+                <div class="avatar">
+                    <img src="images/avatar.png" alt="">
+                </div>
+                <p class="abname">渺小</p>
+                <p class="abposition">... ...!!</p>
+                <div class="abtext">To be or not to be, this is not a question.</div>
+            </div>
+
+            <div class="categories">
+                <h2 class="hometitle">分类</h2>
+                    <ul>
+                        <li><a href="/category/linux.html">Linux</a></li>
+                        <li><a href="/category/security.html">Security</a></li>
+                        <li><a href="/category/service.html">Service</a></li>
+                    </ul>
+            </div>
+            <div class="cloud">
+                <h2 class="hometitle">标签云</h2>
+                <ul>                    <a href="/tag/ansible.html">ansible</a>
+                    <a href="/tag/apache.html">apache</a>
+                    <a href="/tag/curator.html">curator</a>
+                    <a href="/tag/database.html">database</a>
+                    <a href="/tag/elastic.html">elastic</a>
+                    <a href="/tag/elasticsearch.html">elasticsearch</a>
+                    <a href="/tag/facl.html">facl</a>
+                    <a href="/tag/ftp.html">ftp</a>
+                    <a href="/tag/glusterfs.html">glusterfs</a>
+                    <a href="/tag/haproxy.html">haproxy</a>
+                    <a href="/tag/httpd.html">httpd</a>
+                    <a href="/tag/https.html">https</a>
+                    <a href="/tag/linux.html">linux</a>
+                    <a href="/tag/logs.html">logs</a>
+                    <a href="/tag/memcache.html">memcache</a>
+                    <a href="/tag/mysql.html">mysql</a>
+                    <a href="/tag/nginx.html">nginx</a>
+                    <a href="/tag/openssl.html">openssl</a>
+                    <a href="/tag/openwrt.html">Openwrt</a>
+                    <a href="/tag/qa.html">QA</a>
+                    <a href="/tag/redis.html">redis</a>
+                    <a href="/tag/scribe.html">scribe</a>
+                    <a href="/tag/security.html">security</a>
+                    <a href="/tag/service.html">service</a>
+                    <a href="/tag/shadowsocks.html">shadowsocks</a>
+                    <a href="/tag/slb.html">slb</a>
+                    <a href="/tag/ss.html">ss</a>
+                    <a href="/tag/ssltls.html">SSL/TLS</a>
+                    <a href="/tag/storage.html">storage</a>
+                    <a href="/tag/tmux.html">tmux</a>
+                    <a href="/tag/tool.html">tool</a>
+                    <a href="/tag/tools.html">tools</a>
+                </ul>
+            </div>
+            <div class="links">
+              <h2 class="hometitle">推荐链接</h2>
+              <ul>
+                  <li><a href="https://jecvay.com/" target="_blank">Jecvay</a></li>
+                  <li><a href="http://andrewliu.in/" target="_blank">Adnrewliu</a></li>
+                  <li><a href="http://seanlook.com/" target="_blank">sean's notes</a></li>
+                  <li><a href="https://woaielf.github.io/" target="_blank">ZOE's Blog</a></li>
+                  <li><a href="https://233blog.com/" target="_blank">233Blog</a></li>
+                  <li><a href="http://www.yangqq.com" target="_blank">杨青个人博客</a></li>
+              </ul>
+            </div>
+
+
+        </aside>
+        <!--sidebar end-->
+    </div>
+    <!--wrapper end-->
+
+    <a href="#" class="cd-top">Top</a>
+</body>
+
+</html>

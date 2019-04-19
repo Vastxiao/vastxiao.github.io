@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>首页 - Xiao's Notes</title>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Let the cat out of the bag." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/theme/css/base.css" rel="stylesheet">
+    <link href="/theme/css/index.css" rel="stylesheet">
+    <link href="/theme/css/m.css" rel="stylesheet">
+
+<link href="/theme/css/markdown-github.css" rel="stylesheet">
+
+    <script src="/theme/js/jquery.min.js" ></script>
+    <script src="/theme/js/hc-sticky.js"></script>
+    <script src="/theme/js/comm.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/theme/js/modernizr.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <header id="header">         <div class="navbar">
+        <div class="topbox">
+          <p class="welcome">Let the cat out of the bag.</p>
+          <!--<div class="searchbox">-->
+            <!--<div id="search_bar" class="search_bar">-->
+              <!--<form  id="searchform" action="[!&#45;&#45;news.url&#45;&#45;]e/search/index.php" method="post" name="searchform">-->
+                <!--<input class="input" placeholder="想搜点什么呢.." type="text" name="keyboard" id="keyboard">-->
+                <!--<input type="hidden" name="show" value="title" />-->
+                <!--<input type="hidden" name="tempid" value="1" />-->
+                <!--<input type="hidden" name="tbname" value="news">-->
+                <!--<input type="hidden" name="Submit" value="搜索" />-->
+                <!--<p class="search_ico"> <span></span></p>-->
+              <!--</form>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+      </div>
+      <div class="header-navigation">
+        <nav>
+          <div class="logo"><a href="/index.html">Xiao's Notes</a></div>
+          <h2 id="mnavh"><span class="navicon"></span></h2>
+          <ul id="starlist">
+            <li><a href="/index.html">网站首页</a></li>
+            <li class="menu"><a href="/categories.html">分类</a>
+              <ul class="sub">
+                  <li><a href="/category/linux.html">Linux</a></li>
+                  <li><a href="/category/security.html">Security</a></li>
+                  <li><a href="/category/service.html">Service</a></li>
+              </ul>
+            </li>
+            <li><a href="/tags.html">标签</a></li>
+            <li><a href="/archives.html">归档</a></li>
+            <li><a href="/about.html">关于</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+
+    <div class="wrapper">
+
+        <main>
+            <!--banner begin-->
+<h2 class="place"><a href="/article/2017/06/11/vsftp-config-guide/">/article/2017/06/11/vsftp-config-guide/</a></h2>
+<div class="infosbox">
+    <div class="newsview">
+        <h3 class="news_title">vsftp配置指南</h3>
+        <div class="bloginfo">
+            <ul>
+                <li class="author">【作者】<a href="/author/miao-xiao.html">渺小</a></li>
+                <li class="lmname">【分类】<a href="/category/linux.html">Linux</a></li>
+                <li class="date">【发布】2017-06-11 10:15</li>
+                <li class="modified">【更新】2017-06-11 10:15</li>
+            </ul>
+        </div>
+        <div class="tags">
+            <a href="/tag/ftp.html" target="_blank">【ftp】</a>
+            <a href="/tag/service.html" target="_blank">【service】</a>
+        </div>
+        <div class="news_con">
+            <div class="news_mdfile">
+            <h1 id="vsftpd">vsftpd</h1>
+<p>vsftpd提供linux的ftp服务。
+vsftpd较为安全但相对其他ftp服务功能较少。</p>
+<h2 id="_1">功能</h2>
+<ol>
+<li>vsftpd服务的启动者身份为一般用户，对Linux系统的权限较低。</li>
+<li>vsftpd利用chroot()这个函数进行改换根目录的动作，使得系统工具不会被vsftpd这支服务所误用。
+任何需要具有较高执行权限的vsftpd指令均以一支特殊的上层程序所控制，该上层程序享有的较高执行权限功能已经被限制的相当的低，并以不影响Linux本身的系统为准。</li>
+<li>绝大部分ftp会使用到的额外指令功能(dir, ls, cd …)都已经被整合到vsftpd主程序当中了，因此理论上vsftpd不需要使用到额外的系统提供的指令，所以在chroot的情况下，vsftpd不但可以顺利运作，且不需要额外功能对于系统来说也比较安全。</li>
+<li>所有来自客户端且想要使用上层程序(也是使用chroot功能的程序)所提供的较高执行权限的vsftpd指令的需求，均被视为不可信任的要求来处理，必需要经过相当程度的身份确认后，方可利用该上层程序的功能。例如chown,Login的要求等等动作。</li>
+</ol>
+<h2 id="_2">安装</h2>
+<p><strong>yum安装</strong></p>
+<div class="codehilite"><pre><span></span>yum install vsftpd -y
+</pre></div>
+
+
+<p><strong>apt安装</strong></p>
+<div class="codehilite"><pre><span></span>apt-get install vsftpd -y
+</pre></div>
+
+
+<h2 id="vsftpd_1">vsftpd包结构</h2>
+<ul>
+<li>/etc/vsftpd/vsftpd.conf vsftpd主配置文件(配置方式是参数=设定值)</li>
+<li>/etc/pam.d/vsftpd vsftpd使用PAM模块时的相关配置文件。</li>
+</ul>
+<h2 id="_3">服务管理</h2>
+<div class="codehilite"><pre><span></span># Centos
+/etc/init.d/vsftpd {start|stop|restart|try-restart|force-reload|status}
+</pre></div>
+
+
+<h2 id="_4">服务配置</h2>
+<h3 id="1">1. 服务器环境的配置</h3>
+<p>配置 /etc/vsftpd/vsftpd.conf</p>
+<div class="codehilite"><pre><span></span>##################
+# 服务器环境配置 #
+##################
+
+# 以后台进程启动(standalone),默认YES。
+background=YES
+# 监听端口，以standalone模式启动生效。
+listen=YES
+# vsftpd命令通道连接端口，记得防火墙设置。
+listen_port=21
+# standalone下，同一时间最大client连接数，0不限制，默认2000。
+max_clients=0
+# standalone下，同一个IP同一时间允许的最大连接数。
+max_per_ip=0
+# 用户连接后超时无命令动作强制断线时间(s)
+idle_session_timeout=300
+# 已建立的连接，在该时间(s)内无法完成数据传输，则被强制断开。
+data_connection_timeout=300
+
+
+# YES则允许FTP主动连接模式，默认NO。
+connect_from_port_20=NO
+# 主动连接模式，服务器发出连接超时后未响应强制断线时间(s)
+connect_timeout=60
+
+
+# 设置YES则支持ftp被动连接模式(passive mode)，默认YES。
+pasv_enable=YES
+
+# 被动连接模式使用的端口范围(默认0使用任何端口)
+# 记得限制端口号范围，开启防火墙。
+pasv_min_port=0
+pasv_max_port=0
+
+# PASV模式下，等待client超时无回应强制断线时间(s)
+accept_timeout=60
+
+
+# 用户连接ftp时，ftp客户端上显示的说明信息。
+#ftpd_banner=welcome to ftp !!
+# 用户连接ftp时，把文件内容在ftp客户端上显示，如果开启则文件必须存在。
+#banner_file=/etc/login_info
+# 当用户进入某个目录时，会显示该目录中message_file配置的文件内容。
+dirmessage_enable=YES
+message_file=.message
+
+
+# (链接使用子进程管理)每个连接都使用单独process负责,一般不配置.默认不启用(NO)
+#one_process_model=NO
+
+# 支持TCP Wrappers(既/etc/hosts.allow|/etc/hosts.deny控制)
+tcp_wrappers=YES
+
+# 使用本地时间。（vsftp默认使用GMT时间）
+use_localtime=YES
+
+# YES: client就优先使用ASCII格式下载文件,默认NO。
+#ascii_download_enable=YES
+# YES: client就优先使用ASCII格式上传文件,默认NO。
+#ascii_upload_enable=YES
+
+# vsftpd 服务启动用户,默认使用nobody
+nopriv_user=nobody
+
+# 必须配置支持PAM模块管理，pam模块名称, 就是/etc/pam.d/vsftpd
+pam_service_name=vsftpd
+
+
+# 启用日志,设置为YES时，客户端上传/下载文件都会被纪录。(默认NO)
+xferlog_enable=YES
+# 为YES则启用xferlog的wu-ftpd的日志格式记录日志，使用xferlog_file
+# 为NO则使用vsftpd的日志格式记录日志(默认NO)，使用vsftpd_log_file
+xferlog_std_format=YES
+# 使用xferlog的wu-ftpd日志格式的写文件路径。
+xferlog_file=/var/log/xferlog
+# 使用vsftpd的日志格式记录日志的写文件路径。
+vsftpd_log_file=/var/log/vsftpd.log
+# 同时启用两种日志格式（vsftp日志格式和xferlog的wu-ftp日志）,默认NO。
+#dual_log_enable=YES
+
+
+# 在上传文件时，创建文件的可执行权限umask，默认0666
+file_open_mode=0666
+
+# 限制用户使用ftp的命令(这里禁止删除命令)
+cmds_allowed=ABOR,CWD,LIST,MDTM,MKD,NLST,PASS,PASV,PORT,PWD,QUIT,RETR,SIZE,STOR,TYPE,USER,REST,CDUP,HELP,MODE,NOOP,REIN,STAT,STOU,STRU,SYST,FEAT
+</pre></div>
+
+
+<h3 id="2">2. 匿名账号登录配置</h3>
+<p>配置 /etc/vsftpd/vsftpd.conf</p>
+<div class="codehilite"><pre><span></span>####################
+# 匿名账号登录配置 #
+####################
+
+# 匿名账号也是虚拟用户，账号名就是anonymous，权限也依赖guest_username配置。
+# 设置允许匿名账号(anonymous)登录vsftpd，默认YES
+anonymous_enable=NO
+# 允许anonymous账号的读取和下载文件的权限，默认YES。
+anon_world_readable_only=YES
+# 设置anonymous账号对vsftp上的文件写权限，默认NO。
+anon_other_write_enable=NO
+# 设置anonymous账号在vsftp上创建目录的权限，默认NO。
+anon_mkdir_write_enable=NO
+# 设置anonymous账号的上传数据权限，默认NO。
+anon_upload_enable=NO
+# 限制anonymous上传文件的权限(077则anonymous上传的文件权限是-rw—--—---)
+anon_umask=077
+
+# 限制anonymous的传输速度，单位为bytes/秒，0则不限制(默认)。
+# 如果想让anonymous仅有30KB/s的速度,设定anon_max_rate=30000
+anon_max_rate=0
+
+# 设置YES则anonymous登录vsftp时需要输入密码(登录时会检查输入的emai)，默认NO。
+#no_anon_password=YES
+# anonymous登录vsftp时，会要求输入email地址做密码，启用该项可禁止某些email的登录，默认NO。
+#deny_email_enable=YES
+# 启用限制登录vsftp的email列表文件，文件内每个email一行，启用email限制后此文件必须存在。
+#banned_email_file=/etc/vsftpd/banned_emails
+</pre></div>
+
+
+<h3 id="3">3. 实体用户登录配置</h3>
+<p>配置 /etc/vsftpd/vsftpd.conf</p>
+<div class="codehilite"><pre><span></span>####################
+# 实体用户登录配置 #
+####################
+
+# 设置为YES，在/etc/passwd内的账号(或PAM配置的)才能以实体用户的方式登入vsftpd。
+# 针对实体用户和虚拟用户，这个值必须开启。
+local_enable=YES
+
+
+# 启用chroot功能，限制登录的账号根目录在自己家目录,(默认NO)
+chroot_local_user=YES
+# 启用chroot后，chroot_list_enable配置为YES则/etc/vsftpd/chroot_list列表为不被限制的账号；
+# 启用chroot后，chroot_list_enable为NO则/etc/vsftpd/chroot_list为需要被chroot的账号（默认）。
+chroot_list_enable=YES
+# 启用chroot后，chroot_list_file是针对chroot_list_enable设置的账号列表文件，即使没有任何账号，此文件也要存在。
+chroot_list_file=/etc/vsftpd/chroot_list
+
+
+# 是否启用账号登录访问控制，默认NO。
+userlist_enable=YES
+# 启用userlist时，此选项为YES则userlist_file中的账号不允许登录vsftp服务器,(默认项)。
+# 启用userlist时，此选项为NO则userlist_file中的账号为允许登录vsftp服务器。
+userlist_deny=YES
+userlist_file=/etc/vsftpd/user_list
+
+# YES则允许实体用户和虚拟用户下载数据，默认YES。
+download_enable=YES
+# YES则允许实体用户和虚拟用户上传数据(包括目录和文件)，默认NO
+#write_enable=YES
+# 实体用户和虚拟用户创建新目录(755)与文件(644)的权限
+local_umask=022
+
+# 实体用户的传输速度限制，单位为bytes/second，0为不限制。
+local_max_rate=0
+</pre></div>
+
+
+<h3 id="4">4. 虚拟用户登录配置</h3>
+<p>(1)配置 /etc/vsftpd/vsftpd.conf</p>
+<div class="codehilite"><pre><span></span>####################
+# 虚拟用户登录配置 #
+####################
+
+# 该值设置为YES时，任何实体账号都会被当成虚拟用户，权限也依赖虚拟用户的配置(所以默认是NO)。
+guest_enable=NO
+# guest_enable为YES时生效，指定虚拟用户的身份(虚拟用户的宿主用户)。
+guest_username=ftp
+
+
+# 配置YES，则虚拟用户使用本地用户的权限；配置NO，虚拟用户使用匿名用户的权限，默认NO。
+# 启用虚拟用户后，实体账号默认都被当成虚拟用户并且被chroot，开启该项能让实体用户恢复实体用权限，
+# 但无论如何，在vsftpd服务器上进行实际操作的用户名任然是guest_username所配置的用户。
+# 不过还是建议配置为NO，特殊用户权限可以使用虚拟账号自身配置文件配置。
+virtual_use_local_privs=NO
+
+# 虚拟用户的配置文件的主目录(目录自己创建)，该目录下存放虚拟用户的个人配置。
+# 每个用户的配置一个文件，配置文件名=虚拟用户名。
+user_config_dir=/etc/vsftpd/account_conf
+</pre></div>
+
+
+<p>(2)配置PAM认证(根据主配置文件中pam_service_name的配置)。</p>
+<p>修改 /etc/pam.d/vsftpd 注释掉所有参数，在最后面加入下面两行：</p>
+<div class="codehilite"><pre><span></span>auth    required        pam_userdb.so   db=/etc/vsftpd/account
+account required        pam_userdb.so   db=/etc/vsftpd/account
+</pre></div>
+
+
+<p>注意：配置PAM认证数据库后，实体账号也无法直接登录vsftp，也需要在认证数据中添加账号才能登录。</p>
+<p>(3)生成用户认证数据库 /etc/vsftpd/account.db</p>
+<p>生成数据库使用的工具是Berkeley DB工具，安装包是：</p>
+<div class="codehilite"><pre><span></span><span class="c1"># yum 安装</span>
+yum install db4 db4-utils 
+</pre></div>
+
+
+<p>生成数据库需要用户密码文本，添加虚拟用户名和密码，奇数行为用户名，偶数行为密码。</p>
+<p>/etc/vsftpd/account.txt</p>
+<div class="codehilite"><pre><span></span>user1
+password1
+user2
+password2
+</pre></div>
+
+
+<p>根据用户密码文本最终生成用户认证数据库：</p>
+<div class="codehilite"><pre><span></span><span class="c1"># 生成vsftp用户名和密码认证数据库</span>
+<span class="c1"># 每次修改用户和密码信息都必须，用该命令重载一次数据库。</span>
+db_load -T -t <span class="nb">hash</span> -f /etc/vsftpd/account.txt /etc/vsftpd/account.db
+</pre></div>
+
+
+<p>(4)虚拟用户个人vsftp权限配置方式(根据主配置文件中user_config_dir的配置)。</p>
+<p>在 /etc/vsftpd/account_conf/ 目录下创建虚拟用户配置文件：</p>
+<p>每个用户的配置为一个文件，配置文件名为虚拟用户名，配置内容根据情况选择：</p>
+<div class="codehilite"><pre><span></span># 虚拟用户的根目录，需要预先建立并赋予相应权限
+local_root=/data/user1
+
+# 配置YES，则虚拟用户使用本地用户的权限；配置NO，虚拟用户使用匿名用户的权限。
+virtual_use_local_privs=NO
+
+# 匿名权限，YES则允许读取和下载文件的权限。
+anon_world_readable_only=YES
+# 匿名权限，YES则允许文件/目录写权限(删除、重命名)。
+anon_other_write_enable=NO
+# 匿名权限，YES则允许创建目录。
+anon_mkdir_write_enable=NO
+# 匿名权限，YES则允许上传数据。
+anon_upload_enable=NO
+# 匿名权限，限制上传文件的权限掩码(drwx------/-rw-------)
+anon_umask=077
+# 匿名权限，限制传输速度，单位为bytes/秒，0则不限制。
+anon_max_rate=0
+
+# 虚拟用户权限，YES则允许实体用户和虚拟用户下载数据。
+download_enable=YES
+# 虚拟用户权限，YES则允许上传数据(包括目录和文件)
+write_enable=YES
+# 虚拟用户权限，限制创建新目录(755)与文件(644)的权限
+local_umask=022
+# 虚拟用户权限，传输速度限制，单位为bytes/second，0为不限制。
+local_max_rate=0
+
+# 其他vsftpd中用户相关的配置也可以使用，例如：
+idle_session_timeout=0
+</pre></div>
+
+
+<h2 id="_5">针对用户使用命令的权限管理</h2>
+<p>在vsftpd.conf中存在两个对用户使用ftp命令的限制：</p>
+<ul>
+<li>cmds_allowed</li>
+<li>cmds_deny</li>
+</ul>
+<p>cmds_deny优先级高于cmds_allowed，两个配置同一个命令时，以cmds_deny生效。</p>
+<p>这两个命令也都可以应用于虚拟用户个人的权限配置文件。</p>
+<p>参数说明：<br />
+http://fity.cn/post/317.html<br />
+http://itchentao.blog.51cto.com/5168625/1563813</p>
+<h2 id="_6">参考资料</h2>
+<ul>
+<li>http://blog.csdn.net/wave_1102/article/details/50651433</li>
+<li>http://www.huzs.net/?p=1213#server_real_chroot</li>
+</ul>
+            </div>
+        </div>
+    </div>
+</div>
+            <!--banner end-->
+        </main>
+        <aside class="sidebar">
+
+            <div class="about">
+                <h2 class="hometitle">关于我</h2>
+                <div class="avatar">
+                    <img src="images/avatar.png" alt="">
+                </div>
+                <p class="abname">渺小</p>
+                <p class="abposition">... ...!!</p>
+                <div class="abtext">To be or not to be, this is not a question.</div>
+            </div>
+
+            <div class="categories">
+                <h2 class="hometitle">分类</h2>
+                    <ul>
+                        <li><a href="/category/linux.html">Linux</a></li>
+                        <li><a href="/category/security.html">Security</a></li>
+                        <li><a href="/category/service.html">Service</a></li>
+                    </ul>
+            </div>
+            <div class="cloud">
+                <h2 class="hometitle">标签云</h2>
+                <ul>                    <a href="/tag/ansible.html">ansible</a>
+                    <a href="/tag/apache.html">apache</a>
+                    <a href="/tag/curator.html">curator</a>
+                    <a href="/tag/database.html">database</a>
+                    <a href="/tag/elastic.html">elastic</a>
+                    <a href="/tag/elasticsearch.html">elasticsearch</a>
+                    <a href="/tag/facl.html">facl</a>
+                    <a href="/tag/ftp.html">ftp</a>
+                    <a href="/tag/glusterfs.html">glusterfs</a>
+                    <a href="/tag/haproxy.html">haproxy</a>
+                    <a href="/tag/httpd.html">httpd</a>
+                    <a href="/tag/https.html">https</a>
+                    <a href="/tag/linux.html">linux</a>
+                    <a href="/tag/logs.html">logs</a>
+                    <a href="/tag/memcache.html">memcache</a>
+                    <a href="/tag/mysql.html">mysql</a>
+                    <a href="/tag/nginx.html">nginx</a>
+                    <a href="/tag/openssl.html">openssl</a>
+                    <a href="/tag/openwrt.html">Openwrt</a>
+                    <a href="/tag/qa.html">QA</a>
+                    <a href="/tag/redis.html">redis</a>
+                    <a href="/tag/scribe.html">scribe</a>
+                    <a href="/tag/security.html">security</a>
+                    <a href="/tag/service.html">service</a>
+                    <a href="/tag/shadowsocks.html">shadowsocks</a>
+                    <a href="/tag/slb.html">slb</a>
+                    <a href="/tag/ss.html">ss</a>
+                    <a href="/tag/ssltls.html">SSL/TLS</a>
+                    <a href="/tag/storage.html">storage</a>
+                    <a href="/tag/tmux.html">tmux</a>
+                    <a href="/tag/tool.html">tool</a>
+                    <a href="/tag/tools.html">tools</a>
+                </ul>
+            </div>
+            <div class="links">
+              <h2 class="hometitle">推荐链接</h2>
+              <ul>
+                  <li><a href="https://jecvay.com/" target="_blank">Jecvay</a></li>
+                  <li><a href="http://andrewliu.in/" target="_blank">Adnrewliu</a></li>
+                  <li><a href="http://seanlook.com/" target="_blank">sean's notes</a></li>
+                  <li><a href="https://woaielf.github.io/" target="_blank">ZOE's Blog</a></li>
+                  <li><a href="https://233blog.com/" target="_blank">233Blog</a></li>
+                  <li><a href="http://www.yangqq.com" target="_blank">杨青个人博客</a></li>
+              </ul>
+            </div>
+
+
+        </aside>
+        <!--sidebar end-->
+    </div>
+    <!--wrapper end-->
+
+    <a href="#" class="cd-top">Top</a>
+</body>
+
+</html>

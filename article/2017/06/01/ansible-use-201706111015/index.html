@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>首页 - Xiao's Notes</title>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Let the cat out of the bag." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/theme/css/base.css" rel="stylesheet">
+    <link href="/theme/css/index.css" rel="stylesheet">
+    <link href="/theme/css/m.css" rel="stylesheet">
+
+<link href="/theme/css/markdown-github.css" rel="stylesheet">
+
+    <script src="/theme/js/jquery.min.js" ></script>
+    <script src="/theme/js/hc-sticky.js"></script>
+    <script src="/theme/js/comm.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/theme/js/modernizr.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <header id="header">         <div class="navbar">
+        <div class="topbox">
+          <p class="welcome">Let the cat out of the bag.</p>
+          <!--<div class="searchbox">-->
+            <!--<div id="search_bar" class="search_bar">-->
+              <!--<form  id="searchform" action="[!&#45;&#45;news.url&#45;&#45;]e/search/index.php" method="post" name="searchform">-->
+                <!--<input class="input" placeholder="想搜点什么呢.." type="text" name="keyboard" id="keyboard">-->
+                <!--<input type="hidden" name="show" value="title" />-->
+                <!--<input type="hidden" name="tempid" value="1" />-->
+                <!--<input type="hidden" name="tbname" value="news">-->
+                <!--<input type="hidden" name="Submit" value="搜索" />-->
+                <!--<p class="search_ico"> <span></span></p>-->
+              <!--</form>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+      </div>
+      <div class="header-navigation">
+        <nav>
+          <div class="logo"><a href="/index.html">Xiao's Notes</a></div>
+          <h2 id="mnavh"><span class="navicon"></span></h2>
+          <ul id="starlist">
+            <li><a href="/index.html">网站首页</a></li>
+            <li class="menu"><a href="/categories.html">分类</a>
+              <ul class="sub">
+                  <li><a href="/category/linux.html">Linux</a></li>
+                  <li><a href="/category/security.html">Security</a></li>
+                  <li><a href="/category/service.html">Service</a></li>
+              </ul>
+            </li>
+            <li><a href="/tags.html">标签</a></li>
+            <li><a href="/archives.html">归档</a></li>
+            <li><a href="/about.html">关于</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+
+    <div class="wrapper">
+
+        <main>
+            <!--banner begin-->
+<h2 class="place"><a href="/article/2017/06/01/ansible-use-201706111015/">/article/2017/06/01/ansible-use-201706111015/</a></h2>
+<div class="infosbox">
+    <div class="newsview">
+        <h3 class="news_title">ansible配置和使用</h3>
+        <div class="bloginfo">
+            <ul>
+                <li class="author">【作者】<a href="/author/miao-xiao.html">渺小</a></li>
+                <li class="lmname">【分类】<a href="/category/linux.html">Linux</a></li>
+                <li class="date">【发布】2017-06-01 22:46</li>
+                <li class="modified">【更新】2018-11-17 10:26</li>
+            </ul>
+        </div>
+        <div class="tags">
+            <a href="/tag/tools.html" target="_blank">【tools】</a>
+            <a href="/tag/ansible.html" target="_blank">【ansible】</a>
+        </div>
+        <div class="news_con">
+            <div class="news_mdfile">
+            <h1 id="ansible-use">ansible use</h1>
+<ul>
+<li>官方文档: https://docs.ansible.com/</li>
+<li>中文文档: http://www.ansible.com.cn/</li>
+</ul>
+<h2 id="_1">配置文件</h2>
+<h3 id="_2">应用程序的主配置文件</h3>
+<p>Ansible的一些的设置可以通过配置文件完成.</p>
+<p>用户可以修改一下配置文件来修改设置,他们的被读取的顺序如下:</p>
+<ul>
+<li>ANSIBLE_CONFIG (一个环境变量)</li>
+<li>ansible.cfg (位于当前目录中)</li>
+<li>.ansible.cfg (位于家目录中)</li>
+<li>/etc/ansible/ansible.cfg (默认全局配置文件)</li>
+</ul>
+<p>配置形式(ini格式)：</p>
+<div class="codehilite"><pre><span></span><span class="k">[defaults]</span>
+<span class="na">host_key_checking</span> <span class="o">=</span> <span class="s">False</span>
+<span class="k">[ssh_connection]</span>
+<span class="na">scp_if_ssh</span> <span class="o">=</span> <span class="s">smart</span>
+</pre></div>
+
+
+<p>配置参考：http://www.ansible.com.cn/docs/intro_configuration.html</p>
+<h3 id="host-inventory">Host Inventory(定义管控主机)</h3>
+<p>参考：http://www.ansible.com.cn/docs/intro_inventory.html</p>
+<p>Inventory文件，用于配置节点信息，使用ansible时，
+指定Patterns，根据Inventory配置来操作远程机器。</p>
+<h4 id="inventory">单独使用Inventory配置文件</h4>
+<p><strong>默认配置文件：</strong>
+/etc/ansible/hosts</p>
+<div class="codehilite"><pre><span></span># 未分组
+mail.example.com
+badwolf.example.com:5309
+
+[dbservers]
+one.example.com
+two.example.com
+
+[webservers]
+www[01:50].example.com
+
+# 以下方式单独设置主机变量，这些变量定义后可在playbooks中使用
+[targets]
+localhost              ansible_connection=local
+other1.example.com     ansible_connection=ssh        ansible_ssh_user=mpdehaan
+other2.example.com     ansible_connection=ssh        ansible_ssh_user=mdehaan
+host1 http_port=80 maxRequestsPerChild=808
+
+# 也可以定义属于整个组的变量
+[databases]
+db-[a:f].example.com
+[databases:vars]
+ntp_server=ntp.atlanta.example.com
+proxy=proxy.atlanta.example.com
+
+# 可以把一个组作为另一个组的子成员,以及分配变量给整个组使用.
+# 这些变量可以给ansible-playbook使用,但不能给ansible使用
+[atlanta]
+host1
+host2
+[raleigh]
+host2
+host3
+[southeast:children]
+atlanta
+raleigh
+[southeast:vars]
+some_server=foo.southeast.example.com
+halon_system_timeout=30
+self_destruct_countdown=60
+escape_pods=2
+[usa:children]
+southeast
+northeast
+</pre></div>
+
+
+<p><strong>可以手动指定Inventory配置文件：</strong></p>
+<div class="codehilite"><pre><span></span>ansible -i /PATH/TO/HOSTS_File HOST-Patterns -m MODULE_Name -a <span class="s2">&quot;ARGS...&quot;</span>
+
+ansible -i /tmp/myhosts.file all -m ping
+</pre></div>
+
+
+<h4 id="hostgroupinventory">分文件定义Host和Group变量来配置Inventory</h4>
+<p>在inventory主文件中保存所有的变量并不是最佳的方式.
+还可以保存在独立的文件中,这些独立文件与inventory文件保持关联.
+不同于inventory文件(INI格式),这些独立文件的格式为YAML.</p>
+<p>对主机的配置存放在host_vars/目录下。<br />
+对组的配置存放在group_vars/目录下。</p>
+<div class="codehilite"><pre><span></span>/etc/ansible/hosts
+/etc/ansible/group_vars/raleigh
+/etc/ansible/group_vars/webservers
+/etc/ansible/host_vars/foosball
+</pre></div>
+
+
+<p>group_vars/和host_vars/目录可放在inventory目录下,或是playbook目录下.
+如果两个目录下都存在,那么playbook目录下的配置会覆盖inventory目录的配置.</p>
+<h4 id="patterns">Patterns语法</h4>
+<p>Patterns用法参考：http://www.ansible.com.cn/docs/intro_patterns.html</p>
+<div class="codehilite"><pre><span></span># 支持通配，支持域名
+all
+*
+one.example.com
+one.example.com:two.example.com
+192.168.1.50
+192.168.1.*
+
+# group组
+webservers
+webservers[0]
+webservers[0-25]
+
+# 多个组，相当于或集
+webservers:dbservers
+# 排除其他组！，非集
+webservers:!phoenix
+# 主机必须同时存在组，并集
+webservers:&amp;staging
+webservers:dbservers:&amp;staging:!phoenix
+
+# 正则
+~(web|db).*\.example\.com
+</pre></div>
+
+
+<h2 id="ansible">ansible使用</h2>
+<p>Ansible提供两种方式去完成任务,一是ad-hoc命令,一是写Ansible playbook.
+前者可以解决一些简单的任务, 后者解决较复杂的任务.</p>
+<ul>
+<li>使用ad-hoc，既使用/usr/bin/ansible这个命令的意思。</li>
+<li>使用playbook，既使用/usr/bin/ansible-playbook这个命令的意思。</li>
+</ul>
+<p>比如说因为圣诞节要来了,想要把所有实验室的电源关闭,我们只需要执行一行命令就可以达成这个任务,
+而不需要写playbook来做这个任务.至于说做配置管理或部署这种事,还是要借助 playbook 来完成,
+即使用 ‘/usr/bin/ansible-playbook’ 这个命令.</p>
+<p>使用ansible推荐通讯方式：</p>
+<ul>
+<li>通讯方式使用ssh，sftp，scp，及基于ssh的分通讯方式</li>
+<li>使用ssh启用启用公钥认证方式</li>
+<li>使用ssh-agent管理私钥</li>
+</ul>
+<h3 id="ad-hoc">使用Ad-Hoc管理简单任务</h3>
+<p>参考：http://www.ansible.com.cn/docs/intro_adhoc.html</p>
+<div class="codehilite"><pre><span></span><span class="c1"># 最常使用命令</span>
+ansible <span class="o">[</span>-i host-file<span class="o">]</span> &lt;host-pattern&gt; <span class="o">[</span>-f forks<span class="o">]</span> <span class="o">[</span>-m module_name<span class="o">]</span> <span class="o">[</span>-a args<span class="o">]</span>
+  -i host-file     指定host-file替代/etc/ansible/hosts
+  host-pattern     指定Patterns参数，匹配需要执行操作的host
+  -f forks         指明每批管控forks数量的主机，默认为5个主机一批次
+  -m module_name   使用何种模块管理操作，所有的操作都需要通过模块来指定，默认command
+  -a args          指明模块专用参数。args一般为key<span class="o">=</span>value格式；
+                   而command模块的参数非为kv格式，而是直接给出要执行的命令即可。
+  -u remote_user   指定登录的用户名
+  --private-key<span class="o">=</span>PRIVATE_KEY_FILE
+                   指定秘钥文件
+  -s, --sudo       使用sudo执行命令
+
+  -v, -vvvv        显式详细信息<span class="o">(</span>v可以1-4个<span class="o">)</span>
+  -C, --check      测试ansible执行，但是命令不会真正执行
+  --list-hosts     不执行命令，输出匹配的机器host
+</pre></div>
+
+
+<h3 id="playbook">使用Playbook管理复杂任务</h3>
+<ul>
+<li>官方文档: https://docs.ansible.com/ansible/latest/user_guide/playbooks.html</li>
+<li>中文文档: http://www.ansible.com.cn/docs/playbooks.html</li>
+</ul>
+<p>对于需反复执行的、较为复杂的任务，可以通过定义Playbook来搞定。
+Playbook是Ansible真正强大的地方，它允许使用变量、条件、循环、以及模板，
+也能通过角色及包含指令来重用既有内容。</p>
+<p>该例子在远端机器上创建一个新的用户：</p>
+<p>user.yml</p>
+<div class="codehilite"><pre><span></span><span class="nn">---</span>
+<span class="p p-Indicator">-</span> <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">all</span>
+  <span class="nt">become</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yes</span>
+  <span class="nt">become_method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sudo</span>
+  <span class="nt">tasks</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;检查参数</span><span class="nv"> </span><span class="s">absdir&quot;</span>
+      <span class="nt">fail</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">msg=&quot;需要提供变量 absdir(目录绝对路径)&quot;</span>
+      <span class="nt">when</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">absdir is undefined</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;检查参数</span><span class="nv"> </span><span class="s">group&quot;</span>
+      <span class="nt">fail</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">msg=&quot;需要提供变量 group(共享的group名称)&quot;</span>
+      <span class="nt">when</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">group is undefined</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;设置</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">absdir</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">的权限为</span><span class="nv"> </span><span class="s">root.{{</span><span class="nv"> </span><span class="s">group</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">2775&quot;</span>
+      <span class="nt">file</span><span class="p">:</span>
+        <span class="nt">path</span><span class="p">:</span> <span class="s">&quot;{{</span><span class="nv"> </span><span class="s">absdir</span><span class="nv"> </span><span class="s">}}&quot;</span>
+        <span class="nt">owner</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">root</span>
+        <span class="nt">group</span><span class="p">:</span> <span class="s">&quot;{{</span><span class="nv"> </span><span class="s">group</span><span class="nv"> </span><span class="s">}}&quot;</span>
+        <span class="nt">mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">u=rwx,g=rwxs,o=rx</span>
+</pre></div>
+
+
+<p>要执行Playbook，可以敲入：</p>
+<div class="codehilite"><pre><span></span>ansible-playbook user.yml
+</pre></div>
+
+
+<p><strong>常用的ansible-playbook命令选项</strong></p>
+<div class="codehilite"><pre><span></span>ansible-playbook <span class="o">[</span>options<span class="o">]</span> playbook.yml <span class="o">[</span>playbook2 ...<span class="o">]</span>
+  -i host-file     指定host-file替代/etc/ansible/hosts
+  -l <span class="s1">&#39;SUBSET&#39;</span>, --limit <span class="s1">&#39;SUBSET&#39;</span>
+                   指定Patterns参数，匹配需要执行操作的host
+  -f forks         指明每批管控forks数量的主机，默认为5个主机一批次
+  -u remote_user   指定登录的用户名
+  --private-key<span class="o">=</span>PRIVATE_KEY_FILE
+                   指定秘钥文件
+  -s, --sudo       使用sudo执行命令
+  -e EXTRA_VARS    添加变量，可以是 <span class="nv">key</span><span class="o">=</span>value 或 YAML/JSON 或 @filename
+
+  -C, --check      测试ansible执行，但是命令不会真正执行
+  -v, -vvvv        显式详细信息<span class="o">(</span>v可以1-4个<span class="o">)</span>
+  --list-hosts     不执行命令，输出匹配的机器host
+  --list-tags      list all available tags
+  --list-tasks     list all tasks that would be executed
+</pre></div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!--banner end-->
+        </main>
+        <aside class="sidebar">
+
+            <div class="about">
+                <h2 class="hometitle">关于我</h2>
+                <div class="avatar">
+                    <img src="images/avatar.png" alt="">
+                </div>
+                <p class="abname">渺小</p>
+                <p class="abposition">... ...!!</p>
+                <div class="abtext">To be or not to be, this is not a question.</div>
+            </div>
+
+            <div class="categories">
+                <h2 class="hometitle">分类</h2>
+                    <ul>
+                        <li><a href="/category/linux.html">Linux</a></li>
+                        <li><a href="/category/security.html">Security</a></li>
+                        <li><a href="/category/service.html">Service</a></li>
+                    </ul>
+            </div>
+            <div class="cloud">
+                <h2 class="hometitle">标签云</h2>
+                <ul>                    <a href="/tag/ansible.html">ansible</a>
+                    <a href="/tag/apache.html">apache</a>
+                    <a href="/tag/curator.html">curator</a>
+                    <a href="/tag/database.html">database</a>
+                    <a href="/tag/elastic.html">elastic</a>
+                    <a href="/tag/elasticsearch.html">elasticsearch</a>
+                    <a href="/tag/facl.html">facl</a>
+                    <a href="/tag/ftp.html">ftp</a>
+                    <a href="/tag/glusterfs.html">glusterfs</a>
+                    <a href="/tag/haproxy.html">haproxy</a>
+                    <a href="/tag/httpd.html">httpd</a>
+                    <a href="/tag/https.html">https</a>
+                    <a href="/tag/linux.html">linux</a>
+                    <a href="/tag/logs.html">logs</a>
+                    <a href="/tag/memcache.html">memcache</a>
+                    <a href="/tag/mysql.html">mysql</a>
+                    <a href="/tag/nginx.html">nginx</a>
+                    <a href="/tag/openssl.html">openssl</a>
+                    <a href="/tag/openwrt.html">Openwrt</a>
+                    <a href="/tag/qa.html">QA</a>
+                    <a href="/tag/redis.html">redis</a>
+                    <a href="/tag/scribe.html">scribe</a>
+                    <a href="/tag/security.html">security</a>
+                    <a href="/tag/service.html">service</a>
+                    <a href="/tag/shadowsocks.html">shadowsocks</a>
+                    <a href="/tag/slb.html">slb</a>
+                    <a href="/tag/ss.html">ss</a>
+                    <a href="/tag/ssltls.html">SSL/TLS</a>
+                    <a href="/tag/storage.html">storage</a>
+                    <a href="/tag/tmux.html">tmux</a>
+                    <a href="/tag/tool.html">tool</a>
+                    <a href="/tag/tools.html">tools</a>
+                </ul>
+            </div>
+            <div class="links">
+              <h2 class="hometitle">推荐链接</h2>
+              <ul>
+                  <li><a href="https://jecvay.com/" target="_blank">Jecvay</a></li>
+                  <li><a href="http://andrewliu.in/" target="_blank">Adnrewliu</a></li>
+                  <li><a href="http://seanlook.com/" target="_blank">sean's notes</a></li>
+                  <li><a href="https://woaielf.github.io/" target="_blank">ZOE's Blog</a></li>
+                  <li><a href="https://233blog.com/" target="_blank">233Blog</a></li>
+                  <li><a href="http://www.yangqq.com" target="_blank">杨青个人博客</a></li>
+              </ul>
+            </div>
+
+
+        </aside>
+        <!--sidebar end-->
+    </div>
+    <!--wrapper end-->
+
+    <a href="#" class="cd-top">Top</a>
+</body>
+
+</html>

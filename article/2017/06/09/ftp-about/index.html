@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>首页 - Xiao's Notes</title>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Let the cat out of the bag." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/theme/css/base.css" rel="stylesheet">
+    <link href="/theme/css/index.css" rel="stylesheet">
+    <link href="/theme/css/m.css" rel="stylesheet">
+
+<link href="/theme/css/markdown-github.css" rel="stylesheet">
+
+    <script src="/theme/js/jquery.min.js" ></script>
+    <script src="/theme/js/hc-sticky.js"></script>
+    <script src="/theme/js/comm.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/theme/js/modernizr.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <header id="header">         <div class="navbar">
+        <div class="topbox">
+          <p class="welcome">Let the cat out of the bag.</p>
+          <!--<div class="searchbox">-->
+            <!--<div id="search_bar" class="search_bar">-->
+              <!--<form  id="searchform" action="[!&#45;&#45;news.url&#45;&#45;]e/search/index.php" method="post" name="searchform">-->
+                <!--<input class="input" placeholder="想搜点什么呢.." type="text" name="keyboard" id="keyboard">-->
+                <!--<input type="hidden" name="show" value="title" />-->
+                <!--<input type="hidden" name="tempid" value="1" />-->
+                <!--<input type="hidden" name="tbname" value="news">-->
+                <!--<input type="hidden" name="Submit" value="搜索" />-->
+                <!--<p class="search_ico"> <span></span></p>-->
+              <!--</form>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+      </div>
+      <div class="header-navigation">
+        <nav>
+          <div class="logo"><a href="/index.html">Xiao's Notes</a></div>
+          <h2 id="mnavh"><span class="navicon"></span></h2>
+          <ul id="starlist">
+            <li><a href="/index.html">网站首页</a></li>
+            <li class="menu"><a href="/categories.html">分类</a>
+              <ul class="sub">
+                  <li><a href="/category/linux.html">Linux</a></li>
+                  <li><a href="/category/security.html">Security</a></li>
+                  <li><a href="/category/service.html">Service</a></li>
+              </ul>
+            </li>
+            <li><a href="/tags.html">标签</a></li>
+            <li><a href="/archives.html">归档</a></li>
+            <li><a href="/about.html">关于</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+
+    <div class="wrapper">
+
+        <main>
+            <!--banner begin-->
+<h2 class="place"><a href="/article/2017/06/09/ftp-about/">/article/2017/06/09/ftp-about/</a></h2>
+<div class="infosbox">
+    <div class="newsview">
+        <h3 class="news_title">ftp协议 功能及工作模式</h3>
+        <div class="bloginfo">
+            <ul>
+                <li class="author">【作者】<a href="/author/miao-xiao.html">渺小</a></li>
+                <li class="lmname">【分类】<a href="/category/linux.html">Linux</a></li>
+                <li class="date">【发布】2017-06-09 22:09</li>
+                <li class="modified">【更新】2017-06-09 22:09</li>
+            </ul>
+        </div>
+        <div class="tags">
+            <a href="/tag/ftp.html" target="_blank">【ftp】</a>
+            <a href="/tag/service.html" target="_blank">【service】</a>
+        </div>
+        <div class="news_con">
+            <div class="news_mdfile">
+            <h1 id="ftp">FTP 介绍</h1>
+<ul>
+<li>FTP (File transfer protocol).</li>
+<li>FTP 最主要的功能是在服务器与客户端之间进行文件传输.</li>
+<li>FTP协议使用的是明文传输方式.</li>
+</ul>
+<h2 id="ftp_1">FTP 功能</h2>
+<h3 id="1">(1)命令记录与登录文件记录</h3>
+<ul>
+<li>FTP 可以利用系统的 syslogd 来进行数据的纪录,</li>
+<li>记录的数据包括了用户曾经下达过的命令与用户传输数据(传输时间、文件w大小等等)的纪录.</li>
+<li>FTP 日志可以的在 /var/log/ 查到. </li>
+</ul>
+<h3 id="2user-guest-anonymous">(2)不同等级的用户身份：user, guest, anonymous</h3>
+<p>FTP 服务器在预设的情况下，依据使用者登入的情况而分为三种不同的身份:</p>
+<ul>
+<li>实体账号,real user</li>
+<li>访客, guest</li>
+<li>匿名登录者, anonymous</li>
+</ul>
+<h3 id="3change-root-chroot">(3)限制用户活动的目录：(change root, 简称 chroot)</h3>
+<p>FTP 可以限制用户仅能在自己的家目录当中活动，使用者无法离开自己的家目录。
+而且登入 FTP 后，显示的根目录就是自己家目录的内容。</p>
+<h2 id="ftp_2">FTP 的运作流程与使用到的端口</h2>
+<p>FTP 的传输使用的是 TCP 封包协议，TCP 在建立链接前会先进行三次握手。
+FTP 服务的交互比较复杂，使用了两个TCP连接，分别是命令信道与数据流通道(ftp-data)。</p>
+<p><strong>FTP 有两种工作模式</strong></p>
+<p>FTP协议有两种工作方式：PORT方式和PASV方式，中文意思为主动式和被动式。</p>
+<h3 id="ftp-active">FTP主动连接模式 (active)</h3>
+<p>PORT（主动）方式的连接过程是：客户端向服务器的FTP端口（默认是21）发送连接请求，服务器接受连接，建立一条命令链路。
+当需要传送数据时，客户端在命令链路上用 PORT命令告诉服务器：“我打开了<strong><em>*端口，你过来连接我”。于是服务器从20端口
+向客户端的</em></strong>*端口发送连接请求，建立一条数据链路来传送数据。</p>
+<div class="codehilite"><pre><span></span>Client-&gt;FtpServer: ClientPort:A - 建立tcp通道连接 - FtpServerPort:21
+Client-&gt;FtpServer: ClientPort:A - 知服务器端使用active且连接的client端口号B - FtpServerPort:21
+FtpServer--&gt;Client: ClientPort:B - 建立tcp连接 - FtpServerPort:20
+</pre></div>
+
+
+<ol>
+<li>客户端会随机取一个大于1024以上的端口(port A)来与FTP服务器端的(port 21)建立连接，连接后客户端可以通过这个连接对FTP服务器发送命令。</li>
+<li>在有数据传输的行为时，客户端通知FTP服务器端使用active,且告知连接的端口号(port B)。</li>
+<li>FTP服务进行数据传输前通过客户端的端口号通告，使用(port 20)主动与客户端建立连接后，开始交互传输数据。</li>
+</ol>
+<p>如此一来就成功的建立起命令与数据传输两个通道。不过,要注意的是，
+数据传输通道是在有数据传输的行为时才会建立的通道，
+并不是一开始连接到FTP服务器就立刻建立的通道。</p>
+<h3 id="ftp-passive">FTP被动连接模式 (passive)</h3>
+<p>PASV（被动）方式的连接过程是：客户端向服务器的FTP端口（默认是21）发送连接请求，服务器接受连接，建立一条命令链路。
+当需要传送数据时，服务器在命令链路上用 PASV命令告诉客户端：“我打开了<strong><em>*端口，你过来连接我”。于是客户端向服务器
+的</em></strong>*端口发送连接请求，建立一条数据链路来传送数据。</p>
+<div class="codehilite"><pre><span></span>Client-&gt;FtpServer: ClientPort:A - 建立tcp通道连接 - FtpServerPort:21
+Client-&gt;FtpServer: ClientPort:A - 向服务器端发送passive连接请求 - FtpServerPort:21
+FtpServer--&gt;Client: ClientPort:A - 服务器返回passvie连接端口号(Port X) - FtpServerPort:21
+Client-&gt;FtpServer: ClientPort:B - 建立tcp通道连接 - FtpServerPort:X
+</pre></div>
+
+
+<ol>
+<li>客户端会随机取一个大于1024以上的端口(port A)来与FTP服务器端的(port 21)建立连接，连接后客户端可以通过这个连接对FTP服务器发送命令。</li>
+<li>在有数据传输的行为时，客户端通过命令通道向FTP服务器端发送passive连接请求。</li>
+<li>在服务器支持被动连接时，服务器先启动一个端口监听(这个端口号可能是随机的，也可以自定义某一范围的端口号),并讲端口号返回给通知客户端。</li>
+<li>接收服务器通知的端口号后客户端随机取用一个大于1024的端口号与服务器建立tcp连接。</li>
+</ol>
+<h1 id="_1">原文资料</h1>
+<p>http://blog.csdn.net/wave_1102/article/details/50651433</p>
+            </div>
+        </div>
+    </div>
+</div>
+            <!--banner end-->
+        </main>
+        <aside class="sidebar">
+
+            <div class="about">
+                <h2 class="hometitle">关于我</h2>
+                <div class="avatar">
+                    <img src="images/avatar.png" alt="">
+                </div>
+                <p class="abname">渺小</p>
+                <p class="abposition">... ...!!</p>
+                <div class="abtext">To be or not to be, this is not a question.</div>
+            </div>
+
+            <div class="categories">
+                <h2 class="hometitle">分类</h2>
+                    <ul>
+                        <li><a href="/category/linux.html">Linux</a></li>
+                        <li><a href="/category/security.html">Security</a></li>
+                        <li><a href="/category/service.html">Service</a></li>
+                    </ul>
+            </div>
+            <div class="cloud">
+                <h2 class="hometitle">标签云</h2>
+                <ul>                    <a href="/tag/ansible.html">ansible</a>
+                    <a href="/tag/apache.html">apache</a>
+                    <a href="/tag/curator.html">curator</a>
+                    <a href="/tag/database.html">database</a>
+                    <a href="/tag/elastic.html">elastic</a>
+                    <a href="/tag/elasticsearch.html">elasticsearch</a>
+                    <a href="/tag/facl.html">facl</a>
+                    <a href="/tag/ftp.html">ftp</a>
+                    <a href="/tag/glusterfs.html">glusterfs</a>
+                    <a href="/tag/haproxy.html">haproxy</a>
+                    <a href="/tag/httpd.html">httpd</a>
+                    <a href="/tag/https.html">https</a>
+                    <a href="/tag/linux.html">linux</a>
+                    <a href="/tag/logs.html">logs</a>
+                    <a href="/tag/memcache.html">memcache</a>
+                    <a href="/tag/mysql.html">mysql</a>
+                    <a href="/tag/nginx.html">nginx</a>
+                    <a href="/tag/openssl.html">openssl</a>
+                    <a href="/tag/openwrt.html">Openwrt</a>
+                    <a href="/tag/qa.html">QA</a>
+                    <a href="/tag/redis.html">redis</a>
+                    <a href="/tag/scribe.html">scribe</a>
+                    <a href="/tag/security.html">security</a>
+                    <a href="/tag/service.html">service</a>
+                    <a href="/tag/shadowsocks.html">shadowsocks</a>
+                    <a href="/tag/slb.html">slb</a>
+                    <a href="/tag/ss.html">ss</a>
+                    <a href="/tag/ssltls.html">SSL/TLS</a>
+                    <a href="/tag/storage.html">storage</a>
+                    <a href="/tag/tmux.html">tmux</a>
+                    <a href="/tag/tool.html">tool</a>
+                    <a href="/tag/tools.html">tools</a>
+                </ul>
+            </div>
+            <div class="links">
+              <h2 class="hometitle">推荐链接</h2>
+              <ul>
+                  <li><a href="https://jecvay.com/" target="_blank">Jecvay</a></li>
+                  <li><a href="http://andrewliu.in/" target="_blank">Adnrewliu</a></li>
+                  <li><a href="http://seanlook.com/" target="_blank">sean's notes</a></li>
+                  <li><a href="https://woaielf.github.io/" target="_blank">ZOE's Blog</a></li>
+                  <li><a href="https://233blog.com/" target="_blank">233Blog</a></li>
+                  <li><a href="http://www.yangqq.com" target="_blank">杨青个人博客</a></li>
+              </ul>
+            </div>
+
+
+        </aside>
+        <!--sidebar end-->
+    </div>
+    <!--wrapper end-->
+
+    <a href="#" class="cd-top">Top</a>
+</body>
+
+</html>

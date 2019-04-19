@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>首页 - Xiao's Notes</title>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Let the cat out of the bag." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/theme/css/base.css" rel="stylesheet">
+    <link href="/theme/css/index.css" rel="stylesheet">
+    <link href="/theme/css/m.css" rel="stylesheet">
+
+<link href="/theme/css/markdown-github.css" rel="stylesheet">
+
+    <script src="/theme/js/jquery.min.js" ></script>
+    <script src="/theme/js/hc-sticky.js"></script>
+    <script src="/theme/js/comm.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/theme/js/modernizr.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <header id="header">         <div class="navbar">
+        <div class="topbox">
+          <p class="welcome">Let the cat out of the bag.</p>
+          <!--<div class="searchbox">-->
+            <!--<div id="search_bar" class="search_bar">-->
+              <!--<form  id="searchform" action="[!&#45;&#45;news.url&#45;&#45;]e/search/index.php" method="post" name="searchform">-->
+                <!--<input class="input" placeholder="想搜点什么呢.." type="text" name="keyboard" id="keyboard">-->
+                <!--<input type="hidden" name="show" value="title" />-->
+                <!--<input type="hidden" name="tempid" value="1" />-->
+                <!--<input type="hidden" name="tbname" value="news">-->
+                <!--<input type="hidden" name="Submit" value="搜索" />-->
+                <!--<p class="search_ico"> <span></span></p>-->
+              <!--</form>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+      </div>
+      <div class="header-navigation">
+        <nav>
+          <div class="logo"><a href="/index.html">Xiao's Notes</a></div>
+          <h2 id="mnavh"><span class="navicon"></span></h2>
+          <ul id="starlist">
+            <li><a href="/index.html">网站首页</a></li>
+            <li class="menu"><a href="/categories.html">分类</a>
+              <ul class="sub">
+                  <li><a href="/category/linux.html">Linux</a></li>
+                  <li><a href="/category/security.html">Security</a></li>
+                  <li><a href="/category/service.html">Service</a></li>
+              </ul>
+            </li>
+            <li><a href="/tags.html">标签</a></li>
+            <li><a href="/archives.html">归档</a></li>
+            <li><a href="/about.html">关于</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+
+    <div class="wrapper">
+
+        <main>
+            <!--banner begin-->
+<h2 class="place"><a href="/article/2017/08/09/haproxy/">/article/2017/08/09/haproxy/</a></h2>
+<div class="infosbox">
+    <div class="newsview">
+        <h3 class="news_title">HAProxy安装与配置</h3>
+        <div class="bloginfo">
+            <ul>
+                <li class="author">【作者】<a href="/author/miao-xiao.html">渺小</a></li>
+                <li class="lmname">【分类】<a href="/category/service.html">Service</a></li>
+                <li class="date">【发布】2017-08-09 23:13</li>
+                <li class="modified">【更新】2017-08-09 23:12</li>
+            </ul>
+        </div>
+        <div class="tags">
+            <a href="/tag/haproxy.html" target="_blank">【haproxy】</a>
+            <a href="/tag/slb.html" target="_blank">【slb】</a>
+        </div>
+        <div class="news_con">
+            <div class="news_mdfile">
+            <h1 id="haproxy">HAProxy</h1>
+<p>官网：http://www.haproxy.org/</p>
+<p><strong>HAProxy简介</strong></p>
+<ul>
+<li>提供高可用性、负载均衡。</li>
+<li>基于TCP（第四层）和HTTP（第七层）应用的代理。</li>
+<li>特别适用于负载特大的web站点，这些站点通常又需要会话保持或七层处理。</li>
+<li>HAProxy实现了一种事件驱动、单一进程模型，此模型支持非常大的并发连接数。</li>
+<li>支持全透明代理，支持连接拒绝。</li>
+<li>支持虚拟主机的免费、快速并且可靠的解决方案。</li>
+</ul>
+<h2 id="install">Install</h2>
+<div class="codehilite"><pre><span></span><span class="c1">#VERSION=1.7.8</span>
+<span class="nv">VERSION</span><span class="o">=</span><span class="m">1</span>.8.13
+<span class="nv">INSTALLPATH</span><span class="o">=</span>/usr/local/haproxy
+wget https://www.haproxy.org/download/<span class="si">${</span><span class="nv">VERSION</span><span class="p">%.*</span><span class="si">}</span>/src/haproxy-<span class="si">${</span><span class="nv">VERSION</span><span class="p">?empty</span><span class="si">}</span>.tar.gz --no-check-certificate
+<span class="nb">cd</span> haproxy-<span class="si">${</span><span class="nv">VERSION</span><span class="p">?empty</span><span class="si">}</span>
+<span class="c1"># 查看系统内核, 选择参数, see README.</span>
+uname -r
+make <span class="nv">TARGET</span><span class="o">=</span>linux2628 <span class="nv">PREFIX</span><span class="o">=</span><span class="si">${</span><span class="nv">INSTALLPATH</span><span class="p">?empty</span><span class="si">}</span>
+<span class="c1"># 编译支持ssl功能:</span>
+<span class="c1">#make TARGET=linux2628 USE_OPENSSL=1 ADDLIB=-lz PREFIX=${INSTALLPATH?empty}</span>
+make install <span class="nv">PREFIX</span><span class="o">=</span><span class="si">${</span><span class="nv">INSTALLPATH</span><span class="p">?empty</span><span class="si">}</span>
+</pre></div>
+
+
+<h2 id="uninstall">Uninstall</h2>
+<div class="codehilite"><pre><span></span><span class="nv">VERSION</span><span class="o">=</span><span class="m">1</span>.8.3
+<span class="nv">INSTALLPATH</span><span class="o">=</span>/usr/local/haproxy
+<span class="nb">cd</span> haproxy-<span class="si">${</span><span class="nv">VERSION</span><span class="p">?empty</span><span class="si">}</span>
+make uninstall <span class="nv">PREFIX</span><span class="o">=</span><span class="si">${</span><span class="nv">INSTALLPATH</span><span class="p">?empty</span><span class="si">}</span>
+</pre></div>
+
+
+<h2 id="configuration">Configuration</h2>
+<p>haproxy的配置文件由两部分组成：全局配置和代理配置。
+共分为五段：global，defaults，listen，frontend，backend。</p>
+<ol>
+<li>全局配置<ul>
+<li>global    参数是进程级的，通常和操作系统(OS)相关。</li>
+</ul>
+</li>
+<li>代理配置<ul>
+<li>defaults  用于为所有frontend，backend，listen配置段提供默认参数，这默认配置参数可由下一个defaults重新设定。</li>
+<li>listen    通过关联frontend和backend定义了一个完整的代理，通常只对TCP流量有用。</li>
+<li>frontend  用于定义一系列监听的套接字，这些套接字可接受客户端请求并与之建立连接。</li>
+<li>backend   用于定义一系列后端服务器，代理将会将对应客户端的请求转发至这些服务器。</li>
+</ul>
+</li>
+</ol>
+<h3 id="1">(1)全局配置参数</h3>
+<p>global参数</p>
+<div class="codehilite"><pre><span></span>globbal
+        daemon    # 守护进程运行
+        user nobody
+        group nobody
+        #uid 99
+        #gid 99
+        #node Haproxy_name    # 定义当前节点的名称，用于HA场景中多HA进程共享同一个IP地址时。
+        #description strings    # 当前实例的描述信息。
+        #chroot /usr/share/haproxy    # HA的工作目录的chroot()路径。
+        pidfile /var/run/haproxy.pid    # HA进程的PID文件。
+        nbproc 10    # 指定启动的进程的个数(默认1)，只能用于守护进程模式的haproxy。一般只在单进程仅能打开少数文件描述符的场景中才使用多进程模式。
+                     # 配置单进程nbproc 1时，每个进程的最大接收请求数默认为100
+                     # 配置多进程nbproc 时，每个进程的最大接收请求数默认为8
+        #ulimit-n 819200    # 设定每进程所能够打开的最大文件描述符数目，默认情况下其会自动进行计算，因此不推荐修改此选项。
+        maxconn 20480    # 每个haproxy进程所接受的最大并发连接数,“ulimit -n”自动计算的结果是参照此参数设定的。
+        #tune.maxaccept 100    # haproxy进程内核调度运行时一次性可以接受的连接的个数，较大的值可以带来较大的吞吐率，默认在单进程模式下为100，多进程模式下为8。设定为-1可以禁止此限制，一般不建议修改。
+        #stats timeout 10s   # 默认10s
+        #stats maxconn 10    # 默认10
+        #debug    # Debug相关的参数
+        quiet    # Debug相关的参数
+</pre></div>
+
+
+<h3 id="2">(2)代理配置</h3>
+<p><em>所有代理的名称只能使用大写字母、小写字母、数字、-(中线)、_(下划线)、.(点号)和:(冒号)。此外，ACL名称会区分字母大小写。</em></p>
+<div class="codehilite"><pre><span></span>#######################################
+defaults
+        mode http    # 默认的模式mode {tcp|http|health}，tcp是4层，http是7层，health只会返回OK。
+        timeout check 10s    # 健康状态监测时的超时时间，过短会误判，过长资源消耗
+        timeout client 1m    # 客户端非活动状态的超时时长
+        timeout connect 10s  # 定义haproxy将客户端请求转发至后端服务器所等待的超时时长
+        timeout http-keep-alive 10s    # 定义保持连接的超时时长
+        timeout http-request 10s    # 在客户端建立连接但不请求数据时，关闭客户端连接
+        timeout server 1m    # 客户端与服务器端建立连接后，等待服务器端的超时时长，
+        timeout queue 1m    # 等待最大时长
+        #option httpclose    # 每次请求完毕后主动关闭http通道,haproxy不支持keep-alive,只能模拟这种模式的实现
+        option http-server-close    # 在使用长连接时，为了避免客户端超时没有关闭长连接，此功能可以使服务器端关闭长连接
+        option forwardfor    # 如果后端服务器需要获得客户端真实ip需要配置的参数，可以从Http Header中获得客户端ip
+        option accept-invalid-http-request  # haproxy1.5以上版本对非ASCII的url编码会返回400错误，加此选项允许非ASCII码url请求。
+        #log global
+        #log 127.0.0.1 local0 err    # [err warning info debug]
+        #option httplog    # 日志类别,采用httplog
+        #option dontlognull    # 不记录健康检查日志信息
+
+#######################################
+listen admin_stat
+        bind *:9999
+        mode http
+        stats enable
+        stats uri /admin?stats
+        stats realm HAProxy\ login    # 统计页面密码框上提示文本
+        stats auth admin:password123    # 设置监控页面的用户和密码，配置多行可以设置多个用户名
+        #stats admin if TRUE    # 设置手工启动/禁用，后端服务器(haproxy-1.4.9以后版本)
+        stats refresh 30s    # 统计页面自动刷新时间
+        #stats hide-version    # 隐藏统计页面上HAProxy的版本信息  
+        acl admin_src src 192.168.1.33/32
+        acl admin_src src 172.16.1.22/32
+        block if ! admin_src
+
+#######################################
+# 使用listen做tcp转发配置
+listen somename_tcp_8080
+        bind 0.0.0.0:8080
+        mode tcp
+        option tcplog    # 日志类别,采用tcplog
+        maxconn 50480
+        retries 3
+        #balance roundrobin    # 负载均衡算法: 
+                               #   roundrobin(基于权重进行轮询)，权重可以在运行时进行调整，但每个后端服务器最多只接受4128个连接。
+                               #   leastconn（WLC）：适用于长连接的会话，新的连接请求被派发至具有最少连接数目的后端服务器。
+                               #   source(类似于nginx的ip_hash)：使同一个客户端IP的请求始终被派发至某特定的服务器(后端节点变化时重新计算)。
+        #option redispatch    # 当serverId对应的服务器挂掉后，强制定向到其他健康的服务器
+        #option abortonclose    # 当服务器负载很高的时候，自动结束掉当前队列处理比较久的链接  
+        #option redispatch       # 当serverId对应的服务器挂掉后，强制定向到其他健康的服务器
+        server tcp_server1 192.168.1.101:8888
+        server tcp_server2 192.168.1.102:8888
+
+#######################################
+# 使用frontend做tcp转发
+frontend transport_tcp_8090
+        bind :8090
+        mode tcp
+        default_backend tcp_8090_default_back
+
+backend tcp_8090_default_back
+        mode tcp
+        maxconn 50480
+        timeout connect 10s
+        timeout server 1m
+        option tcplog
+        option redispatch
+        balance roundrobin
+        #option abortonclose    # 当服务器负载很高的时候，自动结束掉当前队列处理比较久的链接  
+        #option redispatch       # 当serverId对应的服务器挂掉后，强制定向到其他健康的服务器
+        server tcp-199 192.168.1.199:80
+
+#######################################
+frontend forntend_http_80
+        bind *:80
+        mode http
+        acl acl_mysave.baidu.com hdr_beg(host) -i mysave.baidu.com baidu.com    # 匹配请求报文的首部(host)内容，可以匹配多个值，-i忽略大小写。
+        acl acl_callback url_beg -i /change/?ac=callback    # 匹配url以制定字符串开头，-i忽略大小写。 
+        acl acl_api.qq.com hdr_beg(host) -i api.qq.com
+
+        # 按顺序匹配ACL-based规则，跳转最先匹配到的ACL到backend
+        use_backend backend_callback if acl_callback acl_mysave.baidu.com    # 最全匹配(所有条件都满足)
+        use_backend backend_mysave.baidu.com if acl_mysave.baidu.com
+        use_backend backend_api.qq.com if acl_api.qq.com
+
+backend backend_callback
+        balance roundrobin
+        option httpchk GET /ok.html HTTP/1.1\r\nHost:\ mysave.baidu.com    # 检测后端服务器存活状态
+        server call139_8085 192.168.1.139:8085 check inter 2000 rise 3 fall 3 weight 2
+        server call60_8085  192.168.1.60:8085  check inter 2000 rise 3 fall 3 backup
+        # server选项说明:
+        #   check: 启动对此server执行健康状态检查，其可以借助于额外的其它参数完成更精细的设定
+        #   inter &lt;delay&gt;：设定健康状态检查的时间间隔，单位为毫秒，默认为2000；也可以使用fastinter和downinter来根据服务器端状态优化此时间延迟
+        #   rise &lt;count&gt;：设定健康状态检查中，某离线的server从离线状态转换至正常状态需要成功检查的次数
+        #   fall &lt;count&gt;：确认server从正常状态转换为不可用状态需要检查的次数
+        #   cookie &lt;value&gt;：为指定server设定cookie值，此处指定的值将在请求入站时被检查，第一次为此值挑选的server将在后续的请求中被选中，其目的在于实现持久连接的功能
+        #   maxconn &lt;maxconn&gt;：指定此服务器接受的最大并发连接数；如果发往此服务器的连接数目高于此处指定的值，其将被放置于请求队列，以等待其它连接被释放
+        #   maxqueue &lt;maxqueue&gt;：设定请求队列的最大长度
+        #                          haproxy 有n个进程，每个支持m个连接，后端有x个服务器，每个最大支持y个连接，则 n*m &lt;= x*y，
+        #                          如果后端服务器支持排队，则n*m &lt;= x*（y+z），z为每个服务器的排队队列
+        #   observe &lt;mode&gt;：通过观察服务器的通信状况来判定其健康状态，默认为禁用，其支持的类型有“layer4”和“layer7”，“layer7”仅能用于http代理场景
+        #   redir &lt;prefix&gt;：启用重定向功能，将发往此服务器的GET和HEAD请求均以302状态码响应；需要注意的是，在prefix后面不能使用/，且不能使用相对地址，以免造成循环
+        #   weight &lt;weight&gt;：权重，默认为1，最大值为256，0表示不参与负载均衡（不被调度）
+        #   backup: 设定为备用服务器，仅在负载均衡场景中的其它server均不可用于启用此server
+
+backend backend_mysave.baidu.com
+        balance roundrobin
+        option httpchk GET /ok.html HTTP/1.1\r\nHost:\ mysave.baidu.com
+        server save67_8081  192.168.1.67:8081  check inter 20000 rise 2 fall 3 weight 3
+        server save138_8080 192.168.1.138:8080 check inter 20000 rise 2 fall 3 weight 5
+        server save14_8080  192.168.1.14:8080  check inter 20000 rise 2 fall 3 weight 3 backup
+
+backend backend_api.qq.com
+        balance roundrobin
+        option httpchk GET /index.php HTTP/1.1\r\nHost:\ api.qq.com
+        server S38_nginx_8081  192.168.1.38:8081  check inter 10000 rise 2 fall 2 weight 7
+        server S209_nginx_8081 192.168.1.209:8081 check inter 10000 rise 2 fall 2 weight 7
+        server S61_nginx_8081  192.168.1.61:8081  check inter 10000 rise 2 fall 2 weight 2 backup
+</pre></div>
+
+
+<h3 id="_1">其他</h3>
+<p>时间参数值的表示：</p>
+<div class="codehilite"><pre><span></span><span class="n">us</span><span class="o">:</span> <span class="err">微秒</span><span class="o">(</span><span class="n">microseconds</span><span class="o">)</span>
+<span class="n">ms</span><span class="o">:</span> <span class="err">毫秒</span><span class="o">(</span><span class="n">milliseconds</span><span class="o">)</span>
+<span class="n">s</span><span class="o">:</span> <span class="err">秒</span><span class="o">(</span><span class="n">seconds</span><span class="o">)</span>
+<span class="n">m</span><span class="o">:</span> <span class="err">分钟</span><span class="o">(</span><span class="n">minutes</span><span class="o">)</span>
+<span class="n">h</span><span class="err">：小时</span><span class="o">(</span><span class="n">hours</span><span class="o">)</span>
+<span class="n">d</span><span class="o">:</span> <span class="err">天</span><span class="o">(</span><span class="n">days</span><span class="o">)</span>
+
+<span class="err">一般默认是</span><span class="n">ms</span>
+</pre></div>
+
+
+<p>acl规则配置参考：
+http://www.ttlsa.com/linux/haproxy-study-tutorial/</p>
+<h2 id="running-haproxy-process">running haproxy process</h2>
+<div class="codehilite"><pre><span></span><span class="c1"># 检查haproxy的配置文件是否正确：</span>
+/usr/local/sbin/haproxy -f /usr/local/etc/haproxy.conf -c <span class="o">&amp;&amp;</span> <span class="nb">echo</span> ‘haproxy check ok.’
+
+<span class="c1"># 启动haproxy进程：</span>
+/usr/local/sbin/haproxy -f /usr/local/etc/haproxy.conf
+
+<span class="c1"># 停止haproxy进程：</span>
+killall haproxy
+</pre></div>
+
+
+<h1 id="refrence">Refrence</h1>
+<ul>
+<li>http://www.ttlsa.com/linux/haproxy-study-tutorial/</li>
+<li>http://www.cnblogs.com/Richardzhu/p/3344676.html</li>
+<li>http://blog.csdn.net/zhu_tianwei/article/details/41117323</li>
+</ul>
+            </div>
+        </div>
+    </div>
+</div>
+            <!--banner end-->
+        </main>
+        <aside class="sidebar">
+
+            <div class="about">
+                <h2 class="hometitle">关于我</h2>
+                <div class="avatar">
+                    <img src="images/avatar.png" alt="">
+                </div>
+                <p class="abname">渺小</p>
+                <p class="abposition">... ...!!</p>
+                <div class="abtext">To be or not to be, this is not a question.</div>
+            </div>
+
+            <div class="categories">
+                <h2 class="hometitle">分类</h2>
+                    <ul>
+                        <li><a href="/category/linux.html">Linux</a></li>
+                        <li><a href="/category/security.html">Security</a></li>
+                        <li><a href="/category/service.html">Service</a></li>
+                    </ul>
+            </div>
+            <div class="cloud">
+                <h2 class="hometitle">标签云</h2>
+                <ul>                    <a href="/tag/ansible.html">ansible</a>
+                    <a href="/tag/apache.html">apache</a>
+                    <a href="/tag/curator.html">curator</a>
+                    <a href="/tag/database.html">database</a>
+                    <a href="/tag/elastic.html">elastic</a>
+                    <a href="/tag/elasticsearch.html">elasticsearch</a>
+                    <a href="/tag/facl.html">facl</a>
+                    <a href="/tag/ftp.html">ftp</a>
+                    <a href="/tag/glusterfs.html">glusterfs</a>
+                    <a href="/tag/haproxy.html">haproxy</a>
+                    <a href="/tag/httpd.html">httpd</a>
+                    <a href="/tag/https.html">https</a>
+                    <a href="/tag/linux.html">linux</a>
+                    <a href="/tag/logs.html">logs</a>
+                    <a href="/tag/memcache.html">memcache</a>
+                    <a href="/tag/mysql.html">mysql</a>
+                    <a href="/tag/nginx.html">nginx</a>
+                    <a href="/tag/openssl.html">openssl</a>
+                    <a href="/tag/openwrt.html">Openwrt</a>
+                    <a href="/tag/qa.html">QA</a>
+                    <a href="/tag/redis.html">redis</a>
+                    <a href="/tag/scribe.html">scribe</a>
+                    <a href="/tag/security.html">security</a>
+                    <a href="/tag/service.html">service</a>
+                    <a href="/tag/shadowsocks.html">shadowsocks</a>
+                    <a href="/tag/slb.html">slb</a>
+                    <a href="/tag/ss.html">ss</a>
+                    <a href="/tag/ssltls.html">SSL/TLS</a>
+                    <a href="/tag/storage.html">storage</a>
+                    <a href="/tag/tmux.html">tmux</a>
+                    <a href="/tag/tool.html">tool</a>
+                    <a href="/tag/tools.html">tools</a>
+                </ul>
+            </div>
+            <div class="links">
+              <h2 class="hometitle">推荐链接</h2>
+              <ul>
+                  <li><a href="https://jecvay.com/" target="_blank">Jecvay</a></li>
+                  <li><a href="http://andrewliu.in/" target="_blank">Adnrewliu</a></li>
+                  <li><a href="http://seanlook.com/" target="_blank">sean's notes</a></li>
+                  <li><a href="https://woaielf.github.io/" target="_blank">ZOE's Blog</a></li>
+                  <li><a href="https://233blog.com/" target="_blank">233Blog</a></li>
+                  <li><a href="http://www.yangqq.com" target="_blank">杨青个人博客</a></li>
+              </ul>
+            </div>
+
+
+        </aside>
+        <!--sidebar end-->
+    </div>
+    <!--wrapper end-->
+
+    <a href="#" class="cd-top">Top</a>
+</body>
+
+</html>

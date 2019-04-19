@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>首页 - Xiao's Notes</title>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Let the cat out of the bag." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/theme/css/base.css" rel="stylesheet">
+    <link href="/theme/css/index.css" rel="stylesheet">
+    <link href="/theme/css/m.css" rel="stylesheet">
+
+<link href="/theme/css/markdown-github.css" rel="stylesheet">
+
+    <script src="/theme/js/jquery.min.js" ></script>
+    <script src="/theme/js/hc-sticky.js"></script>
+    <script src="/theme/js/comm.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/theme/js/modernizr.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <header id="header">         <div class="navbar">
+        <div class="topbox">
+          <p class="welcome">Let the cat out of the bag.</p>
+          <!--<div class="searchbox">-->
+            <!--<div id="search_bar" class="search_bar">-->
+              <!--<form  id="searchform" action="[!&#45;&#45;news.url&#45;&#45;]e/search/index.php" method="post" name="searchform">-->
+                <!--<input class="input" placeholder="想搜点什么呢.." type="text" name="keyboard" id="keyboard">-->
+                <!--<input type="hidden" name="show" value="title" />-->
+                <!--<input type="hidden" name="tempid" value="1" />-->
+                <!--<input type="hidden" name="tbname" value="news">-->
+                <!--<input type="hidden" name="Submit" value="搜索" />-->
+                <!--<p class="search_ico"> <span></span></p>-->
+              <!--</form>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+      </div>
+      <div class="header-navigation">
+        <nav>
+          <div class="logo"><a href="/index.html">Xiao's Notes</a></div>
+          <h2 id="mnavh"><span class="navicon"></span></h2>
+          <ul id="starlist">
+            <li><a href="/index.html">网站首页</a></li>
+            <li class="menu"><a href="/categories.html">分类</a>
+              <ul class="sub">
+                  <li><a href="/category/linux.html">Linux</a></li>
+                  <li><a href="/category/security.html">Security</a></li>
+                  <li><a href="/category/service.html">Service</a></li>
+              </ul>
+            </li>
+            <li><a href="/tags.html">标签</a></li>
+            <li><a href="/archives.html">归档</a></li>
+            <li><a href="/about.html">关于</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+
+    <div class="wrapper">
+
+        <main>
+            <!--banner begin-->
+<h2 class="place"><a href="/article/2017/10/10/apache-httpd-config-sslforhttps/">/article/2017/10/10/apache-httpd-config-sslforhttps/</a></h2>
+<div class="infosbox">
+    <div class="newsview">
+        <h3 class="news_title">apache(httpd)配置ssl支持https协议</h3>
+        <div class="bloginfo">
+            <ul>
+                <li class="author">【作者】<a href="/author/miao-xiao.html">渺小</a></li>
+                <li class="lmname">【分类】<a href="/category/service.html">Service</a></li>
+                <li class="date">【发布】2017-10-10 21:25</li>
+                <li class="modified">【更新】2017-10-11 16:55</li>
+            </ul>
+        </div>
+        <div class="tags">
+            <a href="/tag/ssltls.html" target="_blank">【SSL/TLS】</a>
+            <a href="/tag/apache.html" target="_blank">【apache】</a>
+            <a href="/tag/httpd.html" target="_blank">【httpd】</a>
+            <a href="/tag/https.html" target="_blank">【https】</a>
+        </div>
+        <div class="news_con">
+            <div class="news_mdfile">
+            <h1 id="apache-httpd-https">Apache httpd 配置https</h1>
+<ul>
+<li>apache要提供https服务需要在httpd中启用ssl。</li>
+<li>httpd启用ssl功能需要加载mod_ssl模块。</li>
+</ul>
+<h2 id="1httpdmod_ssl">(1)httpd安装mod_ssl模块</h2>
+<h3 id="mod_sslhttpd">直接编译mod_ssl为httpd的静态模块</h3>
+<p>编译httpd时在编译选项中指定ssl选项：</p>
+<div class="codehilite"><pre><span></span><span class="c1"># 需要openssl-devel依赖(Centos)</span>
+<span class="c1">#yum install openssl-devel -y</span>
+
+<span class="c1"># 指定--enable-ssl --with-ssl 选项</span>
+<span class="c1"># 在 httpd 源码目录中 configure 时，指定 --enable-ssl --with-ssl 选项</span>
+./configure --prefix<span class="o">=</span>/usr/local/apache2 --enable-static-support --disable-status --enable-rewrite --enable-so --enable-ssl --with-ssl
+make
+make install
+</pre></div>
+
+
+<h3 id="mod_sslhttpd_1">动态编译mod_ssl到httpd</h3>
+<div class="codehilite"><pre><span></span><span class="c1"># 在httpd 源码目录中：</span>
+<span class="nb">cd</span> modules/ssl
+/usr/local/apache2/bin/apxs -i -a -D <span class="nv">HAVE_OPENSSL</span><span class="o">=</span><span class="m">1</span> -I/usr/include/openssl/ -L/usr/lib/openssl/ -c *.c -lcrypto -lssl -ldl
+
+<span class="c1"># 编译成功后还需要在apache的httpd.conf中加载mod_ssl模块才能使用：</span>
+sed -i <span class="s1">&#39;s@#LoadModule ssl_module         modules/mod_ssl.so@LoadModule ssl_module         modules/mod_ssl.so@&#39;</span> httpd.conf
+</pre></div>
+
+
+<h3 id="ssl_module">查看ssl_module是否正常：</h3>
+<div class="codehilite"><pre><span></span>bin/apachectl -l
+<span class="c1"># 静态编译模块在信息中可以看到mod_ssl.c</span>
+bin/apachectl -M
+<span class="c1"># 动态编译模块在信息中看到ssl_module (shared)</span>
+</pre></div>
+
+
+<h2 id="2sslhttps">(2)配置ssl启用https服务</h2>
+<p><strong><a href="https://vastxiao.github.io/article/2017/09/03/Linux/openSSl_for_CA_and_Certificate/">ssl证书文件</a></strong></p>
+<p>配置ssl需要先获得两个配对的文件：服务器ssl密钥文件(server.key)和CA颁发的证书(server.crt)。</p>
+<p><strong>1. 在httpd.conf配置文件中引入ssl配置文件,增加支持ssl：</strong></p>
+<div class="codehilite"><pre><span></span># (去掉行首的注释)
+Include conf/extra/httpd-ssl.conf
+</pre></div>
+
+
+<p><strong>2. 根据实际需求配置conf/extra/httpd-ssl.conf：</strong></p>
+<h3 id="virtualhosthttps">可以直接修改文件中的默认的VirtualHost直接配置https站点。</h3>
+<div class="codehilite"><pre><span></span># 如果配置报错：
+# [warn] _default_ VirtualHost overlap on port 443, the first has precedence
+# 需要添加这个配置：
+NameVirtualHost *:443
+
+
+####### apache2.2默认配置 #######
+<span class="nt">&lt;VirtualHost</span> <span class="err">_default_:443</span><span class="nt">&gt;</span>
+DocumentRoot &quot;/usr/local/apache2/htdocs&quot;
+ServerName www.example.com:443
+ServerAdmin you@example.com
+ErrorLog &quot;/usr/local/apache2/logs/error_log&quot;
+TransferLog &quot;/usr/local/apache2/logs/access_log&quot;
+SSLEngine on
+SLCipherSuite ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP:+eNULL
+SSLCertificateFile &quot;/usr/local/apache2/conf/server.crt&quot;
+SSLCertificateKeyFile &quot;/usr/local/apache2/conf/server.key&quot;
+<span class="nt">&lt;FilesMatch</span> <span class="err">&quot;\.(cgi|shtml|phtml|php)$&quot;</span><span class="nt">&gt;</span>
+    SSLOptions +StdEnvVars
+<span class="nt">&lt;/FilesMatch&gt;</span>
+<span class="nt">&lt;Directory</span> <span class="err">&quot;/usr/local/apache2/cgi-bin&quot;</span><span class="nt">&gt;</span>
+    SSLOptions +StdEnvVars
+<span class="nt">&lt;/Directory&gt;</span>
+BrowserMatch &quot;.*MSIE.*&quot; \
+         nokeepalive ssl-unclean-shutdown \
+         downgrade-1.0 force-response-1.0
+CustomLog &quot;/usr/local/apache2/logs/ssl_request_log&quot; \
+          &quot;%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \&quot;%r\&quot; %b&quot;
+<span class="nt">&lt;/VirtualHost&gt;</span>
+
+
+####### apache2.4默认配置 #######
+<span class="nt">&lt;VirtualHost</span> <span class="err">_default_:443</span><span class="nt">&gt;</span>
+DocumentRoot &quot;/usr/local/apache4/htdocs&quot;
+ServerName www.example.com:443
+ServerAdmin you@example.com
+ErrorLog &quot;/usr/local/apache4/logs/error_log&quot;
+TransferLog &quot;/usr/local/apache4/logs/access_log&quot;
+SSLEngine on
+SSLCertificateFile &quot;/usr/local/apache4/conf/server.crt&quot;
+<span class="nt">&lt;FilesMatch</span> <span class="err">&quot;\.(cgi|shtml|phtml|php)$&quot;</span><span class="nt">&gt;</span>
+    SSLOptions +StdEnvVars
+<span class="nt">&lt;/FilesMatch&gt;</span>
+<span class="nt">&lt;Directory</span> <span class="err">&quot;/usr/local/apache4/cgi-bin&quot;</span><span class="nt">&gt;</span>
+    SSLOptions +StdEnvVars
+<span class="nt">&lt;/Directory&gt;</span>
+BrowserMatch &quot;MSIE [2-5]&quot; \
+         nokeepalive ssl-unclean-shutdown \
+         downgrade-1.0 force-response-1.0
+CustomLog &quot;/usr/local/apache4/logs/ssl_request_log&quot; \
+          &quot;%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \&quot;%r\&quot; %b&quot;
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</pre></div>
+
+
+<h3 id="virtualhost">或者先注释文件的VirtualHost配置，后自行配置在任何文件中。</h3>
+<p>先根据需要注释掉httpd-ssl.conf默认的VirtualHost配置：</p>
+<div class="codehilite"><pre><span></span><span class="nb">cd</span> conf/extra/
+cp -a httpd-ssl.conf httpd-ssl.conf.default
+<span class="nv">line_n</span><span class="o">=</span><span class="k">$(</span>sed -n <span class="s1">&#39;/^&lt;VirtualHost _default_:443&gt;$/=&#39;</span> httpd-ssl.conf<span class="k">)</span>
+sed -i <span class="s2">&quot;</span><span class="si">${</span><span class="nv">line_n</span><span class="p">?err</span><span class="si">}</span><span class="s2">,</span>$<span class="s2"> s/^/#/&quot;</span> httpd-ssl.conf
+</pre></div>
+
+
+<p>自己配置VirtualHost启动https web：</p>
+<div class="codehilite"><pre><span></span># 如果配置报错：
+# [warn] _default_ VirtualHost overlap on port 443, the first has precedence
+# 需要添加这个配置：
+NameVirtualHost *:443
+
+
+# 最简单的https配置：
+<span class="nt">&lt;VirtualHost</span> <span class="err">*:443</span><span class="nt">&gt;</span>
+        DocumentRoot /www/domain/wwwroot
+        ServerName www.doamin.com
+        SSLEngine on
+        SSLCertificateFile /etc/httpd/conf/server.crt
+        SSLCertificateKeyFile /etc/httpd/conf/server.key
+<span class="nt">&lt;/VirtualHost&gt;</span>
+
+
+# 一般的https服务配置：
+<span class="nt">&lt;VirtualHost</span> <span class="err">*:443</span><span class="nt">&gt;</span>
+    SSLEngine on
+    SSLProtocol all -SSLv2
+    SSLCipherSuite HIGH:MEDIUM:!aNULL:!MD5
+    SSLCertificateFile &quot;/path/to/www.example.com/domain_server.crt&quot;
+    SSLCertificateKeyFile &quot;/path/to/www.example.com/domain_server.key&quot;
+    <span class="nt">&lt;FilesMatch</span> <span class="err">&quot;\.(cgi|shtml|phtml|php)$&quot;</span><span class="nt">&gt;</span>
+        SSLOptions +StdEnvVars
+    <span class="nt">&lt;/FilesMatch&gt;</span>
+    BrowserMatch &quot;MSIE [2-5]&quot; \
+        nokeepalive ssl-unclean-shutdown \
+        downgrade-1.0 force-response-1.0
+
+    ServerAdmin webmaster@domain.com
+    ServerName www.example.com
+    DocumentRoot &quot;/web/www.example.com/wwwroot&quot;
+    <span class="nt">&lt;Directory</span> <span class="err">&quot;/web/www.example.com/wwwroot&quot;</span><span class="nt">&gt;</span>
+        SSLOptions +StdEnvVars
+        Options FollowSymLinks
+        AllowOverride All
+        Order allow,deny
+        Allow from all
+    <span class="nt">&lt;/Directory&gt;</span>
+    ErrorLog &quot;/var/logs/www.example.com-error.log&quot;
+    CustomLog &quot;|/usr/local/apache2/bin/rotatelogs /var/logs/www.example.com-access.log_%Y.%m.%d.%H.%M.%S 86400 480&quot; combined
+<span class="nt">&lt;/VirtualHost&gt;</span> 
+</pre></div>
+
+
+<h3 id="httpdhttps">在一个httpd服务中配置多个https网站</h3>
+<p>配置https关于涉及到多个域名、泛域名解析、通配符SSL证书、单服务器/多服务器、IP、端口等方面的情况。</p>
+<ul>
+<li>老式的SSL证书是一个证书一个站点一个IP的一一对应，但后来有了改进；</li>
+<li>可以配置为一台服务器多个IP，分别对应不同的站点、不同的证书；</li>
+<li>还可以配置为一台服务器一个IP，多个端口号对应不同的站点、不同的证书；</li>
+<li>后来出现SNI（Server Name Indication服务器名称指示）技术，让https与http一样实现一台服务器多个虚拟站点，每个站点都可以对应不同的证书，无需多个IP、无需多个端口（全部都用https标准的端口号443），多个域名、泛域名都支持。</li>
+<li>对SSL证书提供商，根据自己的需要及预算选择，如果自己的站点多，最好是选择支持多域名、通配符的证书，例如StartCom (link is external)的EV、OV、IV认证支持的证书（DV认证不支持通配符）；</li>
+<li>如果需要设置多个SSL站点，在Apache 2.2以上版本中是开启SSL模块后是直接支持SNI的，添加NameVirtualHost *:443和SSLStrictSNIVHostCheck off两句后，就可以像http虚拟站点一样设置多个https虚拟站点；</li>
+<li>多个https虚拟站点可以分别指向多个不同的证书文件，其中第一个默认https站点是在后续https站点配置找不到的时候自动使用的默认配置；</li>
+<li>https虚拟站点与http虚拟站点配置一样，可以使用ServerAlias来将多个子域名指向同一个目录、采用相同的SSL证书；</li>
+</ul>
+<div class="codehilite"><pre><span></span>Listen 443
+#Listen 8081
+NameVirtualHost *:443
+SSLStrictSNIVHostCheck off
+
+<span class="nt">&lt;VirtualHost</span> <span class="err">_default_:443</span><span class="nt">&gt;</span>
+DocumentRoot &quot;/usr/local/apache/htdocs/example.com&quot;
+ServerName example.com
+ServerAlias subdomain.example.com
+ServerAdmin you@example.com
+SSLEngine on
+SSLProtocol all -SSLv2
+SSLCipherSuite HIGH:MEDIUM:!aNULL:!MD5
+SSLCertificateFile &quot;/usr/local/apache/conf/server.crt&quot;
+SSLCertificateKeyFile &quot;/usr/local/apache/conf/server.key&quot;
+SSLCertificateChainFile &quot;/usr/local/apache/conf/1_root_bundle.crt&quot;
+<span class="nt">&lt;FilesMatch</span> <span class="err">&quot;\.(cgi|shtml|phtml|php)$&quot;</span><span class="nt">&gt;</span>
+    SSLOptions +StdEnvVars
+<span class="nt">&lt;/FilesMatch&gt;</span>
+<span class="nt">&lt;Directory</span> <span class="err">&quot;/usr/local/apache/htdocs/example.com&quot;</span><span class="nt">&gt;</span>
+    AllowOverride All
+    SSLOptions +StdEnvVars
+<span class="nt">&lt;/Directory&gt;</span>
+<span class="nt">&lt;/VirtualHost&gt;</span>
+
+<span class="nt">&lt;VirtualHost</span> <span class="err">*:443</span><span class="nt">&gt;</span>
+DocumentRoot &quot;/usr/local/apache/htdocs/example2.com&quot;
+ServerName example2.com
+ServerAlias subdomain.example2.com
+SSLEngine on
+SSLProtocol all -SSLv2
+SSLCipherSuite HIGH:MEDIUM:!aNULL:!MD5
+SSLCertificateFile &quot;/usr/local/apache/conf/server2.crt&quot;
+SSLCertificateKeyFile &quot;/usr/local/apache/conf/server2.key&quot;
+SSLCertificateChainFile &quot;/usr/local/apache/conf/1_root_bundle2.crt&quot;
+<span class="nt">&lt;FilesMatch</span> <span class="err">&quot;\.(cgi|shtml|phtml|php)$&quot;</span><span class="nt">&gt;</span>
+    SSLOptions +StdEnvVars
+<span class="nt">&lt;/FilesMatch&gt;</span>
+<span class="nt">&lt;Directory</span> <span class="err">&quot;/usr/local/apache/htdocs/example2.com&quot;</span><span class="nt">&gt;</span>
+    AllowOverride All
+    SSLOptions +StdEnvVars
+<span class="nt">&lt;/Directory&gt;</span>
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</pre></div>
+
+
+<p><a href="http://www.ttlsa.com/apache/multi-https-virtual-host-apache-mod_gnutls/">apache mod_gnutls实现多HTTPS虚拟主机</a></p>
+<h2 id="3http">(3)http协议重定向(可选)</h2>
+<p>可以让用户HTTP访问自动重定向为HTTPS。</p>
+<h3 id="_1">可以直接在全局生效配置</h3>
+<div class="codehilite"><pre><span></span># 如http.conf/httpd-ssl.conf文件中加入301永久重定向配置：
+RewriteEngine onRewriteCond %{SERVER_PORT} !^443$RewriteRule ^/?(.*)$ https://%{SERVER_NAME}/$1 [L,R]
+</pre></div>
+
+
+<h3 id="virtualhost_1">在VirtualHost生效配置</h3>
+<div class="codehilite"><pre><span></span><span class="nt">&lt;VirtualHost</span> <span class="err">*:80</span><span class="nt">&gt;</span>
+    ServerAdmin webadmin@domain.com
+    ServerName www.domain.com
+
+    RewriteEngine On
+    RewriteRule ^/(.*)$ https://www.domain.com/$1 [R=301,L]
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</pre></div>
+
+
+<h1 id="_2">参考</h1>
+<ul>
+<li>http://lookingdream.blog.51cto.com/5177800/1919718</li>
+<li>http://blog.csdn.net/ownfire/article/details/7686746 </li>
+<li>https://jamesqi.com/%E5%8D%9A%E5%AE%A2/https%E5%A4%9A%E7%BD%91%E7%AB%991%E4%B8%AAIP%E5%A4%9A%E4%B8%AASSL%E8%AF%81%E4%B9%A6%E7%9A%84Apache%E8%AE%BE%E7%BD%AE%E5%8A%9E%E6%B3%95</li>
+</ul>
+            </div>
+        </div>
+    </div>
+</div>
+            <!--banner end-->
+        </main>
+        <aside class="sidebar">
+
+            <div class="about">
+                <h2 class="hometitle">关于我</h2>
+                <div class="avatar">
+                    <img src="images/avatar.png" alt="">
+                </div>
+                <p class="abname">渺小</p>
+                <p class="abposition">... ...!!</p>
+                <div class="abtext">To be or not to be, this is not a question.</div>
+            </div>
+
+            <div class="categories">
+                <h2 class="hometitle">分类</h2>
+                    <ul>
+                        <li><a href="/category/linux.html">Linux</a></li>
+                        <li><a href="/category/security.html">Security</a></li>
+                        <li><a href="/category/service.html">Service</a></li>
+                    </ul>
+            </div>
+            <div class="cloud">
+                <h2 class="hometitle">标签云</h2>
+                <ul>                    <a href="/tag/ansible.html">ansible</a>
+                    <a href="/tag/apache.html">apache</a>
+                    <a href="/tag/curator.html">curator</a>
+                    <a href="/tag/database.html">database</a>
+                    <a href="/tag/elastic.html">elastic</a>
+                    <a href="/tag/elasticsearch.html">elasticsearch</a>
+                    <a href="/tag/facl.html">facl</a>
+                    <a href="/tag/ftp.html">ftp</a>
+                    <a href="/tag/glusterfs.html">glusterfs</a>
+                    <a href="/tag/haproxy.html">haproxy</a>
+                    <a href="/tag/httpd.html">httpd</a>
+                    <a href="/tag/https.html">https</a>
+                    <a href="/tag/linux.html">linux</a>
+                    <a href="/tag/logs.html">logs</a>
+                    <a href="/tag/memcache.html">memcache</a>
+                    <a href="/tag/mysql.html">mysql</a>
+                    <a href="/tag/nginx.html">nginx</a>
+                    <a href="/tag/openssl.html">openssl</a>
+                    <a href="/tag/openwrt.html">Openwrt</a>
+                    <a href="/tag/qa.html">QA</a>
+                    <a href="/tag/redis.html">redis</a>
+                    <a href="/tag/scribe.html">scribe</a>
+                    <a href="/tag/security.html">security</a>
+                    <a href="/tag/service.html">service</a>
+                    <a href="/tag/shadowsocks.html">shadowsocks</a>
+                    <a href="/tag/slb.html">slb</a>
+                    <a href="/tag/ss.html">ss</a>
+                    <a href="/tag/ssltls.html">SSL/TLS</a>
+                    <a href="/tag/storage.html">storage</a>
+                    <a href="/tag/tmux.html">tmux</a>
+                    <a href="/tag/tool.html">tool</a>
+                    <a href="/tag/tools.html">tools</a>
+                </ul>
+            </div>
+            <div class="links">
+              <h2 class="hometitle">推荐链接</h2>
+              <ul>
+                  <li><a href="https://jecvay.com/" target="_blank">Jecvay</a></li>
+                  <li><a href="http://andrewliu.in/" target="_blank">Adnrewliu</a></li>
+                  <li><a href="http://seanlook.com/" target="_blank">sean's notes</a></li>
+                  <li><a href="https://woaielf.github.io/" target="_blank">ZOE's Blog</a></li>
+                  <li><a href="https://233blog.com/" target="_blank">233Blog</a></li>
+                  <li><a href="http://www.yangqq.com" target="_blank">杨青个人博客</a></li>
+              </ul>
+            </div>
+
+
+        </aside>
+        <!--sidebar end-->
+    </div>
+    <!--wrapper end-->
+
+    <a href="#" class="cd-top">Top</a>
+</body>
+
+</html>

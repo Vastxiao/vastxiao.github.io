@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>首页 - Xiao's Notes</title>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Let the cat out of the bag." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/theme/css/base.css" rel="stylesheet">
+    <link href="/theme/css/index.css" rel="stylesheet">
+    <link href="/theme/css/m.css" rel="stylesheet">
+
+<link href="/theme/css/markdown-github.css" rel="stylesheet">
+
+    <script src="/theme/js/jquery.min.js" ></script>
+    <script src="/theme/js/hc-sticky.js"></script>
+    <script src="/theme/js/comm.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/theme/js/modernizr.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <header id="header">         <div class="navbar">
+        <div class="topbox">
+          <p class="welcome">Let the cat out of the bag.</p>
+          <!--<div class="searchbox">-->
+            <!--<div id="search_bar" class="search_bar">-->
+              <!--<form  id="searchform" action="[!&#45;&#45;news.url&#45;&#45;]e/search/index.php" method="post" name="searchform">-->
+                <!--<input class="input" placeholder="想搜点什么呢.." type="text" name="keyboard" id="keyboard">-->
+                <!--<input type="hidden" name="show" value="title" />-->
+                <!--<input type="hidden" name="tempid" value="1" />-->
+                <!--<input type="hidden" name="tbname" value="news">-->
+                <!--<input type="hidden" name="Submit" value="搜索" />-->
+                <!--<p class="search_ico"> <span></span></p>-->
+              <!--</form>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+      </div>
+      <div class="header-navigation">
+        <nav>
+          <div class="logo"><a href="/index.html">Xiao's Notes</a></div>
+          <h2 id="mnavh"><span class="navicon"></span></h2>
+          <ul id="starlist">
+            <li><a href="/index.html">网站首页</a></li>
+            <li class="menu"><a href="/categories.html">分类</a>
+              <ul class="sub">
+                  <li><a href="/category/linux.html">Linux</a></li>
+                  <li><a href="/category/security.html">Security</a></li>
+                  <li><a href="/category/service.html">Service</a></li>
+              </ul>
+            </li>
+            <li><a href="/tags.html">标签</a></li>
+            <li><a href="/archives.html">归档</a></li>
+            <li><a href="/about.html">关于</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+
+    <div class="wrapper">
+
+        <main>
+            <!--banner begin-->
+<h2 class="place"><a href="/article/2018/03/10/proxy-agentd-tool-shadowsocks/">/article/2018/03/10/proxy-agentd-tool-shadowsocks/</a></h2>
+<div class="infosbox">
+    <div class="newsview">
+        <h3 class="news_title">Shadowsocks 翻墙神器!</h3>
+        <div class="bloginfo">
+            <ul>
+                <li class="author">【作者】<a href="/author/miao-xiao.html">渺小</a></li>
+                <li class="lmname">【分类】<a href="/category/service.html">Service</a></li>
+                <li class="date">【发布】2018-03-10 16:45</li>
+                <li class="modified">【更新】2019-01-07 21:52</li>
+            </ul>
+        </div>
+        <div class="tags">
+            <a href="/tag/ss.html" target="_blank">【ss】</a>
+            <a href="/tag/shadowsocks.html" target="_blank">【shadowsocks】</a>
+        </div>
+        <div class="news_con">
+            <div class="news_mdfile">
+            <h1 id="shadowsocks-ss">shadowsocks (ss)</h1>
+<ul>
+<li>官网：shadowsocks.org</li>
+<li>github: https://github.com/shadowsocks</li>
+<li>wiki: https://github.com/shadowsocks/shadowsocks/wiki</li>
+<li>GFW原理: http://blog.neargle.com/SecNewsBak/drops/%E7%BF%BB%E5%A2%99%E8%B7%AF%E7%94%B1%E5%99%A8%E7%9A%84%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E7%8E%B0%20.html</li>
+</ul>
+<h2 id="server">服务端搭建(Server)</h2>
+<p>https://shadowsocks.org/en/download/servers.html</p>
+<h3 id="_1">安装:</h3>
+<p><strong>Ubuntu依赖</strong></p>
+<div class="codehilite"><pre><span></span><span class="c1">#安装libsodium支持高级加密(支持chacha20-ietf-poly1305加密)</span>
+sudo apt install libsodium-dev
+
+<span class="c1"># 另一安装支持chacha20-ietf-poly1305加密:</span>
+<span class="c1"># (Ubuntu)https://linuxssh.com/ubuntu-anzhuang-chacha20-ietf-poly1305-jiami-shadowsocks/</span>
+<span class="c1"># Ubuntu17.04和17.10自带Shadowsocks-libev，可直接安装。</span>
+<span class="c1">#sudo apt install shadowsocks-libev</span>
+</pre></div>
+
+
+<p><strong>Centos依赖</strong></p>
+<div class="codehilite"><pre><span></span><span class="c1"># 安装libsodium支持高级加密(支持chacha20-ietf-poly1305加密)注意安装shadowsocks3.0的版本(从github安装)</span>
+<span class="c1"># yum源:</span>
+<span class="c1">#   wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo # epel(RHEL 7)</span>
+<span class="c1">#   wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-6.repo # epel(RHEL 6)</span>
+yum install libsodium -y  <span class="c1"># for Yum-base install</span>
+
+
+<span class="c1"># 以下是另一安装加密支持的方式: (支持chacha20-ietf-poly1305加密)</span>
+<span class="c1"># (Centos)https://linuxssh.com/cntos7-anzhuang-chacha20-ietf-poly1305-shadowsocks/</span>
+<span class="c1"># YUM源: https://copr.fedorainfracloud.org/coprs/librehat/shadowsocks/</span>
+<span class="c1">#cd /etc/yum.repos.d/</span>
+<span class="c1">##curl -O https://copr.fedorainfracloud.org/coprs/librehat/shadowsocks/repo/epel-6/librehat-shadowsocks-epel-6.repo</span>
+<span class="c1">#curl -O https://copr.fedorainfracloud.org/coprs/librehat/shadowsocks/repo/epel-7/librehat-shadowsocks-epel-7.repo</span>
+<span class="c1">#yum install -y shadowsocks-libev</span>
+</pre></div>
+
+
+<p><strong>shadowsocks安装</strong></p>
+<div class="codehilite"><pre><span></span><span class="c1"># 依赖Python 2.6 or 2.7 +</span>
+<span class="c1"># https://www.python.org/downloads/</span>
+<span class="c1"># PyPI安装:</span>
+pip install shadowsocks
+
+<span class="c1"># 或</span>
+<span class="c1"># GitHub安装:</span>
+git clone https://github.com/shadowsocks/shadowsocks.git
+<span class="nb">cd</span> shadowsocks
+git checkout master
+python setup.py build
+python setup.py install
+</pre></div>
+
+
+<h3 id="_2">启动服务:</h3>
+<p><strong>ssserver服务配置项说明</strong></p>
+<ul>
+<li>server: your hostname or server IP (IPv4/IPv6).</li>
+<li>server_port: server port number.</li>
+<li>local_port: local port number.</li>
+<li>password: a password used to encrypt transfer.</li>
+<li>timeout: connections timeout in seconds.</li>
+<li>method: encryption method. <a href="https://shadowsocks.org/en/spec/Stream-Ciphers.html">more...</a><ul>
+<li>chacha20-ietf-poly1305  (shadowsocks 3.0.0+)</li>
+<li>aes-256-gcm  (shadowsocks 3.0.0+)</li>
+<li>aes-256-cfb</li>
+</ul>
+</li>
+</ul>
+<p><strong>启动ssserver服务</strong></p>
+<div class="codehilite"><pre><span></span><span class="c1"># 直接使用命令选项启动服务:</span>
+nohup ssserver -s <span class="m">0</span>.0.0.0 -p <span class="m">1111</span> -k <span class="s2">&quot;z7T0XRpassword&quot;</span> -m chacha20-ietf-poly1305 -t <span class="m">600</span> &lt;/dev/null <span class="p">&amp;</span>&gt;/tmp/ssserver.log <span class="p">&amp;</span>
+
+
+<span class="c1"># 或着启动服务指定配置文件:</span>
+nohup ssserver -c /path/to/ssserver.json &lt;/dev/null <span class="p">&amp;</span>&gt;/tmp/ssserver.log <span class="p">&amp;</span>
+
+
+<span class="c1"># To run in the background</span>
+<span class="c1">#   默认PID文件 --pid-file /var/run/shadowsocks.pid</span>
+<span class="c1">#   默认日志文件 --log-file /var/log/shadowsocks.log</span>
+ssserver -s <span class="m">0</span>.0.0.0 -p <span class="m">1111</span> -k z7T0XRpassword -m chacha20-ietf-poly1305 -t <span class="m">600</span> --fast-open --user nobody --pid-file /var/run/shadowsocks.pid --log-file /dev/null -d start
+<span class="c1"># 停止damon程序直接kill进程号，或使用-d stop：</span>
+<span class="c1"># ssserver [--pid-file /var/run/shadowsocks.pid] -d stop</span>
+ssserver -d stop
+</pre></div>
+
+
+<p><em>ssserver.json:</em></p>
+<div class="codehilite"><pre><span></span>{
+    &quot;server&quot;: &quot;0.0.0.0&quot;,
+    &quot;server_port&quot;: 1111,
+    &quot;password&quot;:&quot;z7T0XRpassword&quot;,
+    &quot;timeout&quot;: 60,
+    &quot;method&quot;:&quot;chacha20-ietf-poly1305&quot;,
+    &quot;fast_open&quot;: false,
+    &quot;user&quot;: &quot;nobody&quot;,
+    &quot;PID_FILE&quot;: &quot;/var/run/shadowsocks_ssserver.pid&quot;,
+    &quot;LOG_FILE&quot;: &quot;/var/run/shadowsocks_ssserver.log&quot;
+}
+</pre></div>
+
+
+<h3 id="_3">服务器参数优化</h3>
+<p><strong>Step 1, increase the maximum number of open file descriptors</strong></p>
+<p>编辑/etc/security/limits.conf文件</p>
+<div class="codehilite"><pre><span></span><span class="nb">echo</span> <span class="s1">&#39;* soft nofile 51200&#39;</span> &gt;&gt; /etc/security/limits.conf
+<span class="nb">echo</span> <span class="s1">&#39;* hard nofile 51200&#39;</span> &gt;&gt; /etc/security/limits.conf
+</pre></div>
+
+
+<p>启动ssserver前先执行<code>ulimit -n 51200</code></p>
+<p><strong>Step 2, Tune the kernel parameters</strong></p>
+<p>编辑内核配置文件/etc/sysctl.conf</p>
+<div class="codehilite"><pre><span></span>fs.file-max = 51200
+
+net.core.rmem_max = 67108864
+net.core.wmem_max = 67108864
+net.core.netdev_max_backlog = 250000
+net.core.somaxconn = 4096
+
+net.ipv4.tcp_syncookies = 1
+net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_tw_recycle = 0
+net.ipv4.tcp_fin_timeout = 30
+net.ipv4.tcp_keepalive_time = 1200
+net.ipv4.ip_local_port_range = 10000 65000
+net.ipv4.tcp_max_syn_backlog = 8192
+net.ipv4.tcp_max_tw_buckets = 5000
+# tcp_fastopen是开启TCP Fast Open参数(TCP快速打开，缩略为TFO)
+net.ipv4.tcp_fastopen = 3
+net.ipv4.tcp_mem = 25600 51200 102400
+net.ipv4.tcp_rmem = 4096 87380 67108864
+net.ipv4.tcp_wmem = 4096 65536 67108864
+net.ipv4.tcp_mtu_probing = 1
+net.ipv4.tcp_congestion_control = hybla
+</pre></div>
+
+
+<p>执行<code>sysctl -p</code>重新加载内核参数.</p>
+<p><strong>启用BBR</strong></p>
+<p>https://linuxssh.com/centos-qiyong-bbr/</p>
+<div class="codehilite"><pre><span></span><span class="c1"># 下载bbr自动安装脚本执行</span>
+wget --no-check-certificate https://github.com/teddysun/across/raw/master/b
+br.sh <span class="o">&amp;&amp;</span> chmod +x bbr.sh <span class="o">&amp;&amp;</span> ./bbr.sh
+
+<span class="c1"># 升级内核并开启bbr加速后，会提示重启系统，输入y即可</span>
+<span class="c1"># 重启完毕后，就成功开启bbr加速了。</span>
+<span class="c1"># 查看是否成功开启，可以执行如下命令，返回值里有bbr就表示成功开启了</span>
+sysctl net.ipv4.tcp_available_congestion_control
+</pre></div>
+
+
+<h2 id="client">客户端搭建(Client)</h2>
+<p>https://shadowsocks.org/en/download/clients.html</p>
+<h3 id="linuxwindowsmac-os-x">(Linux|Windows|Mac OS X)命令行使用:</h3>
+<p><strong>sslocal客户端工具安装</strong></p>
+<p><sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>安装方式跟服务端搭建方式一样.</p>
+<p><strong>客户端启动命令</strong></p>
+<div class="codehilite"><pre><span></span><span class="c1"># 直接使用sslocal命令选项启动:</span>
+nohup sslocal -s <span class="m">48</span>.48.48.48 -p <span class="m">1111</span> -b <span class="m">192</span>.168.1.209 -l <span class="m">1080</span> -k <span class="s1">&#39;z7T0XRpassword&#39;</span> -m chacha20-ietf-poly1305 -t <span class="m">600</span> --user nobody &lt;/dev/null <span class="p">&amp;</span>&gt;/tmp/ssserver.log <span class="p">&amp;</span>
+
+
+<span class="c1"># 或着启动时指定配置文件:</span>
+sslocal -c /path/to/sslocal.json
+
+
+<span class="c1"># To run in the background</span>
+<span class="c1">#   默认PID文件 --pid-file /var/run/shadowsocks.pid</span>
+<span class="c1">#   默认日志文件 --log-file /var/log/shadowsocks.log</span>
+sslocal -s <span class="m">48</span>.48.48.48 -p <span class="m">1111</span> -b <span class="m">192</span>.168.1.209 -l <span class="m">1080</span> -k <span class="s1">&#39;z7T0XRpassword&#39;</span> -m chacha20-ietf-poly1305 -t <span class="m">600</span> --fast-open --user nobody --pid-file /var/run/shadowsocks.pid --log-file /dev/null -d start
+<span class="c1"># 停止damon程序直接kill进程号，或使用-d stop：</span>
+<span class="c1"># sslocal [--pid-file /var/run/shadowsocks.pid] -d stop</span>
+sslocal -d stop
+</pre></div>
+
+
+<p><em>sslocal.json:</em></p>
+<div class="codehilite"><pre><span></span>{
+    &quot;server&quot;: &quot;48.38.87.48&quot;,
+    &quot;server_port&quot;: 1111,
+    &quot;local_address&quot;: &quot;127.0.0.1&quot;,
+    &quot;local_port&quot;:1080,
+    &quot;password&quot;:&quot;z7T0XRpassword&quot;,
+    &quot;timeout&quot;: 60,
+    &quot;method&quot;:&quot;chacha20-ietf-poly1305&quot;,
+    &quot;fast_open&quot;: false,
+    &quot;user&quot;: &quot;nobody&quot;,
+    &quot;PID_FILE&quot;: &quot;/var/run/shadowsocks_sslocal.pid&quot;,
+    &quot;LOG_FILE&quot;: &quot;/var/run/shadowsocks_sslocal.log&quot;
+}
+</pre></div>
+
+
+<h3 id="openwrt">OpenWRT</h3>
+<ul>
+<li>ss全套openwrt软件: http://openwrt-dist.sourceforge.net/</li>
+<li>OpenWrt/LEDE使用ss+ChinaDNS+DNS-Forwarder实现透明代理: https://www.vpnto.net/posts/shadowsocks-openwrt/</li>
+<li>Shadowsocks+ChinaDNS+dns-forwarder实现OpenWRT自动翻墙: https://cokebar.info/archives/664</li>
+<li>ss科学上网漫游指南: https://lvii.gitbooks.io/outman/content/</li>
+</ul>
+<p><strong>ss+chinaDNS+DNS-Forwarder一键安装脚本</strong></p>
+<div class="codehilite"><pre><span></span><span class="c1"># 这个脚本使用的方式来源 http://openwrt-dist.sourceforge.net/</span>
+<span class="c1"># 不要再安装ShadowVPN(没什么用了)</span>
+wget http://openwrt-dist.sourceforge.net/auto_install.sh
+chmod +x auto_install.sh
+./auto_install.sh
+</pre></div>
+
+
+<h3 id="android">Android</h3>
+<p>支持</p>
+<ul>
+<li>shadowsocks-android: <a href="https://github.com/shadowsocks/shadowsocks-android/releases">GitHub</a></li>
+</ul>
+<h3 id="ios">iOS</h3>
+<p>支持</p>
+<h3 id="windows-gui-client">Windows GUI Client</h3>
+<ul>
+<li>shadowsocks-win: <a href="https://github.com/shadowsocks/shadowsocks-windows/releases">GitHub</a></li>
+<li>Shadowsocks-Qt5: <a href="https://github.com/shadowsocks/shadowsocks-qt5/releases">GitHub</a></li>
+</ul>
+<h2 id="socks5">使用socks5请求代理客户端</h2>
+<h3 id="curl">curl</h3>
+<div class="codehilite"><pre><span></span>curl <span class="s1">&#39;https://www.google.com/&#39;</span> --socks5-hostname <span class="m">127</span>.0.0.1:1080
+</pre></div>
+
+
+<h3 id="switchyomega-for-chromium-firefox">代理插件 SwitchyOmega (for Chromium &amp; Firefox)</h3>
+<p>https://github.com/FelisCatus/SwitchyOmega/releases</p>
+<h3 id="proxychains">通过proxychains工具在终端命令行使用代理</h3>
+<p><strong>安装proxychains</strong></p>
+<div class="codehilite"><pre><span></span><span class="c1"># On Debian/Ubuntu:</span>
+sudo apt install proxychains
+</pre></div>
+
+
+<p><strong>配置proxychains</strong></p>
+<div class="codehilite"><pre><span></span>strict_chain
+proxy_dns 
+remote_dns_subnet 224
+tcp_read_time_out 15000
+tcp_connect_time_out 8000
+localnet 127.0.0.0/255.0.0.0
+quiet_mode
+
+[ProxyList]
+socks5  127.0.0.1 1080
+</pre></div>
+
+
+<p><strong>使用proxychains代理</strong></p>
+<div class="codehilite"><pre><span></span><span class="c1"># Run command with proxychains. Examples:</span>
+proxychains4 curl https://www.twitter.com/
+proxychains4 git push origin master
+
+<span class="c1"># Or just proxify bash:</span>
+proxychains4 bash
+curl https://www.twitter.com/
+git push origin master
+</pre></div>
+
+
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1"></li>
+</ol>
+</div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!--banner end-->
+        </main>
+        <aside class="sidebar">
+
+            <div class="about">
+                <h2 class="hometitle">关于我</h2>
+                <div class="avatar">
+                    <img src="images/avatar.png" alt="">
+                </div>
+                <p class="abname">渺小</p>
+                <p class="abposition">... ...!!</p>
+                <div class="abtext">To be or not to be, this is not a question.</div>
+            </div>
+
+            <div class="categories">
+                <h2 class="hometitle">分类</h2>
+                    <ul>
+                        <li><a href="/category/linux.html">Linux</a></li>
+                        <li><a href="/category/security.html">Security</a></li>
+                        <li><a href="/category/service.html">Service</a></li>
+                    </ul>
+            </div>
+            <div class="cloud">
+                <h2 class="hometitle">标签云</h2>
+                <ul>                    <a href="/tag/ansible.html">ansible</a>
+                    <a href="/tag/apache.html">apache</a>
+                    <a href="/tag/curator.html">curator</a>
+                    <a href="/tag/database.html">database</a>
+                    <a href="/tag/elastic.html">elastic</a>
+                    <a href="/tag/elasticsearch.html">elasticsearch</a>
+                    <a href="/tag/facl.html">facl</a>
+                    <a href="/tag/ftp.html">ftp</a>
+                    <a href="/tag/glusterfs.html">glusterfs</a>
+                    <a href="/tag/haproxy.html">haproxy</a>
+                    <a href="/tag/httpd.html">httpd</a>
+                    <a href="/tag/https.html">https</a>
+                    <a href="/tag/linux.html">linux</a>
+                    <a href="/tag/logs.html">logs</a>
+                    <a href="/tag/memcache.html">memcache</a>
+                    <a href="/tag/mysql.html">mysql</a>
+                    <a href="/tag/nginx.html">nginx</a>
+                    <a href="/tag/openssl.html">openssl</a>
+                    <a href="/tag/openwrt.html">Openwrt</a>
+                    <a href="/tag/qa.html">QA</a>
+                    <a href="/tag/redis.html">redis</a>
+                    <a href="/tag/scribe.html">scribe</a>
+                    <a href="/tag/security.html">security</a>
+                    <a href="/tag/service.html">service</a>
+                    <a href="/tag/shadowsocks.html">shadowsocks</a>
+                    <a href="/tag/slb.html">slb</a>
+                    <a href="/tag/ss.html">ss</a>
+                    <a href="/tag/ssltls.html">SSL/TLS</a>
+                    <a href="/tag/storage.html">storage</a>
+                    <a href="/tag/tmux.html">tmux</a>
+                    <a href="/tag/tool.html">tool</a>
+                    <a href="/tag/tools.html">tools</a>
+                </ul>
+            </div>
+            <div class="links">
+              <h2 class="hometitle">推荐链接</h2>
+              <ul>
+                  <li><a href="https://jecvay.com/" target="_blank">Jecvay</a></li>
+                  <li><a href="http://andrewliu.in/" target="_blank">Adnrewliu</a></li>
+                  <li><a href="http://seanlook.com/" target="_blank">sean's notes</a></li>
+                  <li><a href="https://woaielf.github.io/" target="_blank">ZOE's Blog</a></li>
+                  <li><a href="https://233blog.com/" target="_blank">233Blog</a></li>
+                  <li><a href="http://www.yangqq.com" target="_blank">杨青个人博客</a></li>
+              </ul>
+            </div>
+
+
+        </aside>
+        <!--sidebar end-->
+    </div>
+    <!--wrapper end-->
+
+    <a href="#" class="cd-top">Top</a>
+</body>
+
+</html>

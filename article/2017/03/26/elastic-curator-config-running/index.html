@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>首页 - Xiao's Notes</title>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Let the cat out of the bag." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/theme/css/base.css" rel="stylesheet">
+    <link href="/theme/css/index.css" rel="stylesheet">
+    <link href="/theme/css/m.css" rel="stylesheet">
+
+<link href="/theme/css/markdown-github.css" rel="stylesheet">
+
+    <script src="/theme/js/jquery.min.js" ></script>
+    <script src="/theme/js/hc-sticky.js"></script>
+    <script src="/theme/js/comm.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/theme/js/modernizr.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <header id="header">         <div class="navbar">
+        <div class="topbox">
+          <p class="welcome">Let the cat out of the bag.</p>
+          <!--<div class="searchbox">-->
+            <!--<div id="search_bar" class="search_bar">-->
+              <!--<form  id="searchform" action="[!&#45;&#45;news.url&#45;&#45;]e/search/index.php" method="post" name="searchform">-->
+                <!--<input class="input" placeholder="想搜点什么呢.." type="text" name="keyboard" id="keyboard">-->
+                <!--<input type="hidden" name="show" value="title" />-->
+                <!--<input type="hidden" name="tempid" value="1" />-->
+                <!--<input type="hidden" name="tbname" value="news">-->
+                <!--<input type="hidden" name="Submit" value="搜索" />-->
+                <!--<p class="search_ico"> <span></span></p>-->
+              <!--</form>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+      </div>
+      <div class="header-navigation">
+        <nav>
+          <div class="logo"><a href="/index.html">Xiao's Notes</a></div>
+          <h2 id="mnavh"><span class="navicon"></span></h2>
+          <ul id="starlist">
+            <li><a href="/index.html">网站首页</a></li>
+            <li class="menu"><a href="/categories.html">分类</a>
+              <ul class="sub">
+                  <li><a href="/category/linux.html">Linux</a></li>
+                  <li><a href="/category/security.html">Security</a></li>
+                  <li><a href="/category/service.html">Service</a></li>
+              </ul>
+            </li>
+            <li><a href="/tags.html">标签</a></li>
+            <li><a href="/archives.html">归档</a></li>
+            <li><a href="/about.html">关于</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+
+    <div class="wrapper">
+
+        <main>
+            <!--banner begin-->
+<h2 class="place"><a href="/article/2017/03/26/elastic-curator-config-running/">/article/2017/03/26/elastic-curator-config-running/</a></h2>
+<div class="infosbox">
+    <div class="newsview">
+        <h3 class="news_title">Elastic Curator 的配置和运行</h3>
+        <div class="bloginfo">
+            <ul>
+                <li class="author">【作者】<a href="/author/miao-xiao.html">渺小</a></li>
+                <li class="lmname">【分类】<a href="/category/service.html">Service</a></li>
+                <li class="date">【发布】2017-03-26 19:17</li>
+                <li class="modified">【更新】2017-03-26 19:17</li>
+            </ul>
+        </div>
+        <div class="tags">
+            <a href="/tag/elastic.html" target="_blank">【elastic】</a>
+            <a href="/tag/curator.html" target="_blank">【curator】</a>
+            <a href="/tag/tools.html" target="_blank">【tools】</a>
+        </div>
+        <div class="news_con">
+            <div class="news_mdfile">
+            <h1 id="running-curator">Running Curator</h1>
+<p>curator程序的配置和运行详解。</p>
+<h2 id="singleton-command-line-interface">Singleton Command Line Interface</h2>
+<p>运行：</p>
+<div class="codehilite"><pre><span></span>curator_cli <span class="o">[</span>OPTIONS<span class="o">]</span> COMMAND <span class="o">[</span>ARGS<span class="o">]</span>...
+<span class="c1"># 如果用不指定的Options连接es，可以指定curator.yml配置文件读取连接es和curator的参数</span>
+<span class="c1"># 默认配置文件~/.curator/curator.yml</span>
+curator_cli --config /PATH/TO/curator.yml COMMAND <span class="o">[</span>ARGS<span class="o">]</span>...
+
+<span class="c1"># 帮助命令</span>
+curator_cli --help
+curator_cli show_indices --help
+
+<span class="c1"># 例子</span>
+curator_cli --host <span class="m">192</span>.168.13.36:9200 show_indices
+</pre></div>
+
+
+<p>新版的curator_cli命令行工具对条件的匹配已经改了，
+需要使用--filter_list JSON 的格式来过滤。(感觉已经没帮助可查了,用起来变得复杂- -！)</p>
+<div class="codehilite"><pre><span></span><span class="c1"># 例如查看索引，需要使用--filter_list来过滤需要的索引</span>
+curator_cli --host <span class="m">192</span>.168.13.36:9200 show_indices  --filter_list <span class="s1">&#39;[{&quot;filtertype&quot;:&quot;age&quot;,&quot;source&quot;:&quot;creation_date&quot;,&quot;direction&quot;:&quot;older&quot;,&quot;unit&quot;:&quot;days&quot;,&quot;unit_count&quot;:13},{&quot;filtertype&quot;:&quot;pattern&quot;,&quot;kind&quot;:&quot;prefix&quot;,&quot;value&quot;:&quot;logstash&quot;}]&#39;</span>
+</pre></div>
+
+
+<p>这样还不如就用这个了：
+curator [--config CONFIG.YML] [--dry-run] ACTION_FILE.YML</p>
+<h2 id="command-line-interface">Command Line Interface</h2>
+<p>运行：</p>
+<div class="codehilite"><pre><span></span>curator <span class="o">[</span>--config CONFIG.YML<span class="o">]</span> <span class="o">[</span>--dry-run<span class="o">]</span> ACTION_FILE.YML
+
+  --config CONFIG.YML    curator配置文件，配置连接es等参数，
+                         默认为~/.curator/curator.yml
+  --dry-run              测试运行
+  ACTION_FILE.YML        YAML actionfile指定执行操作的文件
+</pre></div>
+
+
+<h3 id="action_fileyml">ACTION_FILE.YML</h3>
+<p>ACTION_FILE.YML文件用于配置curator需要执行的操作。</p>
+<p>https://www.elastic.co/guide/en/elasticsearch/client/curator/current/actionfile.html</p>
+<h4 id="curator_actions_cronyml">curator_actions_cron.yml</h4>
+<p>主要用于配置curator定时执行任务，
+将运行命令放在crontab中在每日凌晨0点过后执行，
+用于清理和优化es的索引。</p>
+<div class="codehilite"><pre><span></span>---
+actions:
+  1:
+    action: delete_indices
+    description: &quot;删除过期索引&quot;
+    options:
+      # action开关，为True表示不执行这个action，默认False
+      disable_action: False
+      # 如果为True，则在filters空列表时，继续下一个action处理而不是退出程序。
+      ignore_empty_list: True
+      # 发现错误后，继续执行下一个索引操作，默认False
+      continue_if_exception: True
+    filters:
+    # 是否排除隐藏索引，如.kibana
+    - filtertype: kibana
+      exclude: True
+    # 是否排除open状态的索引
+    - filtertype: opened
+      exclude: True
+    # 处理30天前的索引
+    - filtertype: age
+      source: name
+      direction: older
+      timestring: &#39;%Y.%m.%d&#39;
+      unit: days
+      unit_count: 30
+      exclude: False
+  2:
+    action: allocation
+    description: &quot;冷热数据分离任务：将非当天索引从hot节点迁移到stale节点。&quot;
+    options:
+      # action开关，为True表示不执行这个action，默认False
+      disable_action: False
+      # ignore_empty_list标识忽略选项，默认False，
+      # 如果为True，则在filters空列表时，继续下一个action处理而不是退出程序。
+      ignore_empty_list: True
+      # 发现错误后，继续执行下一个索引操作，默认False
+      continue_if_exception: True
+      allocation_type: include
+      key: zone
+      value: stale
+      wait_for_completion: False
+    filters:
+    # 是否排除隐藏索引，如.kibana
+    - filtertype: kibana
+      exclude: True
+    # 是否排除open状态的索引
+    - filtertype: opened
+      exclude: False
+    # 处理1天前的索引
+    - filtertype: age
+      source: name
+      direction: older
+      timestring: &#39;%Y.%m.%d&#39;
+      unit: days
+      unit_count: 1
+      exclude: False
+  3:
+    action: forcemerge
+    description: &quot;强制归并索引segments，优化es性能&quot;
+    options:
+      # action开关，为True表示不执行这个action，默认False
+      disable_action: False
+      # ignore_empty_list标识忽略选项，默认False，
+      # 如果为True，则在filters空列表时，继续下一个action处理而不是退出程序。
+      ignore_empty_list: True
+      # 发现错误后，继续执行下一个索引操作，默认False
+      continue_if_exception: True
+      max_num_segments: 1
+      delay:
+    filters:
+    # 是否排除隐藏索引，如.kibana
+    - filtertype: kibana
+      exclude: False
+    # 是否排除open状态的索引
+    - filtertype: opened
+      exclude: False
+    # 处理1天前的索引
+    - filtertype: age
+      source: name
+      direction: older
+      timestring: &#39;%Y.%m.%d&#39;
+      unit: days
+      unit_count: 2
+      exclude: False
+  4:
+    action: close
+    description: &quot;关闭匹配的索引，减少es内存占用&quot;
+    options:
+      # action开关，为True表示不执行这个action，默认False
+      disable_action: False
+      # 如果为True，则在filters空列表时，继续下一个action处理而不是退出程序。
+      ignore_empty_list: True
+      # 发现错误后，继续执行下一个索引操作，默认False
+      continue_if_exception: True
+      # close索引前是否删除aliases
+      delete_aliases: False
+    filters:
+    # 是否排除隐藏索引，如.kibana
+    - filtertype: kibana
+      exclude: True
+    # 是否排除open状态的索引
+    - filtertype: opened
+      exclude: False
+    # 处理7天前的索引
+    - filtertype: age
+      source: name
+      direction: older
+      timestring: &#39;%Y.%m.%d&#39;
+      unit: days
+      unit_count: 7
+      exclude: False
+</pre></div>
+
+
+<h4 id="curator_actions_cmdyml">curator_actions_cmd.yml</h4>
+<p>主要用于需要手动处理的es索引任务。</p>
+<div class="codehilite"><pre><span></span>---
+actions:
+  1:
+    action: open
+    description: &quot;open匹配的索引&quot;
+    options:
+      # action开关，为True表示不执行这个action，默认False 【记得手动开启action】
+      disable_action: True
+      # 如果为True，则在filters空列表时，继续下一个action处理而不是退出程序。
+      ignore_empty_list: True
+      # 发现错误后，继续执行下一个索引操作，默认False
+      continue_if_exception: True
+    # 下面开始匹配需要执行的任务的索引 【记得手动修改filters条件】
+    filters:
+    - filtertype: closed
+      exclude: False
+    # 是否排除open状态的索引
+    - filtertype: opened
+      exclude: True
+    # 是否排除隐藏索引，如.kibana
+    - filtertype: kibana
+      exclude: True
+    # 主要在这里匹配索引的时间
+    - filtertype: age
+      source: name
+      # direction值为: younger|older
+      direction: younger
+      timestring: &#39;%Y.%m.%d&#39;
+      unit: days
+      unit_count: 14
+      exclude: False
+    # 这里匹配索引名称
+    - filtertype: pattern
+      # kind值: prefix|suffix|timestring|regex
+      kind: prefix
+      value: logstash-
+      exclude: False
+</pre></div>
+
+
+<h2 id="environment-variables">Environment Variables</h2>
+<p>环境变量可以应用与执行curator和curator_cli命令。</p>
+<p>环境变量支持写入CONFIG.YML和ACTION_FILE.YML。</p>
+<p>https://www.elastic.co/guide/en/elasticsearch/client/curator/current/envvars.html</p>
+<h2 id="configyml">CONFIG.YML</h2>
+<p>https://www.elastic.co/guide/en/elasticsearch/client/curator/current/configfile.html</p>
+<p>CONFIG.YML是curator和curator_cli的全局配置文件。</p>
+<p>在使用命令时，如果不指定配置文件，默认读取文件：</p>
+<div class="codehilite"><pre><span></span>~/.curator/curator.yml
+</pre></div>
+
+
+<p>curator.yml</p>
+<div class="codehilite"><pre><span></span>---
+# Remember, leave a key empty if there is no value.  None will be a string,
+# not a Python &quot;NoneType&quot;
+client:
+  hosts:
+    - 127.0.0.1
+    - 10.0.0.1:9200
+    - 10.0.0.2:9201
+  port: 9200
+  url_prefix:
+  use_ssl: False
+  certificate:
+  client_cert:
+  client_key:
+  ssl_no_validate: False
+  http_auth:
+  timeout: 30
+  master_only: False
+
+logging:
+  loglevel: INFO
+  logfile:
+  logformat: default
+  blacklist: [&#39;elasticsearch&#39;, &#39;urllib3&#39;]
+</pre></div>
+
+
+<h2 id="curator4">curator4版本当前的坑说明</h2>
+<p>curator当前在filters中的age类型中对时间存在时差问题.</p>
+<p>原因是,这个age对时间的计算形式如下:</p>
+<div class="codehilite"><pre><span></span>point_of_reference = epoch - ((number of seconds in unit) * unit_count)
+
+&lt;point_of_reference&gt;就是计算出来的时间
+&lt;epoch&gt;是当前时间的utc时间
+&lt;number of seconds in unit&gt;就是配置的day或hours单位的秒数,就是配置的unit换算来的.
+&lt;unit_count&gt;就是unit_count值
+
+curator直接是把&lt;point_of_reference&gt;这个时间拿来匹配索引的时间,比如索引名称的后缀时间%Y.%m.%d
+
+由这里很明显的知道了由于&lt;epoch&gt;是utc时间,所以&lt;point_of_reference&gt;也utc时间.
+那么,中国的和utc时间是要+8小时的,所以这里匹配出来的时间要再加8小时间才是对的.
+
+当前看似官方也知道这个问题,后面的版本可能会再换算一个native时区的时间吧.
+
+当前可以这样解决:
+在换算时间的时候,有意识的先扣掉8个小时再换算,这样就可以解决问题了:
+
+比如要获取前一天是索引,改成这样:
+    - filtertype: age
+      source: name
+      direction: older
+      timestring: &#39;%Y.%m.%d&#39;
+      unit: hours
+      unit_count: 16
+      exclude: False
+</pre></div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!--banner end-->
+        </main>
+        <aside class="sidebar">
+
+            <div class="about">
+                <h2 class="hometitle">关于我</h2>
+                <div class="avatar">
+                    <img src="images/avatar.png" alt="">
+                </div>
+                <p class="abname">渺小</p>
+                <p class="abposition">... ...!!</p>
+                <div class="abtext">To be or not to be, this is not a question.</div>
+            </div>
+
+            <div class="categories">
+                <h2 class="hometitle">分类</h2>
+                    <ul>
+                        <li><a href="/category/linux.html">Linux</a></li>
+                        <li><a href="/category/security.html">Security</a></li>
+                        <li><a href="/category/service.html">Service</a></li>
+                    </ul>
+            </div>
+            <div class="cloud">
+                <h2 class="hometitle">标签云</h2>
+                <ul>                    <a href="/tag/ansible.html">ansible</a>
+                    <a href="/tag/apache.html">apache</a>
+                    <a href="/tag/curator.html">curator</a>
+                    <a href="/tag/database.html">database</a>
+                    <a href="/tag/elastic.html">elastic</a>
+                    <a href="/tag/elasticsearch.html">elasticsearch</a>
+                    <a href="/tag/facl.html">facl</a>
+                    <a href="/tag/ftp.html">ftp</a>
+                    <a href="/tag/glusterfs.html">glusterfs</a>
+                    <a href="/tag/haproxy.html">haproxy</a>
+                    <a href="/tag/httpd.html">httpd</a>
+                    <a href="/tag/https.html">https</a>
+                    <a href="/tag/linux.html">linux</a>
+                    <a href="/tag/logs.html">logs</a>
+                    <a href="/tag/memcache.html">memcache</a>
+                    <a href="/tag/mysql.html">mysql</a>
+                    <a href="/tag/nginx.html">nginx</a>
+                    <a href="/tag/openssl.html">openssl</a>
+                    <a href="/tag/openwrt.html">Openwrt</a>
+                    <a href="/tag/qa.html">QA</a>
+                    <a href="/tag/redis.html">redis</a>
+                    <a href="/tag/scribe.html">scribe</a>
+                    <a href="/tag/security.html">security</a>
+                    <a href="/tag/service.html">service</a>
+                    <a href="/tag/shadowsocks.html">shadowsocks</a>
+                    <a href="/tag/slb.html">slb</a>
+                    <a href="/tag/ss.html">ss</a>
+                    <a href="/tag/ssltls.html">SSL/TLS</a>
+                    <a href="/tag/storage.html">storage</a>
+                    <a href="/tag/tmux.html">tmux</a>
+                    <a href="/tag/tool.html">tool</a>
+                    <a href="/tag/tools.html">tools</a>
+                </ul>
+            </div>
+            <div class="links">
+              <h2 class="hometitle">推荐链接</h2>
+              <ul>
+                  <li><a href="https://jecvay.com/" target="_blank">Jecvay</a></li>
+                  <li><a href="http://andrewliu.in/" target="_blank">Adnrewliu</a></li>
+                  <li><a href="http://seanlook.com/" target="_blank">sean's notes</a></li>
+                  <li><a href="https://woaielf.github.io/" target="_blank">ZOE's Blog</a></li>
+                  <li><a href="https://233blog.com/" target="_blank">233Blog</a></li>
+                  <li><a href="http://www.yangqq.com" target="_blank">杨青个人博客</a></li>
+              </ul>
+            </div>
+
+
+        </aside>
+        <!--sidebar end-->
+    </div>
+    <!--wrapper end-->
+
+    <a href="#" class="cd-top">Top</a>
+</body>
+
+</html>
