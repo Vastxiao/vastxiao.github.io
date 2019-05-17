@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Xiao's Notes - 包含mysql的文章</title>
+    <title>首页 - Xiao's Notes</title>
 
     <meta charset="UTF-8">
     <meta name="description" content="Let the cat out of the bag." />
@@ -11,6 +11,8 @@
     <link href="/theme/css/base.css" rel="stylesheet">
     <link href="/theme/css/index.css" rel="stylesheet">
     <link href="/theme/css/m.css" rel="stylesheet">
+
+<link href="/theme/css/markdown-github.css" rel="stylesheet">
 
     <script src="/theme/js/jquery.min.js" ></script>
     <script src="/theme/js/hc-sticky.js"></script>
@@ -64,41 +66,156 @@
 
         <main>
             <!--banner begin-->
+<h2 class="place"><a href="/article/2019/05/17/mongodb-setup-config-replication/">/article/2019/05/17/mongodb-setup-config-replication/</a></h2>
+<div class="infosbox">
+    <div class="newsview">
+        <h3 class="news_title">Mongodb配置复制集(副本集)架构</h3>
+        <div class="bloginfo">
+            <ul>
+                <li class="author">【作者】<a href="/author/miao-xiao.html">渺小</a></li>
+                <li class="lmname">【分类】<a href="/category/service.html">Service</a></li>
+                <li class="date">【发布】2019-05-17 14:16</li>
+                <li class="modified">【更新】2019-05-17 14:16</li>
+            </ul>
+        </div>
+        <div class="tags">
+            <a href="/tag/mongodb.html" target="_blank">【mongodb】</a>
+        </div>
+        <div class="news_con">
+            <div class="news_mdfile">
+            <h1 id="mongodb">Mongodb 配置复制集</h1>
+<p>在复制集环境中，一个复制集包含以下组件：
+  * 主副本(Primary)，数据读写主入口。
+  * 备副本(Secendry)，同步主副本数据及提供可读。
+  * 仲裁(Arbiter)，本身不存储数据，用于实现主备副本自动切换(可选组件)。</p>
+<p>每个组件都为一个单独的mongod实例。</p>
+<p>一个复制集一般配置3个及以上的mongod实例。其中组件总数必须为奇数，
+否则mongodb在Primary实例出问题时不会实现自动切换副本。</p>
+<p>配置mongodb复制集时，推荐对每个mongod示例的配置
+都采用CNAMEs（hosts,DNS...）。</p>
+<h2 id="_1">复制集配置说明</h2>
+<ol>
+<li>配置文件，创建复制集中每个副本的配置文件。</li>
+<li>确认配置文件中各目录存在及权限正确。</li>
+<li>启动mongod各个副本实例。</li>
+<li>初始化复制集。</li>
+<li>配置完成，可以直接使用。</li>
+</ol>
+<h2 id="_2">配置步骤</h2>
+<h3 id="1">1、配置文件参考下面的复制集配置文件</h3>
+<div class="codehilite"><pre><span></span># 是否后台 #
+processManagement:
+    fork: true
 
-<div class="bloglist">
-    <ul>
-        <li>
-            <i class="blogpic">
-                <a href="/article/2017/10/25/mysql-innotop/"><img src="/images/mysql.png" alt=""></a>
-            </i>
-            <dl>
-                <dt><a href="/article/2017/10/25/mysql-innotop/" title="Mysql Innodb分析工具：innotop">Mysql Innodb分析工具：innotop</a></dt>
-                <dd><span class="bloginfo"><p>Innotop 可用于实时查看mysql的当前运行状态。</p></span>
-                    <p class="timeinfo">
-                        <span class="lanmu"><a href="/category/service.html" target="_blank">Service</a></span>
-                        <span class="date">2017-10-25 22:45</span>
-                    </p>
-                    <a class="read" href="/article/2017/10/25/mysql-innotop/">阅读更多</a> </dd>
-            </dl>
-        </li>
-        <li>
-            <i class="blogpic">
-                <a href="/article/2017/07/26/mysql-sniffer/"><img src="/images/mysql.png" alt=""></a>
-            </i>
-            <dl>
-                <dt><a href="/article/2017/07/26/mysql-sniffer/" title="Mysql抓包工具：mysql-sniffer">Mysql抓包工具：mysql-sniffer</a></dt>
-                <dd><span class="bloginfo"><p>MySQL Sniffer 是一个基于 MySQL 协议的抓包工具，实时抓取 MySQLServer 端的请求，并格式化输出。</p></span>
-                    <p class="timeinfo">
-                        <span class="lanmu"><a href="/category/service.html" target="_blank">Service</a></span>
-                        <span class="date">2017-07-26 22:36</span>
-                    </p>
-                    <a class="read" href="/article/2017/07/26/mysql-sniffer/">阅读更多</a> </dd>
-            </dl>
-        </li>
-    </ul>
+# 网络配置 #
+net:
+    #bindIp: 127.0.0.1,10.8.0.10,192.168.4.24
+    port: 27018
+
+# 安全认证配置 #
+#security:
+    # 启用认证配置：enabled|disabled
+    #authorization: enabled
+    # 使用Internal Authentication
+    #keyFile: /etc/mongodbConf/DBNAME/keyfile
+
+#setParameter:
+    # Local Exception配置，默认true
+    #enableLocalhostAuthBypass: false
+
+# mongo实例日志配置 #
+systemLog:
+    destination: file
+    path: /data/mongodb/DBNAME/logs/RsDBNAME.log
+    # 设置logAppend为true后，mongod/mongos在重启后只会在现有日
+    # 志的尾部继续添加日志，不会覆盖已有日志文件。(默认:False)
+    logAppend: true
+    # 日志滚动配置rename(重命名日志文件)|reopen(关闭并重新打开此日志文件)
+    # reopen使用linux日志rotate特性，如果配置reopen，也要设置logAppend: true
+    logRotate: rename
+    # (default)iso8601-local|iso8601-utc|ctime
+    #timeStampFormat: iso8601-local
+
+# mongodb数据存储配置 #
+storage:
+    # journal配置
+    journal:
+        # 如果是Arbiter，最好设置为false
+        enabled: true
+    # 数据文件存储位置
+    dbPath: /data/mongodb/DBNAME/data/RsDBNAME
+    # 是否一个库一个文件夹
+    directoryPerDB: true
+    # 数据引擎配置
+    engine: wiredTiger
+    # WT引擎配置
+    wiredTiger:
+        engineConfig:
+            # WT最大使用cache（根据服务器实际情况调节）
+            # arbiter可配置成1
+            cacheSizeGB: 10
+            # 是否将索引也按数据库名单独存储
+            directoryForIndexes: true
+        # 表压缩配置
+        collectionConfig:
+            # blockCompressor参数：none|zlib
+            blockCompressor: zlib
+        # 索引配置
+        indexConfig:
+            prefixCompression: true
+
+# 副本配置 #
+replication:
+    # oplog大小。默认磁盘空间5%(1G-50G)
+    #oplogSizeMB: 10240
+    # 复制集名称
+    replSetName: RsDBNAME
+</pre></div>
+
+
+<h3 id="2mongodmongod">2、启动各个mongod副本实例后，连接至mongod初始化。</h3>
+<div class="codehilite"><pre><span></span>sudo -u mongodb mongod -f /etc/mongodbConf/DBNAME/RsDBNAME.conf
+</pre></div>
+
+
+<h3 id="3">3、初始化时，只要连接到该复制集中的其中一个副本实例操作就可以了：</h3>
+<div class="codehilite"><pre><span></span>mongo <span class="m">192</span>.168.1.54:22001
+use admin
+db.runCommand<span class="o">(</span>
+    <span class="o">{</span>
+        <span class="s2">&quot;replSetInitiate&quot;</span>:
+        <span class="o">{</span>
+            <span class="s2">&quot;_id&quot;</span>:<span class="s2">&quot;RsDBNAME&quot;</span>,
+            <span class="s2">&quot;members&quot;</span>:
+            <span class="o">[</span>
+                <span class="o">{</span>
+                    <span class="s2">&quot;_id&quot;</span>:1,
+                    <span class="s2">&quot;host&quot;</span>:<span class="s2">&quot;192.168.1.54:22001&quot;</span>,
+                    <span class="s2">&quot;priority&quot;</span>: <span class="m">2</span>
+                <span class="o">}</span>,
+                <span class="o">{</span>
+                    <span class="s2">&quot;_id&quot;</span>:2,
+                    <span class="s2">&quot;host&quot;</span>:<span class="s2">&quot;192.168.1.53:22001&quot;</span>
+                <span class="o">}</span>,
+                <span class="o">{</span>
+                    <span class="s2">&quot;_id&quot;</span>:3,
+                    <span class="s2">&quot;host&quot;</span>:<span class="s2">&quot;192.168.1.52:22001&quot;</span>,
+                    <span class="s2">&quot;arbiterOnly&quot;</span>:true
+                <span class="o">}</span>
+            <span class="o">]</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">)</span>
+<span class="nb">exit</span>
+</pre></div>
+
+
+<p>以上操作就完成了这一个复制集的初始化。
+这样初始化完的复制集连接到primary实例中就可以直接使用了。</p>
+            </div>
+        </div>
+    </div>
 </div>
-<!--bloglist end-->
-
             <!--banner end-->
         </main>
         <aside class="sidebar">
