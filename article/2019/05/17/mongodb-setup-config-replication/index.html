@@ -72,10 +72,10 @@
         <h3 class="news_title">Mongodb配置复制集(副本集)架构</h3>
         <div class="bloginfo">
             <ul>
-                <li class="author">【作者】<a href="/author/miao-xiao.html">渺小</a></li>
+                <li class="author">【作者】<a href="/author/kan-bu-jian-wo.html">看不见我</a></li>
                 <li class="lmname">【分类】<a href="/category/service.html">Service</a></li>
                 <li class="date">【发布】2019-05-17 14:16</li>
-                <li class="modified">【更新】2019-05-17 14:16</li>
+                <li class="modified">【更新】2019-06-21 14:20</li>
             </ul>
         </div>
         <div class="tags">
@@ -84,10 +84,12 @@
         <div class="news_con">
             <div class="news_mdfile">
             <h1 id="mongodb">Mongodb 配置复制集</h1>
-<p>在复制集环境中，一个复制集包含以下组件：
-  * 主副本(Primary)，数据读写主入口。
-  * 备副本(Secendry)，同步主副本数据及提供可读。
-  * 仲裁(Arbiter)，本身不存储数据，用于实现主备副本自动切换(可选组件)。</p>
+<p>在复制集环境中，一个复制集包含以下组件：</p>
+<ul>
+<li>主副本(Primary)，数据读写主入口。</li>
+<li>备副本(Secendry)，同步主副本数据及提供可读。</li>
+<li>仲裁(Arbiter)，本身不存储数据，用于实现主备副本自动切换(可选组件)。</li>
+</ul>
 <p>每个组件都为一个单独的mongod实例。</p>
 <p>一个复制集一般配置3个及以上的mongod实例。其中组件总数必须为奇数，
 否则mongodb在Primary实例出问题时不会实现自动切换副本。</p>
@@ -225,7 +227,7 @@ db.runCommand<span class="o">(</span>
                 <div class="avatar">
                     <img src="/images/avatar.png" alt="">
                 </div>
-                <p class="abname">渺小</p>
+                <p class="abname">看不见我</p>
                 <p class="abposition">... ...!!</p>
                 <div class="abtext">To be or not to be, this is not a question.</div>
             </div>
