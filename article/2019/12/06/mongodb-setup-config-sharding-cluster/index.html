@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>首页 - Xiao's Notes</title>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Let the cat out of the bag." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/theme/css/base.css" rel="stylesheet">
+    <link href="/theme/css/index.css" rel="stylesheet">
+    <link href="/theme/css/m.css" rel="stylesheet">
+
+<link href="/theme/css/markdown-github.css" rel="stylesheet">
+
+    <script src="/theme/js/jquery.min.js" ></script>
+    <script src="/theme/js/hc-sticky.js"></script>
+    <script src="/theme/js/comm.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/theme/js/modernizr.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <header id="header">         <div class="navbar">
+        <div class="topbox">
+          <p class="welcome">Let the cat out of the bag.</p>
+          <!--<div class="searchbox">-->
+            <!--<div id="search_bar" class="search_bar">-->
+              <!--<form  id="searchform" action="[!&#45;&#45;news.url&#45;&#45;]e/search/index.php" method="post" name="searchform">-->
+                <!--<input class="input" placeholder="想搜点什么呢.." type="text" name="keyboard" id="keyboard">-->
+                <!--<input type="hidden" name="show" value="title" />-->
+                <!--<input type="hidden" name="tempid" value="1" />-->
+                <!--<input type="hidden" name="tbname" value="news">-->
+                <!--<input type="hidden" name="Submit" value="搜索" />-->
+                <!--<p class="search_ico"> <span></span></p>-->
+              <!--</form>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+      </div>
+      <div class="header-navigation">
+        <nav>
+          <div class="logo"><a href="/index.html">Xiao's Notes</a></div>
+          <h2 id="mnavh"><span class="navicon"></span></h2>
+          <ul id="starlist">
+            <li><a href="/index.html">网站首页</a></li>
+            <li class="menu"><a href="/categories.html">分类</a>
+              <ul class="sub">
+                  <li><a href="/category/linux.html">Linux</a></li>
+                  <li><a href="/category/security.html">Security</a></li>
+                  <li><a href="/category/service.html">Service</a></li>
+              </ul>
+            </li>
+            <li><a href="/tags.html">标签</a></li>
+            <li><a href="/archives.html">归档</a></li>
+            <li><a href="/about.html">关于</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+
+    <div class="wrapper">
+
+        <main>
+            <!--banner begin-->
+<h2 class="place"><a href="/article/2019/12/06/mongodb-setup-config-sharding-cluster/">/article/2019/12/06/mongodb-setup-config-sharding-cluster/</a></h2>
+<div class="infosbox">
+    <div class="newsview">
+        <h3 class="news_title">Mongodb配置分片集群架构</h3>
+        <div class="bloginfo">
+            <ul>
+                <li class="author">【作者】<a href="/author/kan-bu-jian-wo.html">看不见我</a></li>
+                <li class="lmname">【分类】<a href="/category/service.html">Service</a></li>
+                <li class="date">【发布】2019-12-06 10:20</li>
+                <li class="modified">【更新】2019-12-06 10:20</li>
+            </ul>
+        </div>
+        <div class="tags">
+            <a href="/tag/mongodb.html" target="_blank">【mongodb】</a>
+        </div>
+        <div class="news_con">
+            <div class="news_mdfile">
+            <h1 id="mongodb">Mongodb 配置分片集群</h1>
+<h2 id="_1">分片集群组件说明</h2>
+<h3 id="_2">在一个分片集群中，包含以下组件：</h3>
+<ul>
+<li>分片(shards)，实际存储数据的节点。</li>
+<li>集群配置集(config)，存储整个分片集群的信息。</li>
+<li>路由(mongos)，作为路由节点，是mongodb数据的统一入口。</li>
+</ul>
+<p><strong>shards：</strong></p>
+<ol>
+<li>多个独立的shard分片组成整个shards分片集群。</li>
+<li>每个shard分片可以是一个mongod单实例，也可以是一个复制集。</li>
+<li>Localhost Exception特性（集群安全认证相关特性，默认开启）。</li>
+</ol>
+<p><strong>config：</strong></p>
+<ol>
+<li>一般配置3个mongod实例作为config server(官方推荐)。</li>
+<li>MongoDB 3.2版本后，推荐3个config实例以复制集的方式配置：</li>
+<li>作为config server的复制集必须采用 WiredTiger storage engine。</li>
+<li>副本节点中没有arbiter。</li>
+<li>副本节点中没有delayed members。</li>
+<li>副本节点中必须build indexes。</li>
+</ol>
+<p><strong>mongos：</strong></p>
+<ol>
+<li>mongos作为分片集群的路由节点，负责接入用户。</li>
+<li>所有对集群的操作及数据读写都连接到mongos进行。</li>
+</ol>
+<h3 id="mongodb_1">高可用配置mongodb分片集群：</h3>
+<p><strong>(1)配置mongodb分片集群时，推荐对每个mongod示例的配置都采用CNAMEs（hosts,DNS...）。</strong></p>
+<p>例如host形式：</p>
+<ul>
+<li>192.168.1.59 id1.shard22001.mongodb.projectname</li>
+<li>192.168.1.55 id2.shard22001.mongodb.projectname</li>
+<li>192.168.1.56 id3.shard22001.mongodb.projectname</li>
+<li>192.168.1.59 id1.configrs.mongodb.projectname</li>
+<li>192.168.1.55 id2.configrs.mongodb.projectname</li>
+<li>192.168.1.56 id3.configrs.mongodb.projectname</li>
+</ul>
+<p><strong>(2)分片集群至少配置2个分片，每个分片都为复制集(1P+1R+1A)。</strong></p>
+<p><strong>(3)配置包含3个mongod实例的复制集作为config server。</strong></p>
+<p><strong>(4)启用多个mongos实例，并在应用上使用负载均衡来连接mongos。</strong></p>
+<h2 id="_3">分片集群配置说明</h2>
+<ol>
+<li>创建shards、config、mongos配置文件</li>
+<li>确认mongodb各目录存在及权限正确</li>
+<li>启动mongodb各个组件实例(依次启动config-&gt;shards-&gt;mongos)</li>
+<li>初始化复制集分片（若是单实例分片自然不需要）</li>
+<li>初始化config server复制集</li>
+<li>配置集群分片</li>
+<li>对某个库开启分片功能</li>
+<li>使用数据库都连接到mongos节点进行操作</li>
+</ol>
+<h2 id="mongo">Mongo分片集群配置步骤</h2>
+<h3 id="1mongodb">1、配置文件参考下面的mongodb配置文件</h3>
+<p><strong>复制集配置文件</strong></p>
+<div class="codehilite"><pre><span></span><span class="c1"># 是否后台 #</span>
+<span class="nt">processManagement</span><span class="p">:</span>
+    <span class="nt">fork</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="c1"># 网络配置 #</span>
+<span class="nt">net</span><span class="p">:</span>
+    <span class="c1">#bindIp: 127.0.0.1,10.8.0.10,192.168.4.24</span>
+    <span class="c1">#bindIp: id1.shard22001.mongodb.projectname</span>
+    <span class="nt">port</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">27018</span>
+
+<span class="c1"># 安全认证配置 #</span>
+<span class="c1">#security:</span>
+    <span class="c1"># 启用认证配置：enabled|disabled</span>
+    <span class="c1">#authorization: enabled</span>
+    <span class="c1"># 使用Internal Authentication</span>
+    <span class="c1">#keyFile: /etc/mongodbConf/DBNAME/keyfile</span>
+
+<span class="c1">#setParameter:</span>
+    <span class="c1"># Local Exception配置，默认true</span>
+    <span class="c1">#enableLocalhostAuthBypass: false</span>
+
+<span class="c1"># mongo实例日志配置 #</span>
+<span class="nt">systemLog</span><span class="p">:</span>
+    <span class="nt">destination</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">file</span>
+    <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/data/mongodb/DBNAME/logs/shardN.log</span>
+    <span class="c1"># 设置logAppend为true后，mongod/mongos在重启后只会在现有日</span>
+    <span class="c1"># 志的尾部继续添加日志，不会覆盖已有日志文件。(默认:False)</span>
+    <span class="nt">logAppend</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="c1"># 日志滚动配置rename(重命名日志文件)|reopen(关闭并重新打开此日志文件)</span>
+    <span class="c1"># reopen使用linux日志rotate特性，如果配置reopen，也要设置logAppend: true</span>
+    <span class="nt">logRotate</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rename</span>
+    <span class="c1"># (default)iso8601-local|iso8601-utc|ctime</span>
+    <span class="c1">#timeStampFormat: iso8601-local</span>
+
+<span class="c1"># mongodb数据存储配置 #</span>
+<span class="nt">storage</span><span class="p">:</span>
+    <span class="c1"># journal配置</span>
+    <span class="nt">journal</span><span class="p">:</span>
+        <span class="c1"># 如果是Arbiter，最好设置为false</span>
+        <span class="nt">enabled</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="c1"># 数据文件存储位置</span>
+    <span class="nt">dbPath</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/data/mongodb/DBNAME/data/shardN</span>
+    <span class="c1"># 是否一个库一个文件夹</span>
+    <span class="nt">directoryPerDB</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="c1"># 数据引擎配置</span>
+    <span class="nt">engine</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">wiredTiger</span>
+    <span class="c1"># WT引擎配置</span>
+    <span class="nt">wiredTiger</span><span class="p">:</span>
+        <span class="nt">engineConfig</span><span class="p">:</span>
+            <span class="c1"># WT最大使用cache（根据服务器实际情况调节）</span>
+            <span class="c1"># arbiter|configrs可配置成1</span>
+            <span class="nt">cacheSizeGB</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+            <span class="c1"># 是否将索引也按数据库名单独存储</span>
+            <span class="nt">directoryForIndexes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+        <span class="c1"># 表压缩配置</span>
+        <span class="nt">collectionConfig</span><span class="p">:</span>
+            <span class="c1"># blockCompressor参数：none|zlib</span>
+            <span class="nt">blockCompressor</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">zlib</span>
+        <span class="c1"># 索引配置</span>
+        <span class="nt">indexConfig</span><span class="p">:</span>
+            <span class="nt">prefixCompression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="c1"># 副本配置 #</span>
+<span class="nt">replication</span><span class="p">:</span>
+    <span class="c1"># oplog大小。默认磁盘空间5%(1G-50G)</span>
+    <span class="nt">oplogSizeMB</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20480</span>
+    <span class="c1"># 复制集名称</span>
+    <span class="nt">replSetName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">shardN</span>
+
+<span class="c1"># 分片配置 #</span>
+<span class="nt">sharding</span><span class="p">:</span>
+    <span class="c1"># 分片角色</span>
+    <span class="nt">clusterRole</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">shardsvr</span>
+</pre></div>
+
+
+<p><strong>configsvr配置文件</strong></p>
+<div class="codehilite"><pre><span></span><span class="c1"># 是否后台 #</span>
+<span class="nt">processManagement</span><span class="p">:</span>
+    <span class="nt">fork</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="c1"># 网络配置 #</span>
+<span class="nt">net</span><span class="p">:</span>
+    <span class="c1">#bindIp: 127.0.0.1,10.8.0.10,192.168.4.24</span>
+    <span class="c1">#bindIp: id3.configrs.mongodb.projectname</span>
+    <span class="nt">port</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">27019</span>
+
+<span class="c1"># 安全认证配置 #</span>
+<span class="c1">#security:</span>
+    <span class="c1"># 启用认证配置：enabled|disabled</span>
+    <span class="c1">#authorization: enabled</span>
+    <span class="c1"># 使用Internal Authentication</span>
+    <span class="c1">#keyFile: /etc/mongodbConf/DBNAME/keyfile</span>
+
+<span class="c1">#setParameter:</span>
+    <span class="c1"># Local Exception配置，默认true</span>
+    <span class="c1">#enableLocalhostAuthBypass: false</span>
+
+<span class="c1"># mongo实例日志配置 #</span>
+<span class="nt">systemLog</span><span class="p">:</span>
+    <span class="nt">destination</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">file</span>
+    <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/data/mongodb/DBNAME/logs/configReplSetNAME27019.log</span>
+    <span class="c1"># 设置logAppend为true后，mongod/mongos在重启后只会在现有日</span>
+    <span class="c1"># 志的尾部继续添加日志，不会覆盖已有日志文件。(默认:False)</span>
+    <span class="nt">logAppend</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="c1"># 日志滚动配置rename(重命名日志文件)|reopen(关闭并重新打开此日志文件)</span>
+    <span class="c1"># reopen使用linux日志rotate特性，如果配置reopen，也要设置logAppend: true</span>
+    <span class="nt">logRotate</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rename</span>
+    <span class="c1"># (default)iso8601-local|iso8601-utc|ctime</span>
+    <span class="c1">#timeStampFormat: iso8601-local</span>
+
+<span class="c1"># mongodb数据存储配置 #</span>
+<span class="nt">storage</span><span class="p">:</span>
+    <span class="c1"># journal配置</span>
+    <span class="nt">journal</span><span class="p">:</span>
+        <span class="nt">enabled</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="c1"># 数据文件存储位置</span>
+    <span class="nt">dbPath</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/data/mongodb/DBNAME/data/configReplSetNAME27019</span>
+    <span class="c1"># 是否一个库一个文件夹</span>
+    <span class="nt">directoryPerDB</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="c1"># 数据引擎配置</span>
+    <span class="nt">engine</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">wiredTiger</span>
+    <span class="c1"># WT引擎配置</span>
+    <span class="nt">wiredTiger</span><span class="p">:</span>
+        <span class="nt">engineConfig</span><span class="p">:</span>
+            <span class="c1"># WT最大使用cache（根据服务器实际情况调节）</span>
+            <span class="c1"># arbiter|configrs可配置成1</span>
+            <span class="nt">cacheSizeGB</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+            <span class="c1"># 是否将索引也按数据库名单独存储</span>
+            <span class="nt">directoryForIndexes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+        <span class="c1"># 表压缩配置</span>
+        <span class="nt">collectionConfig</span><span class="p">:</span>
+            <span class="c1"># blockCompressor参数：none|zlib</span>
+            <span class="nt">blockCompressor</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">zlib</span>
+        <span class="c1"># 索引配置</span>
+        <span class="nt">indexConfig</span><span class="p">:</span>
+            <span class="nt">prefixCompression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="c1"># 副本配置 #</span>
+<span class="nt">replication</span><span class="p">:</span>
+    <span class="c1"># oplog大小,默认磁盘空间5%(1G-50G)</span>
+    <span class="c1">#oplogSizeMB: 4096</span>
+    <span class="c1"># 复制集名称</span>
+    <span class="nt">replSetName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">configReplSetNAME</span>
+
+<span class="c1"># 分片配置 #</span>
+<span class="nt">sharding</span><span class="p">:</span>
+    <span class="c1"># 分片角色</span>
+    <span class="nt">clusterRole</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">configsvr</span>
+</pre></div>
+
+
+<p><strong>mongos配置文件</strong></p>
+<div class="codehilite"><pre><span></span><span class="c1"># 是否后台</span>
+<span class="nt">processManagement</span><span class="p">:</span>
+    <span class="nt">fork</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="c1"># 安全认证配置</span>
+<span class="c1">#security:</span>
+    <span class="c1"># 使用Internal Authentication</span>
+    <span class="c1">#keyFile: /etc/mongodbConf/DBNAME/keyfile</span>
+
+<span class="c1"># 网路配置 #</span>
+<span class="nt">net</span><span class="p">:</span>
+    <span class="c1">#bindIp: 127.0.0.1,10.8.0.10,192.168.4.24</span>
+    <span class="c1"># 端口配置</span>
+    <span class="nt">port</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">27017</span>
+
+<span class="c1">#setParameter:</span>
+    <span class="c1"># Local Exception配置，默认true</span>
+    <span class="c1">#enableLocalhostAuthBypass: false</span>
+
+<span class="c1"># mongo实例日志配置 #</span>
+<span class="nt">systemLog</span><span class="p">:</span>
+    <span class="nt">destination</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">file</span>
+    <span class="c1"># 日志位置</span>
+    <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/data/mongodb/DBNAME/logs/mongos27017.log</span>
+    <span class="c1"># 设置logAppend为true后，mongod/mongos在重启后只会在现有日</span>
+    <span class="c1"># 志的尾部继续添加日志，不会覆盖已有日志文件。(默认:False)</span>
+    <span class="nt">logAppend</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="c1"># 日志滚动配置rename(重命名日志文件)|reopen(关闭并重新打开此日志文件)</span>
+    <span class="c1"># reopen使用linux日志rotate特性，如果配置reopen，也要设置logAppend: true</span>
+    <span class="nt">logRotate</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rename</span>
+    <span class="c1"># (default)iso8601-local|iso8601-utc|ctime</span>
+    <span class="c1">#timeStampFormat: iso8601-local</span>
+
+<span class="c1"># 分片配置</span>
+<span class="nt">sharding</span><span class="p">:</span>
+    <span class="c1"># 指定config server</span>
+    <span class="c1">#configDB: 10.96.29.2:29017,10.96.29.2:29018,10.96.29.2:29019</span>
+    <span class="c1"># 如果config server是一个副本集，则必须使用以下的配置</span>
+    <span class="nt">configDB</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">configReplSetNAME/192.168.1.18:21001,192.168.1.55:21001,192.168.1.56:21001</span>
+</pre></div>
+
+
+<h3 id="2">2、启动各个组件的实例</h3>
+<div class="codehilite"><pre><span></span><span class="c1"># shard和config的启动都是使用mongod启动</span>
+sudo -u mongodb numactl --interleave<span class="o">=</span>all mongod -f /etc/mongodbConf/DBNAME/shardPORT.conf
+sudo -u mongodb numactl --interleave<span class="o">=</span>all mongod -f /etc/mongodbConf/DBNAME/configPORT.conf
+
+<span class="c1"># mongos的启动</span>
+sudo -u mongodb mongos -f /etc/mongodbConf/DBNAME/mongosPORT.conf
+</pre></div>
+
+
+<h3 id="3">3、对各个分片的复制集进行初始化</h3>
+<div class="codehilite"><pre><span></span>mongo <span class="m">192</span>.168.1.54:22001
+use admin
+db.runCommand<span class="o">({</span>
+    <span class="s2">&quot;replSetInitiate&quot;</span>:<span class="o">{</span>
+        <span class="s2">&quot;_id&quot;</span>:<span class="s2">&quot;RsDBNAME&quot;</span>,
+        <span class="s2">&quot;members&quot;</span>:<span class="o">[</span>
+            <span class="o">{</span><span class="s2">&quot;_id&quot;</span>:1,<span class="s2">&quot;host&quot;</span>:<span class="s2">&quot;192.168.1.54:22001&quot;</span>,<span class="s2">&quot;priority&quot;</span>: <span class="m">2</span><span class="o">}</span>,
+            <span class="o">{</span><span class="s2">&quot;_id&quot;</span>:2,<span class="s2">&quot;host&quot;</span>:<span class="s2">&quot;192.168.1.53:22001&quot;</span><span class="o">}</span>,
+            <span class="o">{</span><span class="s2">&quot;_id&quot;</span>:3,<span class="s2">&quot;host&quot;</span>:<span class="s2">&quot;192.168.1.52:22001&quot;</span>,<span class="s2">&quot;arbiterOnly&quot;</span>:true<span class="o">}</span>
+        <span class="o">]</span>
+    <span class="o">}</span>
+<span class="o">})</span>
+</pre></div>
+
+
+<h3 id="4config-server">4、初始化config server复制集</h3>
+<div class="codehilite"><pre><span></span>use admin
+rs.initiate<span class="o">({</span>
+    _id: <span class="s2">&quot;configReplSetNAME&quot;</span>,
+    configsvr: true,
+    members: <span class="o">[</span>
+        <span class="o">{</span> _id: <span class="m">1</span>, host: <span class="s2">&quot;&lt;host1&gt;:&lt;port1&gt;&quot;</span>, <span class="s2">&quot;priority&quot;</span>: <span class="m">2</span> <span class="o">}</span>,
+        <span class="o">{</span> _id: <span class="m">2</span>, host: <span class="s2">&quot;&lt;host2&gt;:&lt;port2&gt;&quot;</span> <span class="o">}</span>,
+        <span class="o">{</span> _id: <span class="m">3</span>, host: <span class="s2">&quot;&lt;host3&gt;:&lt;port3&gt;&quot;</span> <span class="o">}</span>
+   <span class="o">]</span>
+<span class="o">})</span>
+</pre></div>
+
+
+<h3 id="5mongos">5、连接到mongos进行集群分片的配置</h3>
+<div class="codehilite"><pre><span></span>mongo <span class="m">192</span>.168.1.54:20001
+use admin
+sh.addShard<span class="o">(</span><span class="s2">&quot;&lt;replica_set&gt;/&lt;hostname&gt;&lt;:port&gt;&quot;</span><span class="o">)</span>
+<span class="c1"># or:</span>
+<span class="c1">#db.runCommand({&quot;addShard&quot;:&quot;shard1/192.168.1.54:22001&quot;})</span>
+</pre></div>
+
+
+<h3 id="6">6、对某个库开启分片功能</h3>
+<div class="codehilite"><pre><span></span>mongo <span class="m">192</span>.168.1.54:20001
+use admin
+sh.enableSharding<span class="o">(</span><span class="s2">&quot;test&quot;</span><span class="o">)</span>
+<span class="c1"># or:</span>
+<span class="c1">#db.runCommand({&quot;enablesharding&quot;:&quot;test&quot;})</span>
+</pre></div>
+
+
+<h3 id="7mongos">7、使用数据库都连接到mongos节点进行操作</h3>
+<div class="codehilite"><pre><span></span>mongo <span class="m">192</span>.168.1.54:20001
+use <span class="nb">test</span>
+db.collname.insert<span class="o">({</span><span class="s2">&quot;aaa&quot;</span>: <span class="m">1</span><span class="o">})</span>
+db.collname.find<span class="o">()</span>
+</pre></div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!--banner end-->
+        </main>
+        <aside class="sidebar">
+
+            <div class="about">
+                <h2 class="hometitle">关于我</h2>
+                <div class="avatar">
+                    <img src="/images/avatar.png" alt="">
+                </div>
+                <p class="abname">看不见我</p>
+                <p class="abposition">... ...!!</p>
+                <div class="abtext">To be or not to be, this is not a question.</div>
+            </div>
+
+            <div class="categories">
+                <h2 class="hometitle">分类</h2>
+                    <ul>
+                        <li><a href="/category/linux.html">Linux</a></li>
+                        <li><a href="/category/security.html">Security</a></li>
+                        <li><a href="/category/service.html">Service</a></li>
+                    </ul>
+            </div>
+            <div class="cloud">
+                <h2 class="hometitle">标签云</h2>
+                <ul>                    <a href="/tag/ansible.html">ansible</a>
+                    <a href="/tag/apache.html">apache</a>
+                    <a href="/tag/curator.html">curator</a>
+                    <a href="/tag/database.html">database</a>
+                    <a href="/tag/elastic.html">elastic</a>
+                    <a href="/tag/elasticsearch.html">elasticsearch</a>
+                    <a href="/tag/facl.html">facl</a>
+                    <a href="/tag/ftp.html">ftp</a>
+                    <a href="/tag/glusterfs.html">glusterfs</a>
+                    <a href="/tag/haproxy.html">haproxy</a>
+                    <a href="/tag/httpd.html">httpd</a>
+                    <a href="/tag/https.html">https</a>
+                    <a href="/tag/linux.html">linux</a>
+                    <a href="/tag/logs.html">logs</a>
+                    <a href="/tag/memcache.html">memcache</a>
+                    <a href="/tag/mongodb.html">mongodb</a>
+                    <a href="/tag/mysql.html">mysql</a>
+                    <a href="/tag/nginx.html">nginx</a>
+                    <a href="/tag/openssl.html">openssl</a>
+                    <a href="/tag/openwrt.html">Openwrt</a>
+                    <a href="/tag/qa.html">QA</a>
+                    <a href="/tag/redis.html">redis</a>
+                    <a href="/tag/scribe.html">scribe</a>
+                    <a href="/tag/security.html">security</a>
+                    <a href="/tag/service.html">service</a>
+                    <a href="/tag/shadowsocks.html">shadowsocks</a>
+                    <a href="/tag/slb.html">slb</a>
+                    <a href="/tag/ss.html">ss</a>
+                    <a href="/tag/ssltls.html">SSL/TLS</a>
+                    <a href="/tag/storage.html">storage</a>
+                    <a href="/tag/tmux.html">tmux</a>
+                    <a href="/tag/tool.html">tool</a>
+                    <a href="/tag/tools.html">tools</a>
+                </ul>
+            </div>
+            <div class="links">
+              <h2 class="hometitle">推荐链接</h2>
+              <ul>
+                  <li><a href="https://jecvay.com/" target="_blank">Jecvay</a></li>
+                  <li><a href="http://andrewliu.in/" target="_blank">Adnrewliu</a></li>
+                  <li><a href="http://seanlook.com/" target="_blank">sean's notes</a></li>
+                  <li><a href="https://woaielf.github.io/" target="_blank">ZOE's Blog</a></li>
+                  <li><a href="https://233blog.com/" target="_blank">233Blog</a></li>
+                  <li><a href="http://www.yangqq.com" target="_blank">杨青个人博客</a></li>
+              </ul>
+            </div>
+
+
+        </aside>
+        <!--sidebar end-->
+    </div>
+    <!--wrapper end-->
+
+    <a href="#" class="cd-top">Top</a>
+</body>
+
+</html>

@@ -75,7 +75,7 @@
                 <li class="author">【作者】<a href="/author/kan-bu-jian-wo.html">看不见我</a></li>
                 <li class="lmname">【分类】<a href="/category/service.html">Service</a></li>
                 <li class="date">【发布】2018-03-10 16:45</li>
-                <li class="modified">【更新】2019-01-07 21:52</li>
+                <li class="modified">【更新】2019-09-22 12:17</li>
             </ul>
         </div>
         <div class="tags">
@@ -127,7 +127,8 @@ yum install libsodium -y  <span class="c1"># for Yum-base install</span>
 <div class="codehilite"><pre><span></span><span class="c1"># 依赖Python 2.6 or 2.7 +</span>
 <span class="c1"># https://www.python.org/downloads/</span>
 <span class="c1"># PyPI安装:</span>
-pip install shadowsocks
+<span class="c1">#pip install shadowsocks</span>
+install git+https://github.com/shadowsocks/shadowsocks.git@master
 
 <span class="c1"># 或</span>
 <span class="c1"># GitHub安装:</span>
@@ -147,13 +148,24 @@ python setup.py install
 <li>local_port: local port number.</li>
 <li>password: a password used to encrypt transfer.</li>
 <li>timeout: connections timeout in seconds.</li>
-<li>method: encryption method. <a href="https://shadowsocks.org/en/spec/Stream-Ciphers.html">more...</a><ul>
+<li>method: encryption method. <a href="https://shadowsocks.org/en/spec/AEAD-Ciphers.html">more...</a><ul>
 <li>chacha20-ietf-poly1305  (shadowsocks 3.0.0+)</li>
 <li>aes-256-gcm  (shadowsocks 3.0.0+)</li>
 <li>aes-256-cfb</li>
 </ul>
 </li>
 </ul>
+<hr />
+<div class="codehilite"><pre><span></span><span class="c1"># 关于ss加密方式: https://blog.csdn.net/Bleachswh/article/details/78079185</span>
+<span class="c1"># 总结一点:</span>
+<span class="c1">#   AES兼顾效率和安全。在拥有AES指令集的机器上， 效率比XCHACHA20更高。推荐：sodium:aes-256-gcm</span>
+<span class="c1">#   XCHACHA20兼顾效率和安全。在没有AES指令集的机器上，效率比AES高。推荐：xchacha20-ietf-poly1305</span>
+
+<span class="c1"># 查看设备cpu指令集是否有AES指令集</span>
+grep --color aes /proc/cpuinfo <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s1">&#39;此设备CPU有AES指令集&#39;</span>
+</pre></div>
+
+
 <p><strong>启动ssserver服务</strong></p>
 <div class="codehilite"><pre><span></span><span class="c1"># 直接使用命令选项启动服务:</span>
 nohup ssserver -s <span class="m">0</span>.0.0.0 -p <span class="m">1111</span> -k <span class="s2">&quot;z7T0XRpassword&quot;</span> -m chacha20-ietf-poly1305 -t <span class="m">600</span> &lt;/dev/null <span class="p">&amp;</span>&gt;/tmp/ssserver.log <span class="p">&amp;</span>
@@ -306,6 +318,10 @@ chmod +x auto_install.sh
 <ul>
 <li>shadowsocks-win: <a href="https://github.com/shadowsocks/shadowsocks-windows/releases">GitHub</a></li>
 <li>Shadowsocks-Qt5: <a href="https://github.com/shadowsocks/shadowsocks-qt5/releases">GitHub</a></li>
+</ul>
+<h3 id="linux">Linux</h3>
+<ul>
+<li>shadowsocks-qt5: <a href="https://github.com/shadowsocks/shadowsocks-qt5">https://github.com/shadowsocks/shadowsocks-qt5</a></li>
 </ul>
 <h2 id="socks5">使用socks5请求代理客户端</h2>
 <h3 id="curl">curl</h3>

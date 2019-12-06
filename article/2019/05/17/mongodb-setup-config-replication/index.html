@@ -214,6 +214,7 @@ db.runCommand<span class="o">(</span>
 
 <p>以上操作就完成了这一个复制集的初始化。
 这样初始化完的复制集连接到primary实例中就可以直接使用了。</p>
+<p><em>备注:初始化命令不能在arbiter节点上执行，否则会初始化失败报错。</em></p>
             </div>
         </div>
     </div>
