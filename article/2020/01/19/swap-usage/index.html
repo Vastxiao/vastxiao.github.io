@@ -66,149 +66,117 @@
 
         <main>
             <!--banner begin-->
-<h2 class="place"><a href="/article/2019/04/19/elastic-es-index-lifecycle/">/article/2019/04/19/elastic-es-index-lifecycle/</a></h2>
+<h2 class="place"><a href="/article/2020/01/19/swap-usage/">/article/2020/01/19/swap-usage/</a></h2>
 <div class="infosbox">
     <div class="newsview">
-        <h3 class="news_title">Elasticsearch 索引生命周期管理(lifecycle)</h3>
+        <h3 class="news_title">Linux swap 维护</h3>
         <div class="bloginfo">
             <ul>
                 <li class="author">【作者】<a href="/author/kan-bu-jian-wo.html">看不见我</a></li>
-                <li class="lmname">【分类】<a href="/category/service.html">Service</a></li>
-                <li class="date">【发布】2019-04-19 09:40</li>
-                <li class="modified">【更新】2019-04-19 09:40</li>
+                <li class="lmname">【分类】<a href="/category/linux.html">Linux</a></li>
+                <li class="date">【发布】2020-01-19 10:17</li>
+                <li class="modified">【更新】2020-01-19 10:17</li>
             </ul>
         </div>
         <div class="tags">
-            <a href="/tag/elastic.html" target="_blank">【elastic】</a>
-            <a href="/tag/elasticsearch.html" target="_blank">【elasticsearch】</a>
+            <a href="/tag/system.html" target="_blank">【system】</a>
         </div>
         <div class="news_con">
             <div class="news_mdfile">
-            <h1 id="index-lifecycle">索引生命周期(index lifecycle)</h1>
-<p><em>索引生命周期管理在ES6.6开始支持,在ES7.0已经是稳定版特性了。</em></p>
+            <h1 id="linux-swap">Linux swap 操作</h1>
+<h2 id="_1">让系统尽量不使用交换分区，注意不是禁用</h2>
+<div class="codehilite"><pre><span></span><span class="nb">echo</span> <span class="s2">&quot;vm.swappiness = 0&quot;</span>&gt;&gt; /etc/sysctl.conf
+sysctl -p
+</pre></div>
+
+
+<h2 id="swap">查看swap状态</h2>
+<div class="codehilite"><pre><span></span>swapon -s
+</pre></div>
+
+
+<h2 id="swap_1">刷新SWAP</h2>
+<div class="codehilite"><pre><span></span><span class="c1"># 可以执行命令刷新一次SWAP（将SWAP里的数据转储回内存，并清空SWAP里的数据）</span>
+swapoff -a <span class="o">&amp;&amp;</span> swapon -a
+</pre></div>
+
+
+<h2 id="swap_2">自动挂载swap</h2>
+<div class="codehilite"><pre><span></span><span class="c1"># 这个命令会自动根据 /etc/fstab 的配置挂载swap分区</span>
+swapon -a
+</pre></div>
+
+
+<h2 id="swap_3">禁用swap</h2>
+<div class="codehilite"><pre><span></span><span class="c1"># 1. 删除 swap 分区所有内容</span>
+<span class="c1"># 执行 swapoff -a 后的free命令显示的 swap 一行应该全部是 0</span>
+swapoff -a
+
+<span class="c1"># 2. 删除 swap 挂载，这样系统下次启动不会再挂载 swap</span>
+<span class="c1"># 在 /etc/fstab 中注释 swap 行</span>
+vim /etc/fstab
+</pre></div>
+
+
+<h2 id="swap_4">启用swap分区</h2>
+<p>Linux下可以创建两种类型的交换空间:</p>
 <ul>
-<li>https://www.elastic.co/guide/en/elasticsearch/reference/current/index-lifecycle-management.html</li>
-<li>https://www.elastic.co/guide/en/elasticsearch/reference/current/index-lifecycle-management-api.html#index-lifecycle-management-api</li>
+<li>一种是swap分区。适合有空闲的分区可以使用。</li>
+<li>一种是swap文件。适合于没有空的硬盘分区。</li>
 </ul>
-<p>索引生命周期管理包含内容:
-  - 生命周期任务管理(_ilm)
-  - 生命周期策略管理(policy)
-  - 索引周期策略管理</p>
-<h2 id="_ilm">生命周期任务管理(_ilm)</h2>
-<p>接口:</p>
-<div class="codehilite"><pre><span></span># 获取 _ilm 运行状态
-GET /_ilm/status
+<h3 id="swap_5">使用swap分区</h3>
+<p>使用swap分区的方式，就是创建硬盘分区，格式化为swap文件系统。</p>
+<div class="codehilite"><pre><span></span><span class="c1"># 1、拿硬盘创建一个分区:</span>
+<span class="c1">#parted /dev/sdb</span>
 
-# 关闭 _ilm 任务
-POST /_ilm/stop
+<span class="c1"># 2、格式化为swap格式：</span>
+mkswap /dev/sdb1
 
-# 启动 _ilm 任务
-POST /_ilm/start
+<span class="c1"># 3、启用交换分区：</span>
+swapon /dev/sdb1
+<span class="c1"># 关闭swap分区</span>
+<span class="c1">#swapoff /dev/sdb1</span>
+
+<span class="c1"># 4、如果要重启生效，将swap分区写入 /etc/fstab</span>
+<span class="c1"># vim /etc/fstab</span>
+<span class="c1"># /dev/sdb1 swap swap defaults 0 0</span>
+<span class="c1">#</span>
+<span class="c1"># 写入 /etc/fstab 的swap可以使用命令:</span>
+swapon -a
 </pre></div>
 
 
-<p>使用</p>
-<div class="codehilite"><pre><span></span>curl <span class="s1">&#39;http://192.168.13.56:9200/_ilm/status?pretty&#39;</span>
-curl <span class="s1">&#39;http://192.168.13.56:9200/_ilm/stop?pretty&#39;</span> -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -XPOST
-curl <span class="s1">&#39;http://192.168.13.56:9200/_ilm/start?pretty&#39;</span> -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -XPOST
-</pre></div>
+<h3 id="swap_6">使用swap文件</h3>
+<div class="codehilite"><pre><span></span><span class="c1"># 1、创建用于交换分区的文件：</span>
+dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/mnt/swap <span class="nv">bs</span><span class="o">=</span><span class="m">4096</span> <span class="nv">count</span><span class="o">=</span><span class="m">1048576</span>（这条命令运行完后稍等一会）
+<span class="c1"># 注：dd创建的文件总大小等于(bs * count)。</span>
+<span class="c1">#   (bs * count) / 1024 / 1024 / 1024 = nG</span>
+<span class="c1">#   count = (nG * 1024 * 1024 * 1024) / bs</span>
+<span class="c1">#   本例是 4096*1048576=4G(4294967296 bytes)。</span>
+<span class="c1"># 注释：</span>
+<span class="c1">#   dd：可以创建指定大小(4G)的文件</span>
+<span class="c1">#   if：指定输入设备</span>
+<span class="c1">#   /dev/zero：无限0资源</span>
+<span class="c1">#   of：指定输出设备</span>
+<span class="c1">#   bs：每个块的大小</span>
+<span class="c1">#   count：块的数量</span>
 
+<span class="c1"># 2、设置交换分区文件：</span>
+mkswap /mnt/swap
 
-<h2 id="policy">生命周期策略管理(policy)</h2>
-<h3 id="lifesycle4stages">lifesycle包含4个阶段(stages)</h3>
-<ul>
-<li>hot: The index is actively being written to</li>
-<li>warm: The index is generally not being written to, but is still queried</li>
-<li>cold: The index is no longer being updated and is seldom queried. The information still needs to be searchable, but it’s okay if those queries are slower.</li>
-<li>delete: The index is no longer needed and can safely be deleted</li>
-</ul>
-<h3 id="lifesyclepolicy">lifesycle策略接口(policy)</h3>
-<div class="codehilite"><pre><span></span># 创建和更新policy:
-PUT _ilm/policy/&lt;policy_id&gt;
+<span class="c1"># 4、设置文件权限：</span>
+chown root:root /mnt/swap
+chmod <span class="m">0600</span> /mnt/swap
 
-# 查看policy:
-GET _ilm/policy
-GET _ilm/policy/&lt;policy_id&gt;
+<span class="c1"># 5、启用交换分区文件：</span>
+swapon /mnt/swap
 
-# 删除policy:
-DELETE _ilm/policy/&lt;policy_id&gt;
-</pre></div>
-
-
-<h3 id="policy_1">使用policy接口</h3>
-<div class="codehilite"><pre><span></span><span class="c1"># 创建lifecycle策略:</span>
-curl <span class="s1">&#39;192.168.13.56:9200/_ilm/policy/my_policy&#39;</span> -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -XPUT -d <span class="s1">&#39;</span>
-<span class="s1">{</span>
-<span class="s1">  &quot;policy&quot;: {</span>
-<span class="s1">    &quot;phases&quot;: {</span>
-<span class="s1">      &quot;warm&quot;: {</span>
-<span class="s1">        &quot;min_age&quot;: &quot;10d&quot;,</span>
-<span class="s1">        &quot;actions&quot;: {</span>
-<span class="s1">          &quot;forcemerge&quot;: {</span>
-<span class="s1">            &quot;max_num_segments&quot;: 1</span>
-<span class="s1">          }</span>
-<span class="s1">        }</span>
-<span class="s1">      },</span>
-<span class="s1">      &quot;delete&quot;: {</span>
-<span class="s1">        &quot;min_age&quot;: &quot;30d&quot;,</span>
-<span class="s1">        &quot;actions&quot;: {</span>
-<span class="s1">          &quot;delete&quot;: {}</span>
-<span class="s1">        }</span>
-<span class="s1">      }</span>
-<span class="s1">    }</span>
-<span class="s1">  }</span>
-<span class="s1">}</span>
-<span class="s1">&#39;</span>
-
-
-<span class="c1"># 查看lifecycle策略:</span>
-curl <span class="s1">&#39;192.168.13.56:9200/_ilm/policy/my_policy?pretty&#39;</span> -XGET
-<span class="c1"># 查看所有策略</span>
-curl <span class="s1">&#39;192.168.13.56:9200/_ilm/policy?pretty&#39;</span> -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -XGET
-
-
-<span class="c1"># 删除lifecycle策略:</span>
-curl <span class="s1">&#39;192.168.13.56:9200/_ilm/policy/my_policy?pretty&#39;</span> -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -XDELETE
-</pre></div>
-
-
-<h2 id="_1">索引周期策略管理</h2>
-<p>在模版中添加生命周期策略:</p>
-<div class="codehilite"><pre><span></span>curl <span class="s1">&#39;192.168.13.56:9200/_template/my_template&#39;</span> -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -XPUT -d<span class="s1">&#39;</span>
-<span class="s1">{</span>
-<span class="s1">  &quot;index_patterns&quot;: [&quot;test-*&quot;], </span>
-<span class="s1">  &quot;settings&quot;: {</span>
-<span class="s1">    &quot;number_of_shards&quot;: 1,</span>
-<span class="s1">    &quot;number_of_replicas&quot;: 1,</span>
-<span class="s1">    &quot;index.lifecycle.name&quot;: &quot;my_policy&quot;</span>
-<span class="s1">  }</span>
-<span class="s1">}</span>
-<span class="s1">&#39;</span>
-</pre></div>
-
-
-<p>配置索引的生命周期策略:</p>
-<div class="codehilite"><pre><span></span>curl <span class="s1">&#39;192.168.13.56:9200/my_index/_settings&#39;</span> -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -XPUT -d<span class="s1">&#39;</span>
-<span class="s1">{</span>
-<span class="s1">  &quot;lifecycle.name&quot;: &quot;my_other_policy&quot;</span>
-<span class="s1">}</span>
-<span class="s1">&#39;</span>
-</pre></div>
-
-
-<p>从索引中移除生命周期策略:</p>
-<div class="codehilite"><pre><span></span><span class="c1"># POST &lt;index&gt;/_ilm/remove</span>
-curl <span class="s1">&#39;192.168.13.56:9200/my_index/_ilm/remove&#39;</span> -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -XPOST
-</pre></div>
-
-
-<p>查看索引的生命周期当前阶段状态:</p>
-<div class="codehilite"><pre><span></span>curl <span class="s1">&#39;192.168.13.56:9200/myindex/_ilm/explain?pretty&#39;</span>
-</pre></div>
-
-
-<p>对索引重试lifecycle策略执行失败的操作:</p>
-<div class="codehilite"><pre><span></span>curl <span class="s1">&#39;192.168.13.56:9200/myindex/_ilm/retry?pretty&#39;</span> -H <span class="s1">&#39;Content-Type: application/json&#39;</span> -XPOST
+<span class="c1"># 6、如果要重启生效，将swap分区写入 /etc/fstab</span>
+<span class="c1"># vim /etc/fstab</span>
+<span class="c1"># /mnt/swap swap swap defaults 0 0</span>
+<span class="c1">#</span>
+<span class="c1"># 写入 /etc/fstab 的swap可以使用命令:</span>
+swapon -a
 </pre></div>
             </div>
         </div>
